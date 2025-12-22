@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewData["Title"] = "自定义表单数据权限";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout lr-layout-left-center" id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title lrlg ">自定义表单功能目录</div>
+            <div id="interface_tree" class="lr-layout-body"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                <span class="lrlg">数据权限信息</span> - <span id="titleinfo" class="lrlg">未选择功能</span>
+            </div>
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class="btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+var objectId = request("objectId");
+var objectType = request("objectType");
+
+var refreshGirdData;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var interfaceId = '';
+    var formId = '';
+    var page = {
+        init: function () {
+            page.inittree();
+            page.initGrid();
+            page.bind();
+        },
+        bind: function () {
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var keyword = $('#txt_Keyword').val();
+                page.search({ keyword: keyword });
+            });
+            // 刷新
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+            if (!!objectId) {
+                // 新增
+                $('#lr_add').on('click', function () {
+                    if (!interfaceId) {
+                        aycsoft.alert.warning('请选择左侧功能！');
+                        return false;
+                    }
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '新增数据权限',
+                        url: top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/CustomerForm?interfaceId=' + interfaceId + '&objectId=' + objectId + '&objectType=' + objectType + '&type=2' + '&formId=' + formId,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                });
+            }
+            else {
+                $('#lr_add').hide();
+            }
+            // 编辑
+            $('#lr_edit').on('click', function () {
+                if (!formId) {
+                    aycsoft.alert.warning('请选择左侧功能！');
+                    return false;
+                }
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '编辑数据权限',
+                        url: top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/CustomerForm?interfaceId=' + interfaceId + '&objectId=' + objectId + '&objectType=' + objectType + '&keyValue=' + keyValue + '&type=2' + '&formId=' + formId,
+                        width: 700,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            });
+            // 删除
+            $('#lr_delete').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                        if (res) {
+                            aycsoft.deleteForm(top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/DeleteForm', { keyValue: keyValue }, function () {
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                }
+            });
+        },
+        inittree: function () {
+            $('#interface_tree').lrtree({
+                url: top.$.rootUrl + '/LR_FormModule/FormRelation/GetTree',
+                nodeClick: page.treeNodeClick
+            });
+        },
+        treeNodeClick: function (item) {
+            interfaceId = item.id;
+            formId = item.value;
+
+            $('#titleinfo').text(item.text);
+            page.search();
+        },
+        initGrid: function () {
+            $('#gridtable').jfGrid({
+                url: top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/GetPageList?type=2',
+                headData: [
+                    { label: "名称", name: "F_Name", width: 180, align: "left" },
+                    {
+                        label: "用户/角色", name: "F_ObjectId", width: 180, align: "left",
+                        formatterAsync: function (callback, value, row) {
+                                if (row.F_ObjectType == 1) {
+                                    aycsoft.clientdata.getAsync('role', {
+                                        key: value,
+                                        callback: function (item) {
+                                            callback("【角色】" + item.F_FullName);
+                                        }
+                                    });
+                                }
+                                else {
+                                    aycsoft.clientdata.getAsync('user', {
+                                        key: value,
+                                        callback: function (item) {
+                                            callback("【用户】" + item.F_RealName);
+                                        }
+                                    });
+                                }
+                            }
+                    },
+                    { label: "公式", name: "F_Formula", width: 280, align: "left" },
+                    {
+                        label: '创建人', name: 'F_CreateUserName', width: 100, align: 'left'
+                    },
+                    {
+                        label: "创建时间", name: "F_CreateDate", width: 100, align: "left",
+                        formatter: function (cellvalue) {
+                            return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd');
+                        }
+                    }
+                ],
+                isPage: true,
+                reloadSelected: true,
+                mainId: 'F_Id'
+            });
+            page.search();
+        },
+        search: function (param) {
+            param = param || {};
+            param.interfaceId = interfaceId;
+            param.objectId = objectId;
+            $('#gridtable').jfGridSet('reload', param);
+        }
+    };
+    refreshGirdData = function () {
+        $('#gridtable').jfGridSet('reload');
+    };
+    page.init();
+}
+</script>

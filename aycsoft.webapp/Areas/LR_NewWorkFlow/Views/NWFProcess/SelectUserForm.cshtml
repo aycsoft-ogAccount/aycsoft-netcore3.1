@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "选择下一节点审核人员";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+</div>
+<script>
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var nodeList = aycsoft.frameTab.currentIframe().nwflow.scheme.nodes;
+    var nextUsers = aycsoft.frameTab.currentIframe().nwflow.nextUsers;
+    var nodeMap = {};
+
+    var page = {
+        init: function () {
+            $.each(nodeList, function (_index, _item) {
+                nodeMap[_item.id] = _item;
+            });
+            var $form = $('#form');
+            $.each(nextUsers, function (_id, _list) {
+                if (_list.length > 1) {
+                    $form.append('<div class="col-xs-12 lr-form-item"><div class="lr-form-item-title" >' + nodeMap[_id].name.replace('<br/>【多人审核:并行】', '').replace('<br/>【多人审核:串行】', '') + '</div><div id="' + _id + '" class="nodeId" ></div></div >');
+                    $('#' + _id).lrselect({
+                        type: 'multiple',
+                        data: _list,
+                        value: 'Id',
+                        text: 'Name'
+                    });
+                }
+            });
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        var formData = $('#form').lrGetFormData();
+        // 获取审核人员
+        var auditers = {};
+        $('#form').find('.nodeId').each(function () {
+            var $this = $(this);
+            var id = $this.attr('id');
+            if (formData[id]) {
+                auditers[id] = formData[id];
+            }
+        });
+
+        callBack(auditers);
+        return true;
+    };
+    page.init();
+}
+</script>
+

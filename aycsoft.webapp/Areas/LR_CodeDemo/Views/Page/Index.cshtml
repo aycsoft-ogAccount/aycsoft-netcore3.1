@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewData["Title"] = "页面演示";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div class="lr-layout lr-layout-left-center lr-layout-query " id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title lrlg ">分类目录</div>
+            <div class="lr-layout-body" id="lr_left_tree"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center" style="padding-top:174px;">
+        <!--60 38-->
+        <div class="lr-layout-query-form" style="height:174px;">
+            <div class="lr-form-wrap lr-rblock" id="queryForm">
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">输入框</div>
+                    <input id="f_input1" type="text" class="form-control" />
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">下拉框1</div>
+                    <div id="f_select1"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">下拉框2</div>
+                    <div id="f_select2"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">公司</div>
+                    <div id="f_company"></div>
+                </div>
+
+
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">部门</div>
+                    <div id="f_department"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">人员</div>
+                    <div id="f_user"></div>
+                </div>
+
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">单选框</div>
+                    <div id="f_radio1"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">单选框2</div>
+                    <div id="f_radio2"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">多选框</div>
+                    <div id="f_checkbox1"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">多选框</div>
+                    <div id="f_checkbox2"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">日期框</div>
+                    <div id="f_date" style="width:100%;"></div>
+                </div>
+            </div>
+            <div class="lr-layout-query-form-btns">
+                <a id="lr_btn_qReset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                <a id="lr_btn_qSearch" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+            </div>
+        </div>
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                <span class="lrlg">此页面只作为页面布局参考用，与具体功能无关</span>
+                <div class="lr-layout-title-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="btn_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                        <a id="btn_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="btn_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="btn_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                        <a id="btn_print" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">打印</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var bootstrap = function ($, aycsoft) {
+        var page = {
+            init: function () {
+                page.bind();
+                page.initCompont();
+                page.initTree();
+                page.initGrid();
+            },
+            bind: function () {
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 查询
+                $('#lr_btn_qSearch').on('click', function () {
+                    var queryData = $('#queryForm').lrGetFormData();
+                    page.search({ queryJson: JSON.stringify(queryData) });
+                });
+                // 重置
+                $('#lr_btn_qReset').on('click', function () {
+                    var queryData = $('#queryForm').lrGetFormData();
+                    for (var id in queryData) {
+                        queryData[id] = "";
+                    }
+                    $('#queryForm').lrSetFormData(queryData, true);
+                    
+                });
+               
+                // 新增
+                $('#btn_add').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '新增-测试页面可能会报错,仅供参考',
+                        url: top.$.rootUrl + '/LR_CodeDemo/Page/Form',
+                        height: 500,
+                        width: 600,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGird);
+                        }
+                    });
+                });
+                // 编辑
+                $('#btn_edit').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_AreaId');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'form',
+                            title: '编辑-测试页面可能会报错,仅供参考',
+                            url: top.$.rootUrl + '/LR_CodeDemo/Page/Form?keyValue=' + keyValue,
+                            height: 500,
+                            width: 600,
+                            callBack: function (id) {
+                                return top[id].acceptClick(refreshGird);
+                            }
+                        });
+                    }
+                });
+                // 删除
+                $('#btn_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_AreaId');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！(删不掉的)', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_SystemModule/Area/DeleteForm', { keyValue: 'xxxxx' }, function () {
+                                    refreshGird();
+                                });
+                            }
+                        });
+                    }
+                });
+                // 打印
+                $('#btn_print').on('click', function () {
+                    $("#gridtable").jqprintTable({ title: '打印列表' });
+                });
+            },
+            initCompont: function () {
+                $('#f_select1').lrDataItemSelect({ code: 'FlowSort' })
+                $('#f_select2').lrDataSourceSelect({ code: 'dataitemc',text:'f_itemname',value:'f_itemid' })
+                $('#f_company').lrCompanySelect()
+                $('#f_department').lrDepartmentSelect()
+                $('#f_user').lrUserSelect('0')
+                $('#f_radio1').lrRadioCheckbox({ code: 'DbVersion' })
+                $('#f_radio2').lrRadioCheckbox({ code: 'test001', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid' })
+                $('#f_checkbox1').lrRadioCheckbox({ code: 'DbVersion', type: 'checkbox' })//
+                $('#f_checkbox2').lrRadioCheckbox({ code: 'test001', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid', type: 'checkbox', dfvalue:'15322f80-d492-4de9-a37a-6fb668948f5b' })
+                $('#f_date').lrdate({
+                    type:'right',
+                    dfvalue: '1'
+                })
+            },
+            initTree: function () {
+                $('#lr_left_tree').lrtree({
+                    url: top.$.rootUrl + '/LR_SystemModule/Area/GetTree',
+                    nodeClick: function (item) {
+                        if (item) {
+
+                        }
+                    }
+                });
+            },
+            initGrid: function () {
+                $('#gridtable').jfGrid({
+                    url: top.$.rootUrl + '/LR_SystemModule/Area/GetList',
+                    headData: [
+                        {
+                            label: "编号", name: "F_AreaCode", width: 100, align: "left"
+                            , formatterAsync: function (callback,value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('dataItem', {
+                                    key: value,
+                                    code: item.compont.itemCode,
+                                    callback: function (_data) {
+                                        callback(_data.F_ItemName);
+                                    }
+                                });
+                            }
+                        },
+                        { label: "名称", name: "F_AreaName", width: 300, align: "left" },
+                        { label: "简拼", name: "F_SimpleSpelling", width: 100, align: "left" },
+                        { label: "描述", name: "F_Description", width: 200, align: "left" }
+                    ],
+                    mainId: 'F_AreaId',
+                    reloadSelected: true
+                });
+
+                page.search();
+            },
+            search: function (param) {
+                param = param || {};
+                $('#gridtable').jfGridSet('reload', param);
+            }
+        };
+        // 保存数据后回调刷新
+        window.refreshGird = function () {
+            page.search();
+        }
+
+        page.init();
+    }
+</script>
+

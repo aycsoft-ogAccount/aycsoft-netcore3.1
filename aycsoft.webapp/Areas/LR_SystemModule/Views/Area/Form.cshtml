@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "区域添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+    <div class="lr-form-wrap" id="form">
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">编号<font face="宋体">*</font></div>
+            <input id="F_AreaCode" type="text" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+            <input id="F_AreaName" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">排序<font face="宋体">*</font></div>
+            <input id="F_SortCode" type="text" class="form-control" placeholder="请输入排序号" isvalid="yes" checkexpession="Num" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">描述</div>
+            <textarea id="F_Description" type="text" class="form-control" style="height:80px;"></textarea>
+        </div>
+    </div>
+    <script>
+        var parentId = request('parentId');
+
+var keyValue = '';
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+
+    var page = {
+        init: function () {
+            page.initData();
+        },
+        initData: function () {
+            if (!!selectedRow) {
+                keyValue = selectedRow.F_AreaId;
+                $('#form').lrSetFormData(selectedRow);
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var postData = $('#form').lrGetFormData(keyValue);
+        postData["F_ParentId"] = parentId;
+        $.lrSaveForm(top.$.rootUrl + '/LR_SystemModule/Area/SaveForm?keyValue=' + keyValue, postData, function (res) {
+            // 保存成功后才回调
+            if (!!callBack) {
+                callBack();
+            }
+        });
+    };
+    page.init();
+}
+    </script>
+

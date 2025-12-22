@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "添加上下级";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">上下级</div>
+        <div id="auditorId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+</div>
+<script>
+var acceptClick;
+var auditorName = '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('#auditorId').lrselect({// 限制条件1.同一个部门2.同一个公司
+                data: [{ id: '1', text: '上一级' }, { id: '2', text: '上二级' }, { id: '3', text: '上三级' }, { id: '4', text: '上四级' }, { id: '5', text: '上五级' }, { id: '6', text: '下一级' }, { id: '7', text: '下二级' }, { id: '8', text: '下三级' }, { id: '9', text: '下四级' }, { id: '10', text: '下五级' }],//
+                 select: function (item) {
+                     if (item) {
+                         auditorName = item.text;
+                     }
+                     else {
+                         auditorName = '';
+                     }
+                },
+            });
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+        formData.auditorName = auditorName;
+        formData.type = '4';//审核者类型1.岗位2.角色3.用户4.上下级5.表单指定字段6.某一个节点执行人
+        callBack(formData);
+        return true;
+    };
+    page.init();
+}
+</script>

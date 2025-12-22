@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "甘特图4";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class="btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.initGantt();
+            page.bind();
+        },
+        bind: function () {
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var keyword = $('#txt_Keyword').val();
+                page.search({ keyword: keyword });
+            });
+            // 刷新
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+        },
+        initGantt: function () {
+            $('#gridtable').lrGantt({
+                url: top.$.rootUrl + '/LR_CodeDemo/GanttDemo/GetPageList',
+                childUrl: top.$.rootUrl + '/LR_CodeDemo/GanttDemo/GetTimeList',
+                isPage: true,
+                rows: 30,
+                timebtns: ['month', 'week', 'day'],//'month', 'week', 'day', 'hour'
+            }).lrGanttSet('reload');
+        },
+        search: function (param) {
+            $('#gridtable').lrGanttSet('reload', param || {});
+        }
+    };
+    page.init();
+}
+</script>
+

@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "GirdSelectIndex";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-form-layout {
+    padding:44px 0 0 0;
+}
+.lr-form-layout-top {
+    position:absolute;
+    top:0;
+    left:0;
+    border-bottom:1px solid #ddd;
+    height:44px;
+    width:100%;
+    padding-left:3px;
+    z-index:4;
+}
+.lr-item {
+    position: relative;
+    float: left;
+    padding-top: 8px;
+    padding-left:5px;
+    line-height:28px;
+}
+.lr-item .btn
+{
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    margin-bottom: 1px;
+    line-height: 14px;
+
+}
+.lr-item .lr-select {
+    width:170px;
+}
+.lr-item .lr-field-error-info {
+    top:9px;
+    height:26px;
+}
+</style>
+<div class="lr-form-layout">
+    <div class="lr-form-layout-top">
+        <div class="lr-item">
+            <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width:240px;" />
+        </div>
+        <div class="lr-item">
+            <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+        </div>
+    </div>
+    <div id="gridtable"></div>
+</div>
+
+<script>
+var dfopid = request('dfopid');
+var acceptClick;
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectItem;
+
+    function loadData(_dfop) {
+        if (_dfop._loaded) {
+            $('#gridtable').jfGridSet('refreshdata', _dfop._data);
+        }
+        else {
+            setTimeout(function () {
+                loadData(_dfop);
+            }, 100);
+        }
+    }
+
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            var dfop = top.lrGirdSelect[dfopid];
+            $('#btn_Search').on('click', function () {
+                var keyword = $('#txt_Keyword').val();
+                if (dfop._loaded) {
+                    if (!!keyword) {
+                        var _data = [];
+                        $.each(dfop._data, function (id, item) {
+                            if (item[dfop.selectWord].indexOf(keyword) != -1) {
+                                _data.push(item);
+                            }
+                        });
+                        $('#gridtable').jfGridSet('refreshdata', _data);
+                    }
+                    else {
+                        $('#gridtable').jfGridSet('refreshdata', dfop._data);
+                    }
+                }
+            });
+            $('#gridtable').jfGrid({
+                headData: dfop.headData,
+                mainId: 'F_Id',
+                onSelectRow: function (row) {
+                    selectItem = row;
+                }
+            });
+            loadData(dfop);
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        callBack(selectItem, dfopid);
+        return true;
+    };
+    page.init();
+}
+</script>

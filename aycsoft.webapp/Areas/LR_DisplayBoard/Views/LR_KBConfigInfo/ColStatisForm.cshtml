@@ -1,0 +1,349 @@
+﻿@{
+    ViewBag.Title = "ColStatisForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .lr-form-item-title {
+    width: 130px;
+}
+
+.lr-form-item {
+    padding: 5px 0 5px 130px;
+}
+.lr-form-wrap.lr-scroll-wrap > .lr-scroll-box {
+    padding: 15px 30px 15px 0;
+}
+</style>
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">显示标题<font face="宋体">*</font></div>
+        <input id="F_Title" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">选项</div>
+        <div class="radio">
+            <label>
+                <input name="radio" value="sql" type="radio" checked>
+                SQL语句
+            </label>
+            <label>
+                <input name="radio" value="api" type="radio">
+                接口地址
+            </label>
+        </div>
+    </div>
+    <div id="db" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">显示值数据库</div>
+        <div id="F_TBaseData"></div>
+    </div>
+    <div id="sql" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">显示值Sql</div>
+        <textarea id="F_TSQL" class="form-control" style="height: 100px;"></textarea>
+    </div>
+    <div id="api" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">显示值接口</div>
+        <input id="F_TInterface" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">显示值对应字段<font face="宋体">*</font></div>
+        <div id="F_TitleValue" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">副显示标题<font face="宋体">*</font></div>
+        <input id="F_Subtitle" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">选项</div>
+        <div class="radio">
+            <label>
+                <input name="radiot" value="sql" type="radio" checked>
+                SQL语句
+            </label>
+            <label>
+                <input name="radiot" value="api" type="radio">
+                接口地址
+            </label>
+        </div>
+    </div>
+    <div id="dbt" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">副显示值数据库</div>
+        <div id="F_SBaseData"></div>
+    </div>
+    <div id="sqlt" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">副显示值Sql</div>
+        <textarea id="F_SubSQL" class="form-control" style="height: 100px;"></textarea>
+    </div>
+    <div id="apit" class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">副显示值接口</div>
+        <input id="F_SInterface" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">副显示值对应字段<font face="宋体">*</font></div>
+        <div id="F_SubtitleValue" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">跳转链接</div>
+        <input id="F_Link" type="text" class="form-control" />
+    </div>
+</div>
+
+<script>
+var acceptClick;
+
+var sqlFieldMap = {};
+var urlFieldMap = {};
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectColData = top.layer_form.selectColData;
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            sqlOrAPiIsShow();
+            $("input[type = 'radio']").click(function () {
+                sqlOrAPiIsShow();
+            });
+            function sqlOrAPiIsShow() {
+                if ($("input[type = 'radio'][name='radio']:checked").val() == "sql") {
+                    $("#db").show();
+                    $("#sql").show();
+                    $("#api").hide();
+                }
+                else {
+                    $("#db").hide();
+                    $("#sql").hide();
+                    $("#api").show();
+                }
+
+                if ($("input[type = 'radio'][name='radiot']:checked").val() == "sql") {
+                    $("#dbt").show();
+                    $("#sqlt").show();
+                    $("#apit").hide();
+                } else {
+                    $("#dbt").hide();
+                    $("#apit").hide();
+                    $("#sqlt").show();
+                }
+            }
+
+            ///显示值数据库
+            $('#F_TBaseData').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                type: 'tree',
+                placeholder: '请选择数据库',
+                allowSearch: true,
+                select: function () {
+                    var datasourceId = $('#F_TBaseData').lrselectGet();
+                    var sql = $("#F_TSQL").val();
+                    if (datasourceId && sql) {
+                        page.sqldata(datasourceId, sql, function (data) {
+                            var _v = $('#F_TitleValue').lrselectGet();
+                            $('#F_TitleValue').lrselectRefresh({ data: data });
+                            $('#F_TitleValue').lrselectSet(_v);
+                        });
+                    }
+                }
+            });
+            ///副显示值数据库
+            $('#F_SBaseData').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                type: 'tree',
+                placeholder: '请选择数据库',
+                allowSearch: true,
+                select: function () {
+                    var datasourceId = $('#F_SBaseData').lrselectGet();
+                    var sql = $("#F_SubSQL").val();
+                    if (datasourceId && sql) {
+                        page.sqldata(datasourceId, sql, function (data) {
+                            var _v = $('#F_SubtitleValue').lrselectGet();
+                            $('#F_SubtitleValue').lrselectRefresh({ data: data });
+                            $('#F_SubtitleValue').lrselectSet(_v);
+                        });
+                    }
+                }
+            });
+
+            $("#F_TSQL").on('blur', function () {
+                var datasourceId = $('#F_TBaseData').lrselectGet();
+                var sql = $("#F_TSQL").val();
+                if (datasourceId && sql) {
+                    page.sqldata(datasourceId, sql, function (data) {
+                        var _v = $('#F_TitleValue').lrselectGet();
+                        $('#F_TitleValue').lrselectRefresh({ data: data });
+                        $('#F_TitleValue').lrselectSet(_v);
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('请检查数据库或sql语句是否输入');
+                }
+            });
+            $("#F_TInterface").on('blur', function () {
+                var path = $("#F_TInterface").val();
+                if (!!path) {
+                    page.InterfaceData(path, function (data) {
+                        var _v = $('#F_TitleValue').lrselectGet();
+                        $('#F_TitleValue').lrselectRefresh({ data: data });
+                        $('#F_TitleValue').lrselectSet(_v);
+                    });
+                } else {
+                    aycsoft.alert.warning('请检查填写接口地址');
+                }
+            });
+            $("#F_SubSQL").on('blur', function () {
+                var datasourceId = $('#F_SBaseData').lrselectGet();
+                var sql = $("#F_SubSQL").val();
+                if (datasourceId && sql) {
+                    page.sqldata(datasourceId, sql, function (data) {
+                        var _v = $('#F_SubtitleValue').lrselectGet();
+                        $('#F_SubtitleValue').lrselectRefresh({ data: data });
+                        $('#F_SubtitleValue').lrselectSet(_v);
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('请检查数据库或sql语句是否输入');
+                }
+            });
+            $("#F_SInterface").on('blur', function () {
+                var path = $("#F_SInterface").val();
+                if (!!path) {
+                    page.InterfaceData(path, function (data) {
+                        var _v = $('#F_SubtitleValue').lrselectGet();
+                        $('#F_SubtitleValue').lrselectRefresh({ data: data });
+                        $('#F_SubtitleValue').lrselectSet(_v);
+                    });
+                } else {
+                    aycsoft.alert.warning('请检查填写接口地址');
+                }
+            });
+
+            // 显示值对应字段
+            $('#F_TitleValue').lrselect({
+                value: 'F_FullName',
+                text: 'F_FullName',
+                allowSearch: true
+            });
+            // 副显示值对应字段
+            $('#F_SubtitleValue').lrselect({
+                value: 'F_FullName',
+                text: 'F_FullName',
+                allowSearch: true
+            });
+        },
+        initData: function () {
+            if (selectColData) {
+                $('#form').lrSetFormData(selectColData);
+                if (selectColData.F_TBaseData && selectColData.F_TSQL) {
+                    page.sqldata(selectColData.F_TBaseData, selectColData.F_TSQL, function (data) {
+                        $('#F_TitleValue').lrselectRefresh({ data: data });
+                        $('#F_TitleValue').lrselectSet(selectColData.F_TitleValue);
+                    });
+                }
+                if (selectColData.F_SBaseData && selectColData.F_SubSQL) {
+                    page.sqldata(selectColData.F_SBaseData, selectColData.F_SubSQL, function (data) {
+                        $('#F_SubtitleValue').lrselectRefresh({ data: data });
+                        $('#F_SubtitleValue').lrselectSet(selectColData.F_SubtitleValue);
+                    });
+                }
+
+                if (selectColData.F_TInterface) {
+                    $("input[name=radio][value=api]").trigger('click');
+                    page.InterfaceData(selectColData.F_TInterface, function (data) {
+                        $('#F_TitleValue').lrselectRefresh({ data: data });
+                        $('#F_TitleValue').lrselectSet(selectColData.F_TitleValue);
+                    });
+                }
+                if (selectColData.F_SInterface) {
+                    $("input[name=radiot][value=api]").trigger('click');
+                    page.InterfaceData(selectColData.F_SInterface, function (data) {
+                        $('#F_SubtitleValue').lrselectRefresh({ data: data });
+                        $('#F_SubtitleValue').lrselectSet(selectColData.F_SubtitleValue);
+                    });
+                }
+               
+            }
+        },
+        sqldata: function (databaseLinkId, strSql,callback) {// 根据sql语句获取字段列表
+            if (sqlFieldMap[strSql]) {
+                callback(sqlFieldMap[strSql]);
+            } else {
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetSqlColName', { dbCode: databaseLinkId, strSql: strSql }, function (data) {
+                    if (data) {
+                        sqlFieldMap[strSql] = [];
+                        $.each(data, function (_index, _item) {
+                            sqlFieldMap[strSql].push({ F_FullName: _item });
+                        });
+                    }
+                    callback(sqlFieldMap[strSql] || []);
+                });
+            }
+        },
+        rfaceData: function (path, callback) {
+            if (urlFieldMap[path]) {
+                callback(urlFieldMap[path]);
+            } else {
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetApiData', { path: path }, function (data) {
+                    if (data) {
+                        urlFieldMap[path] = [];
+                        $.each(data, function (_index, _item) {
+                            urlFieldMap[path].push({ F_FullName: _index });
+                        });
+                    }
+                    callback(urlFieldMap[path] || []);
+                });
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+
+        if ($("input[type = 'radio'][name='radio']:checked").val() == "sql") {
+            if (formData.F_TBaseData == "" || formData.F_TSQL == "") {
+                aycsoft.alert.error('请检查数据库或sql语句是否输入');
+                return false;
+            }
+            formData.F_TInterface = '';
+        }
+        else {
+            if (formData.F_TInterface == "") {
+                aycsoft.alert.error('请检查填写接口地址');
+                return false;
+            }
+            formData.F_TBaseData = '';
+            formData.F_TSQL = '';
+        }
+
+        if ($("input[type = 'radio'][name='radiot']:checked").val() == "sql") {
+            if (formData.F_SBaseData == "" || formData.F_SubSQL == "") {
+                aycsoft.alert.error('请检查数据库或sql语句是否输入');
+                return false;
+            }
+            formData.F_SInterface = '';
+        }
+        else {
+            if (formData.F_SInterface == "") {
+                aycsoft.alert.error('请检查填写接口地址');
+                return false;
+            }
+            formData.F_SBaseData = '';
+            formData.F_SubSQL = '';
+        }
+        if (selectColData) {
+            $.extend(selectColData, formData);
+        }
+        formData.id = aycsoft.newGuid();
+
+        callBack(formData);
+        return true;
+    };
+    page.init();
+}
+</script>
+
+

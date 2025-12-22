@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "单据规则";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">前缀<font face="宋体">*</font></div>
+        <div id="itemType" isvalid="yes" checkexpession="NotNull">
+            <ul>
+                <li data-value="0">自定义</li>
+                <li data-value="1">日期</li>
+                <li data-value="2">流水号</li>
+                <li data-value="3">公司</li>
+                <li data-value="4">部门</li>
+                <li data-value="5">用户</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">格式<font face="宋体">*</font></div>
+        <input id="formatStr" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">步长</div>
+        <input id="stepValue" type="text" readonly class="form-control" isvalid="no" checkexpession="Num" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">初始</div>
+        <input id="initValue" type="text" readonly class="form-control" isvalid="no" checkexpession="Num" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">说明</div>
+        <input id="description" type="text" class="form-control" />
+    </div>
+</div>
+<script>
+var acceptClick;
+var currentColRow = top.layer_Form.currentColRow;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var itemTypeName;
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            // 前缀
+            $('#itemType').lrselect({
+                select: function (item) {
+                    if (!!item && item.id == "2") {
+                        $('#stepValue').removeAttr('readonly');
+                        $('#stepValue').attr('isvalid', 'yes');
+
+                        $('#initValue').removeAttr('readonly');
+                        $('#initValue').attr('isvalid', 'yes');
+                    }
+                    else {
+                        $('#stepValue').attr('readonly', 'readonly');
+                        $('#stepValue').attr('isvalid', 'no');
+                        $('#stepValue').val('');
+                        $('#stepValue').lrRemoveValidMessage();
+
+                        $('#initValue').attr('readonly', 'readonly');
+                        $('#initValue').attr('isvalid', 'no');
+                        $('#initValue').val('');
+                        $('#initValue').lrRemoveValidMessage();
+                    }
+
+                    var $formatStr = $('#formatStr');
+                    $formatStr.lrRemoveValidMessage();
+                    var $parent = $formatStr.parent();
+                    if (!!item) {
+                        $formatStr.remove();
+                        itemTypeName = item.text;
+                        switch (item.id) {
+                            case '0':
+                                $parent.append('<input id="formatStr" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />');
+                                break;
+                            case '1':
+                                $parent.append('<div id="formatStr" isvalid="yes" checkexpession="NotNull"><ul>'
+                                + '<li data-value="mmdd">mmdd</li>'
+                                + '<li data-value="ddmm">ddmm</li>'
+                                + '<li data-value="mmyy">mmyy</li>'
+                                + '<li data-value="yymm">yymm</li>'
+                                + '<li data-value="yyyy">yyyy</li>'
+                                + '<li data-value="yy">yy</li>'
+                                + '<li data-value="yyyymm">yyyymm</li>'
+                                + '<li data-value="yymmdd">yymmdd</li>'
+                                + '<li data-value="yyyymmdd">yyyymmdd</li>'
+                                + '</ul></div>');
+                                $('#formatStr').lrselect({ maxHeight: 145 });
+                                break;
+                            case '2':
+                                $parent.append('<div id="formatStr" isvalid="yes" checkexpession="NotNull"><ul>'
+                                + '<li data-value="000">000</li>'
+                                + '<li data-value="0000">0000</li>'
+                                + '<li data-value="00000">00000</li>'
+                                + '<li data-value="000000">000000</li>'
+                                + '</ul></div>');
+                                $('#formatStr').lrselect();
+                                break;
+                            case '3':
+                                $parent.append('<div id="formatStr" isvalid="yes" checkexpession="NotNull"><ul>'
+                                + '<li data-value="code">公司编号</li>'
+                                + '<li data-value="name">公司名称</li>'
+                                + '</ul></div>');
+                                $('#formatStr').lrselect();
+                                break;
+                            case '4':
+                                $parent.append('<div id="formatStr" isvalid="yes" checkexpession="NotNull"><ul>'
+                                + '<li data-value="code">部门编号</li>'
+                                + '<li data-value="name">部门名称</li>'
+                                + '</ul></div>');
+                                $('#formatStr').lrselect();
+                                break;
+                            case '5':
+                                $parent.append('<div id="formatStr" isvalid="yes" checkexpession="NotNull"><ul>'
+                                + '<li data-value="code">用户编号</li>'
+                                + '<li data-value="name">用户名称</li>'
+                                + '</ul></div>');
+                                $('#formatStr').lrselect();
+                                break;
+                        }
+                    }
+                }
+            });
+        },
+        initData: function () {
+            if (!!currentColRow) {
+                $('#form').lrSetFormData(currentColRow);
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var data = $('#form').lrGetFormData();
+        data.itemTypeName = itemTypeName;
+        if (!!callBack) { callBack(data); }
+        return true;
+    };
+    page.init();
+}
+</script>

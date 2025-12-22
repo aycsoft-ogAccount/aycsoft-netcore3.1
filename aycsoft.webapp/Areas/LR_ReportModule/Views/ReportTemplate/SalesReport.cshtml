@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "SalesReport";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+.ui-report{display:inline-block;width:100%;position: relative;}
+.ui-report .lr-layout-wrap{border:0px;background-color: #F5F5F5;box-shadow:none;}
+.ui-report .lr-layout-tool{padding: 0;border: 1px solid #cfcfcf;box-shadow: 0 1px 3px rgba(0,0,0,0.2);background-color: #fff;}
+.ui-report .lr-layout-grid{margin-top: 5px;background: #fff;padding: 15px;box-shadow: 0 1px 3px rgba(0,0,0,0.2);border: 1px solid #cfcfcf;}
+.ui-report .lr-layout-grid .grid-title{font-size: 22px;text-align:center;width:100%;color: #444;}
+.ui-report .lr-layout-grid .grid-subtitle{width:100%;text-align:left;padding: 5px 0;}
+.ui-report .jfgrid-layout{border: 1px solid #ccc;}
+.ui-report .jfgrid-border{background-color: #fff;}
+.ui-report .jfgrid-head{background-color: #fff;}
+.ui-report .jfgrid-head-cell{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;}
+.ui-report .jfgrid-data-cell{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;}
+.price-box{width:860px;margin-left:auto;margin-right:auto;border: 1px solid #ddd;box-shadow: rgb(189, 189, 189) 0px 0px 10px;background: #fff;padding: 50px;padding-top:20px;margin-top: 25px;padding-bottom:0px;}
+.price-box .price-title{font-size: 28px;text-align: center;line-height:60px;font-weight: bold;color: #333;}
+.price-box .price-subtitle{text-align: center;}
+.price-box .price-info{margin-top:20px;margin-bottom:20px;}
+.price-box .price-info table .formTitle{text-align:left;width:50px;font-size: 12px;}
+.price-box .price-info table .formValue{text-align:left;font-size: 12px;}
+.price-box .price-info table .formValue input{box-shadow:none;border-top:none;border-right:none;border-left:none;height:22px!important;line-height:22px!important;font-size: 12px;}
+.price-box .price-table table{margin: 0px;margin-top:1px;border-collapse: collapse;width: 100%;border-left: 1px solid #ccc;}
+.price-box .price-table table thead tr td{border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;padding-top:5px;padding-bottom:5px;text-overflow:ellipsis;word-break:keep-all;overflow:hidden;font-weight:bold;padding-left:5px;padding-right:5px;font-size: 12px;}
+.price-box .price-table table tbody tr td{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;height:25px;line-height:25px;word-break: break-all;padding-left:5px;padding-right:5px;font-size: 12px;}
+.price-box .form{width:100%;margin:0px;padding:0px;border-collapse:collapse;border-width:3px 1px 1px;table-layout:fixed}
+.price-box .form .formTitle{position:relative;left:0px;text-align:right;white-space:nowrap;font-weight:normal;width:90px;padding-right:10px;}
+.price-box .form .formTitle font{color:red;position:absolute;right:0px;}
+.price-box .form .formTitle-top{vertical-align:top;padding-top:4px;}
+.price-box .form .formValue{position:relative;padding:5px;width:auto;}
+.price-box .form .formValue select{padding: 4px;padding-left:4px;}
+</style>
+<div class="lr-layout ui-report">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class="btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr-replace" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;<span class="lrlg">刷新</span></a>
+                        <a id="lr-print" class="btn btn-default"><i class="fa fa-print"></i>&nbsp;<span class="lrlg">打印</span></a>
+                        <a id="lr-export" class="btn btn-default"><i class="fa fa-sign-out"></i>&nbsp;<span class="lrlg">导出</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-grid">
+                <div class="grid-title lrlg ">商品销售明细表</div>
+                <div class="grid-subtitle">日期: 2010-03-05 至 2016-03-28</div>
+                <div class="lr-layout-body" id="gridtable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.initGrid();
+            page.bind();
+        },
+        bind: function () {
+            // 刷新
+            $('#lr-replace').on('click', function () {
+                location.reload();
+            });
+            //打印
+            $('#lr-print').on('click', function () {
+                $("#gridtable").jqprintTable({ title: '商品销售明细表' });
+            });
+            //导出
+            $('#lr-export').on('click', function () {
+                aycsoft.download({
+                    method: "POST",
+                    url: '/Utility/ExportExcel',
+                    param: {
+                        fileName: "商品销售明细表",
+                        columnJson: JSON.stringify($('#gridtable').jfGridGet('settingInfo').headData),
+                        dataJson: JSON.stringify($('#gridtable').jfGridGet('settingInfo').rowdatas)
+                    }
+                });
+            });
+        },
+        initGrid: function () {
+            $("#gridtable").height($(window).height() - 170);
+            $('#gridtable').jfGrid({
+                url: top.$.rootUrl + '/LR_ReportModule/ReportTemplate/GetSalesReportList',
+                headData: [
+                    { name: "date", label: "销售日期", width: 80, align: "center" },
+                    { name: "billNo", label: "销售单据号", width: 120, align: "center" },
+                    { name: "salesName", label: "销售人员", width: 80 },
+                    { name: "buName", label: "客户", width: 150, align: "left" },
+                    { name: "invNo", label: "商品编号", width: 80, align: "left" },
+                    { name: "invName", label: "商品名称", width: 150, align: "left" },
+                    { name: "unit", label: "单位", width: 80, align: "center" },
+                    { name: "location", label: "仓库", width: 80 },
+                    { name: "qty", label: "数量", width: 80, align: "right" },
+                    {
+                        name: "unitPrice", label: "单价", width: 80, align: "right",
+                        formatter: function (cellvalue) {
+                            return aycsoft.toDecimal(cellvalue);
+                        }
+                    },
+                    {
+                        name: "amount", label: "金额", width: 80, align: "right",
+                        formatter: function (cellvalue) {
+                            return aycsoft.toDecimal(cellvalue);
+                        }
+                    },
+                    { name: "description", label: "备注", width: 150, align: "left" }
+                ],
+                reloadSelected: true,
+                mainId: 'billNo'
+            });
+            page.search();
+        },
+        search: function (param) {
+            param = param || {};
+            $('#gridtable').jfGridSet('reload', param);
+        }
+    };
+    page.init();
+}
+</script>

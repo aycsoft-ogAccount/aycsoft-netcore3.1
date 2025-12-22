@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "任务计划模板";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入任务名称" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus lrlg"></i>&nbsp;新增</a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o lrlg"></i>&nbsp;编辑</a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o lrlg"></i>&nbsp;删除</a>
+
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_disabled" class="btn btn-default"><i class="fa fa-pause-circle-o lrlg"></i>&nbsp;暂停任务</a>
+                        <a id="lr_enabled" class="btn btn-default"><i class="fa fa-play-circle-o lrlg"></i>&nbsp;启动任务</a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>var selectedRow;
+    var refreshGirdData;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initGird();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyWord: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 新增
+                $('#lr_add').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '新增任务',
+                        url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/Form',
+                        width: 700,
+                        height: 610,
+                        btn: null
+                    });
+                });
+                // 编辑
+                $('#lr_edit').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'form',
+                            title: '编辑任务',
+                            url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/Form?keyValue=' + keyValue,
+                            width: 700,
+                            height: 610,
+                            btn: null
+                        });
+                    }
+                });
+                // 删除
+                $('#lr_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_TaskScheduling/TSScheme/DeleteForm', { keyValue: keyValue }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+                });
+                ///暂停任务
+                $('#lr_disabled').on('click', function () {
+                    var processId = $('#gridtable').jfGridValue('F_Id');
+                    selectedRow = $('#gridtable').jfGridGet('rowdata');
+                    if (aycsoft.checkrow(processId)) {
+                        if (selectedRow.F_IsActive == "1") {
+                            aycsoft.layerConfirm('是否确认暂停该任务！', function (res, _index) {
+                                if (res) {
+                                    aycsoft.loading(true, '暂停任务中...');
+                                    aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_TaskScheduling/TSScheme/PauseJob', { processId: processId }, function (data) {
+                                        aycsoft.loading(false);
+                                        refreshGirdData();
+                                    });
+                                    top.layer.close(_index);
+                                }
+                            });
+                        } else {
+                            aycsoft.alert.error('当前任务已暂停');
+                        }
+                    }
+                });
+                ///重新启动任务
+                $('#lr_enabled').on('click', function () {
+                    var processId = $('#gridtable').jfGridValue('F_Id');
+                    selectedRow = $('#gridtable').jfGridGet('rowdata');
+                    if (aycsoft.checkrow(processId)) {
+                        if (selectedRow.F_IsActive == "2") {
+                            aycsoft.layerConfirm('是否确认启动该任务！', function (res, _index) {
+                                if (res) {
+                                    if (res) {
+                                        aycsoft.loading(true, '启动任务中...');
+                                        aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_TaskScheduling/TSScheme/ResumeJob', { processId: processId }, function (data) {
+                                            aycsoft.loading(false);
+                                            refreshGirdData();
+                                        });
+                                        top.layer.close(_index);
+                                    }
+                                }
+                            });
+                        } else {
+                            aycsoft.alert.error('当前任务已运行');
+                        }
+                    }
+                });
+            },
+            initGird: function () {
+                $('#gridtable').lrAuthorizeJfGrid({
+                    url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/GetPageList',
+                    headData: [
+                        { label: '名称', name: 'F_Name', width: 200, align: "left" },
+                        {
+                            label: '状态', name: 'F_IsActive', width: 80, align: "center",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == 1) {
+                                    return '<span class=\"label label-primary\" style=\"cursor: pointer;\">运行中</span>';
+                                } else if (cellvalue == 2) {
+                                    return '<span class=\"label label-default\" style=\"cursor: pointer;\">暂停中</span>';
+                                }
+                            }
+                        },
+                        {
+                            label: '开始时间', name: 'F_BeginTime', width: 140, align: "center",
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        {
+                            label: '结束时间', name: 'F_EndTime', width: 140, align: "center",
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        { label: '说明', name: 'F_Description', width: 200, align: "left" },
+
+                    ],
+                    mainId: 'F_Id',
+                    sidx: '',
+                    isPage: true
+                });
+                page.search();
+            },
+            search: function (param) {
+                param = param || {};
+                $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(param) });
+            }
+        };
+        refreshGirdData = function () {
+            page.search();
+        };
+        page.init();
+    }</script>

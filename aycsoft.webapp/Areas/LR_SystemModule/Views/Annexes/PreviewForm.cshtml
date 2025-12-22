@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "预览文件";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .left {
+        position:absolute;
+        top:0;
+        left:0;
+        height:100%;
+        width:81px;
+        border-right:1px solid #ccc;
+        overflow-y:auto;
+        overflow-x:hidden;
+    }
+    .lr-file-image {
+        padding:8px 0 0 8px;
+        width:100%;
+    }
+    .lr-file-image img {
+        width:64px;
+        height:64px;
+        cursor:pointer;
+    }
+        .lr-file-image.active {
+            background-color:#f2f2f2;
+        }
+    .file-show-item {
+        position:relative;
+        height:100%;
+        width:100%;
+        display:none;
+
+    }
+    iframe {
+        height:100%;
+        width:100%;
+    }
+</style>
+<div class="lr-rblock" style="padding-left:81px;" >
+    <div class="left" id="fileList" ></div>
+    <div class="lr-rblock" id="preview_area" >
+        
+    </div>
+</div>
+<script>
+    var fileMap = {};
+    // 支持 xls xlsx docx pdf png
+    var fileId = request('fileId');
+    var bootstrap = function ($, aycsoft) {
+
+        var fileTypeList = { 'xls': true, 'xlsx': true, 'docx': true, 'pdf': true, 'png': true, 'xls': true, 'xls': true, };
+
+        $('#fileList').on('click', '.lr-file-image', function () {
+            var $this = $(this);
+            if (!$this.hasClass('active')) {
+                $this.parent().find('.active').removeClass('active');
+                $this.addClass('active');
+
+                var dv = $this.attr('data-value');
+                var $area = $('#preview_area [data-value="' + dv + '"]');
+                $('#preview_area').find('.file-show-item').hide();
+                if ($area.length > 0) {
+                    $area.show();
+                }
+                else {
+                    // 加载文件预览区域
+                    var fileInfo = fileMap[dv];
+                    
+                    $area = $('<div class="file-show-item ' + fileInfo.F_FileType + '" ></div>');
+                    var url = top.$.rootUrl + '/LR_SystemModule/Annexes/PreviewFile?fileId=' + dv;
+                    $area.append('<iframe frameborder="0" src="' + url + '"></iframe>');
+                    $('#preview_area').append($area);
+                    $area.show();
+                }
+            }
+        });
+
+        // 加载文件数据
+        aycsoft.httpAsync('Get', top.$.rootUrl + '/LR_SystemModule/Annexes/GetAnnexesFileList', { folderId: fileId }, function (data) {
+            if (data) {
+                var $fileList = $('#fileList');
+                $.each(data, function (index, item) {
+                    console.log(item)
+                    fileMap[item.F_Id] = item;
+                    $fileList.append('<div class="lr-file-image" data-value="'+ item.F_Id +'" ><img src="' + top.$.rootUrl + '/img/filetype/' + item.F_FileType + '.png"><div class="name" >'+item.F_FileName+'</div></div>');
+                });
+                $fileList.find('.lr-file-image').eq(0).trigger('click');
+            }
+            console.log(data)
+        });
+    }
+</script>

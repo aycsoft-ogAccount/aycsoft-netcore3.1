@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "聊天记录查询";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var userId = request('userId');
+    var username = request('name');
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initGrid();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyWord: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+            },
+            initGrid: function () {
+                $('#gridtable').jfGrid({
+                    url: top.$.rootUrl + '/LR_IM/IMMsg/GetMsgPageList?userId=' + userId,
+                    headData: [
+                        {
+                            label: '发送人', name: 'F_SendUserId', width: 80, align: 'left',
+                            formatterAsync(callback, cellvalue) {
+                                var loginInfo = aycsoft.clientdata.get(['userinfo']);
+                                if (loginInfo.F_UserId == cellvalue) {
+                                    callback('我');
+                                }
+                                else {
+                                    // 获取人员数据
+                                    aycsoft.clientdata.getAsync('user', {
+                                        key: cellvalue,
+                                        callback: function (data, op) {
+                                            callback(data.F_RealName || username);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            label: '创建时间', name: 'F_CreateDate', width: 130, align: 'left',
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        { label: '消息内容', name: 'F_Content', width: 200, align: 'left' }
+
+
+                    ],
+                    mainId: 'F_MsgId',
+                    sidx: 'F_CreateDate',
+                    sord: 'DESC',
+                    isPage: true
+                });
+                page.search();
+            },
+            search: function (param) {
+                $('#gridtable').jfGridSet('reload', param);
+            }
+        };
+        page.init();
+    }
+</script>

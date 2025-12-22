@@ -1,0 +1,381 @@
+﻿
+@{
+    ViewData["Title"] = "流程容器";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+@Html.AppendCssFile("/lib/aycsoft/plugin/workflownew/lr-workflow-ui.css")
+@Html.AppendJsFile("/lib/aycsoft/plugin/workflownew/lr-workflow-ui.js", "/lib/aycsoft/plugin/workflownew/lr-workflow-api.js","/lib/aycsoft/plugin/custmerform/lr-formcomponts.js","/lib/aycsoft/plugin/custmerform/lr-formrender.js")
+<style>
+    body {
+        background-color:rgba(255, 255, 255, 0);
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding: 5px;
+    }
+
+    .lr-layout-panel-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 40px;
+        padding: 5px;
+        width: 100%;
+        text-align: right;
+        line-height: 26px;
+    }
+
+    .flow-btn {
+        z-index: 2;
+        display: none;
+    }
+
+        .flow-btn .btn {
+            padding: 4px 6px;
+            display: none;
+        }
+
+        .flow-btn.col-xs-12 .btn {
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+    .lr-form-bg {
+        display: none;
+    }
+
+    .lr-layout-panel {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #fff;
+        padding-right: 400px;
+    }
+
+    .lr-layout-panel-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        border-left: 1px solid #ccc;
+        width: 400px;
+    }
+
+    .lr-nav-tabs {
+        position: absolute;
+        top: 0;
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        z-index: 1;
+        /*border-top: 1px solid #ccc;*/
+    }
+
+    .nav-tabs.lr-nav-tabs > li > a {
+        cursor: pointer;
+    }
+
+    .nav-tabs.lr-nav-tabs > li.active > a, .nav-tabs.lr-nav-tabs > li.active > a:focus, .nav-tabs.lr-nav-tabs > li.active > a:hover {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 0;
+        border-bottom: 2px solid #3498DB;
+    }
+
+    .nav-tabs.lr-nav-tabs > li > a {
+        margin-right: 0;
+        border-radius: 0;
+        border: 0;
+        padding: 11px 15px;
+    }
+
+    .tab-content, .tab-content .tab-pane {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .form-list {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    .form-list-iframe, .form-list-container {
+        width: 100%;
+        height: 100%;
+    }
+
+
+
+    .lr-workflow-work .lr-workflow-workinner {
+        background-image: none;
+    }
+
+
+    .flow-item {
+        display: none;
+    }
+
+
+    .lr-layout-panel-notright {
+        padding-right: 0;
+    }
+
+        .lr-layout-panel-notright .lr-layout-panel-right {
+            display: none;
+        }
+
+
+    .tab-flow-audit {
+        margin-top: 8px;
+    }
+
+        .tab-flow-audit .auditinfo {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            padding-left: 120px;
+            border-top: none;
+        }
+
+            .tab-flow-audit .auditinfo:first-child {
+                border-top: 1px solid #ccc;
+            }
+
+        .tab-flow-audit .auditinfo-h {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 120px;
+            border-right: 1px solid #ccc;
+            padding: 4px 0 0 4px;
+        }
+
+        .tab-flow-audit .auditinfo-b {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 4px;
+        }
+
+        .tab-flow-audit .auditinfo-d, .tab-flow-audit .auditinfo-n {
+            position: absolute;
+            bottom: 24px;
+            right: 0px;
+            width: 170px;
+            text-align: left;
+        }
+
+        .tab-flow-audit .auditinfo-d {
+            bottom: 4px;
+        }
+
+
+    .auditinfo-s {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 80px;
+    }
+
+        .auditinfo-s img {
+            height: 80px;
+        }
+
+    .auditinfo-sg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 40px;
+    }
+
+        .auditinfo-sg img {
+            height: 40px;
+        }
+</style>
+<div class="lr-layout-panel">
+    <div class="lr-rblock" style="padding-top:40px;">
+        <div class="flow-btn" style="position:absolute;top:4px;right:5px;">
+            <a id="print" class="btn btn-primary">打印表单</a>
+            <a id="eye" class="btn btn-default">查看父流程</a>
+        </div>
+        <ul class="nav nav-tabs lr-nav-tabs" id="tablist">
+            <li class="active"><a data-value="forminfo">表单信息</a></li>
+            <li><a data-value="workflowshcemeinfo">流程信息</a></li>
+            <li><a data-value="auditinfo">流转记录</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content" id="tab_content">
+            <div class="tab-pane active noauditinfo" id="forminfo">
+                <div class="form-list" id="form_list_iframes">
+                </div>
+            </div>
+            <div class="tab-pane" id="workflowshcemeinfo" style="padding-bottom:40px;">
+                <div id="flow"></div>
+                <div style="position:absolute;left:0px;bottom:0;width:100%;height:40px;border-top:1px solid #ddd;line-height:39px;text-align:right;padding-right:10px;font-size:16px;">
+                    <div style="display: inline-block;margin-left: 10px;"><i style="padding-right:5px;color:#5bc0de;" class="fa fa-square"></i><span>正在处理</span></div>
+                    <div style="display: inline-block;margin-left: 10px;"><i style="padding-right:5px;color:#5cb85c;" class="fa fa-square"></i><span>已处理</span></div>
+                    <div style="display: inline-block;margin-left: 10px;"><i style="padding-right:5px;color:#999;" class="fa fa-square"></i><span>未处理</span></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="auditinfo" style="overflow-y: auto;"></div>
+        </div>
+    </div>
+    <div class="lr-layout-panel-right" style="padding-top:40px;">
+        <div style="position:absolute;height:40px;border-bottom: 1px solid #eee;width:100%;top:0;left:0;font-weight:bold;color:#666;line-height:39px;padding-left:10px;">
+            审批信息
+        </div>
+        <div class="lr-rblock" style="overflow:auto;padding:10px 10px 0 10px;">
+            <div class="col-xs-12 lr-form-item flow-item" style="padding:0;" id="flow-title">
+                <div class="lr-form-item-title" style="position:relative;width:100%;text-align:left;">流程标题</div>
+                <input id="F_Title" type="text" class="form-control" />
+            </div>
+            <div class="col-xs-12 lr-form-item flow-item" style="padding:0;" id="flow-level">
+                <div class="lr-form-item-title" style="position:relative;width:100%;text-align:left;">重要等级</div>
+                <div class="radio lr-radio" type="lr-radio" id="F_Level">
+                    <label>
+                        <input name="processLevel" type="radio" value="0" checked="checked" />
+                        普通
+                    </label>
+                    <label>
+                        <input name="processLevel" type="radio" value="1" />
+                        重要
+                    </label>
+                    <label>
+                        <input name="processLevel" type="radio" value="2" />
+                        紧急
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-12 lr-form-item flow-item" style="padding:0;" id="flow-des">
+                <div class="lr-form-item-title" style="position:relative;width:100%;text-align:left;">审批意见</div>
+                <textarea id="des" class="form-control" style="height: 120px;"></textarea>
+            </div>
+
+            <div class="col-xs-12 flow-btn">
+                <a id="release" class="btn btn-success">创建流程</a>
+                <a id="savedraft" class="btn btn-default">保存草稿</a>
+                <a id="sign" class="btn btn-info">加签</a>
+                <a id="confirm" class="btn btn-info">确认阅读</a>
+            </div>
+            <div class="col-xs-12 tab-flow-audit">
+            </div><!-- 审批信息 -->
+        </div>
+    </div>
+</div>
+<script>
+    var type = request('type');                // 操作类型 look流程进度查看;create创建;draftCreate草稿创建;audit审批 againCreate重新创建 refer确认阅读 chlid子流程
+    
+    var shcemeCode = request('shcemeCode');    // 流程模板编号
+    var processId = request('processId');      // 流程实例主键
+    var taskId = request('taskId');            // 任务主键
+    var createUserId = request('createUserId');// 流程发起人
+    var wfFormParam = request('wfFormParam');  // 流程表单传递参数
+
+    var bootstrap = function ($, aycsoft) {
+        $.fn.showBtn = function () {
+            return $(this).css({ 'display': 'inline-block' });
+        };
+        var page = {
+            init: function () {
+                page.bind();
+                nwflow.init[type] && nwflow.init[type](shcemeCode, processId,taskId,wfFormParam,createUserId);
+            },
+            bind: function () {
+                // 显示信息选项卡
+                $('#tablist').lrFormTabEx(function (id) {
+                    if (id == 'workflowshcemeinfo' || id == 'auditinfo') {
+                        $('#print').hide();
+                    }
+                    else {
+                        $('#print').show();
+                    }
+                });
+
+                $('#flow').lrworkflow({
+                    isPreview: true,
+                    openNode: function (node) {
+                        top.wflookNode = node;
+                        if (node.type == 'childwfnode') {
+                            aycsoft.layerForm({
+                                id: 'LookFlowForm',
+                                title: '子流程查看',
+                                url: top.$.rootUrl + '/LR_NewWorkFlow/NWFProcess/LookFlowForm?schemeCode=' + node.childFlow + '&nodeId=' + node.id + '&processId=' + processId + '&type=lookChlid',
+                                width: 1000,
+                                height: 900,
+                                maxmin: true,
+                                btn: null
+                            });
+                        }
+                        else if (node.history) {
+                            aycsoft.layerForm({
+                                id: 'LookNodeForm',
+                                title: '审批记录查看【' + node.name + '】',
+                                url: top.$.rootUrl + '/LR_NewWorkFlow/NWFProcess/LookNodeForm',
+                                width: 600,
+                                height: 400,
+                                btn: null
+                            });
+                        }
+                    }
+                });
+
+                // 打印表单
+                $('#print').on('click', function () {
+                    var html = '';
+                    if (!$('#forminfo').hasClass('noauditinfo')) {
+                        html = $('.tab-flow-audit').html();
+                    }
+
+                    var $iframes = $('#form_list_iframes');
+                    var iframeId = $iframes.find('.form-list-iframe.active').attr('id');
+                    if (iframeId) {
+                        var $iframe = aycsoft.iframe(iframeId, frames);
+                        var res = $iframe.$('body').lrGetFormShow();
+                        //for (var len = ainfo.length, i = ainfo.length - 1; i >= 0; i--) {
+                        //    res.push(ainfo[i]);
+                        //}
+                        $.jqprintForm(res);
+                    }
+                    else {
+                        //$iframes.find(".lr-scroll-vertical-block")[0].style.top = 0;
+                        //$iframes.find(".lr-scroll-box")[0].style.top = 0;
+                        //$iframes.find(".lr-formselect i").removeClass();
+                        //$iframes.find('.form-list-container.active').find('.lr-form-wrap:visible').jqprint(null,html);
+                        var res1 = $iframes.lrGetFormShow();
+                        //for (var len1 = ainfo.length, i1 = ainfo.length - 1; i1 >= 0; i1--) {
+                        //    res1.push(ainfo[i1]);
+                        //}
+                        $.jqprintForm(res1);
+                    }
+                });
+                $('#print').showBtn();
+
+                // 查看父流程
+                $('#eye').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'LookFlowForm',
+                        title: '父流程进度查看',
+                        url: top.$.rootUrl + '/LR_NewWorkFlow/NWFProcess/LookFlowForm?processId=' + nwflow.pProcessId + '&taskId=' + nwflow.pTaskId + '&type=lookParent',
+                        width: 1000,
+                        height: 900,
+                        maxmin: true,
+                        btn: null
+                    });
+                });
+
+            },
+            // iframe 加载
+
+        };
+
+        page.init();
+
+    }
+</script>
+

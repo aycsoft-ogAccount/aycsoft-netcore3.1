@@ -1,0 +1,1162 @@
+﻿
+@{
+    ViewData["Title"] = "AdminTop";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+    .lr-logo-title {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        height: 100%;
+        width: 320px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 18px;
+        white-space: nowrap;
+        line-height: 56px;
+    }
+
+    /*顶部*/
+    .lr-frame-top {
+        z-index: 3;
+        height: 60px;
+        background: #3286ed;
+        background-size: cover;
+        background-size: cover;
+    }
+    /*菜单*/
+    .lr-frame-menu-wrap {
+        overflow: hidden;
+    }
+
+    .lr-first-menu-list {
+        white-space: nowrap;
+        height: 60px;
+    }
+
+    .lr-frame-menu {
+        top: 0;
+        height: 60px;
+        width: 100%;
+        z-index: 3;
+        padding: 0 143px 0 405px;
+    }
+
+        .lr-frame-menu li {
+            width: auto;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .lr-frame-menu .lr-menu-item {
+            height: 100%;
+            line-height: 60px;
+            font-size: 12px;
+            color: #fff;
+            padding: 0 19px 0 36px;
+        }
+
+    .lr-first-menu-list > li > .lr-menu-item.active,
+    .lr-first-menu-list > li > .lr-menu-item:hover {
+        background-color: #156edb;
+    }
+
+    .lr-first-menu-list > li > .lr-menu-item > .lr-menu-item-icon {
+        display: block;
+        position: absolute;
+        top: 23px;
+        left: 14px;
+    }
+
+    .lr-first-menu-list > li > .lr-menu-item:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        margin-top: -18px;
+        left: 0;
+        height: 36px;
+        width: 1px;
+        background-color: #156edb;
+    }
+
+    .lr-first-menu-list > li.active + li > .lr-menu-item:before,
+    .lr-first-menu-list > li:hover + li > .lr-menu-item:before {
+        display: none;
+    }
+
+    .lr-second-menu-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 160px;
+        background-color: #f8f8f8;
+        border-right: 1px solid #e1e2e2;
+        z-index: 2;
+        padding-top: 100px;
+    }
+
+        .lr-second-menu-wrap > div {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+    .lr-second-menu-list .lr-menu-item {
+        height: 40px;
+        line-height: 40px;
+        color: #333;
+        padding: 0px 0px 0px 20px;
+        font-size: 12px;
+    }
+
+        .lr-second-menu-list .lr-menu-item:hover {
+            background-color: #ccc;
+        }
+
+    .lr-second-menu-list .lr-menu-item-arrow .fa-angle-left {
+        position: absolute;
+        right: 15px;
+        top: 12px;
+    }
+
+    .lr-second-menu-list .open .lr-menu-item-arrow .fa-angle-left {
+        -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+
+    .lr-three-menu-list {
+        display: block;
+    }
+
+    .lr-second-menu-list > li {
+        position: relative;
+    }
+
+        .lr-second-menu-list > li:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -70px;
+            width: 140px;
+            height: 1px;
+            background-color: #ccc;
+        }
+
+    .lr-three-menu-list .lr-menu-item {
+        padding-left: 45px;
+        color: #666;
+    }
+
+    .lr-four-menu-list .lr-menu-item {
+        padding-left: 60px;
+        color: #666;
+    }
+
+    /*tabs条*/
+    .lr-frame-tabs {
+        top: 60px;
+        padding: 0px 30px 0px 160px;
+        background-color: #fff;
+        z-index: 1;
+        -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.1);
+        box-shadow: 0 1px 3px rgba(0,0,0,.1);
+        border-bottom: 1px solid #d2d3d4;
+        height: 40px;
+    }
+
+    .lr-frame-tabs-wrap {
+        height: 40px;
+    }
+
+    .lr-frame-tabItem {
+        height: 39px;
+        line-height: 39px;
+        background: #fff;
+        margin-left: 0px;
+    }
+
+        .lr-frame-tabItem i {
+            color: #666;
+        }
+
+        .lr-frame-tabItem.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            bottom: 1px\9;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background-color: #156edb;
+        }
+
+        .lr-frame-tabItem.active .text {
+            font-weight: bold;
+        }
+
+        .lr-frame-tabItem .reomve {
+            top: 13px;
+            right: 4px;
+        }
+
+
+    /*个人设置和头像*/
+    .lr-frame-personCenter {
+        top: 0;
+        right: 10px;
+        height: 60px;
+        line-height: 60px;
+    }
+
+        .lr-frame-personCenter > a {
+            color: #fff;
+        }
+
+        .lr-frame-personCenter > .dropdown-toggle > img {
+            border: 2px solid #fff;
+            margin-top: 16px;
+        }
+
+    .lr_frame_fullscreen {
+        top: 60px;
+        color: #666;
+        height: 39px;
+        line-height: 39px;
+    }
+
+        .lr_frame_fullscreen a {
+            color: #666;
+        }
+
+    /*功能窗口*/
+    .lr-frame-main {
+        padding: 100px 0px 0px 160px;
+        background: #F0F3F4;
+    }
+
+
+    /*风尚版独有-菜单缩进按钮*/
+    .lr-frame-menu-btn {
+        position: absolute;
+        left: 0;
+        top: 60px;
+        height: 40px;
+        line-height: 40px;
+        width: 159px;
+        text-align: center;
+        font-size: 18px;
+        cursor: pointer;
+        color: #333;
+        opacity: .5;
+        background: #ededed;
+        border-bottom: 1px solid #ccc;
+        z-index: 3;
+    }
+
+        .lr-frame-menu-btn:hover {
+            color: #999;
+        }
+
+    /*导航缩进*/
+    .lr-menu-closed .lr-second-menu-wrap {
+        width: 50px;
+    }
+
+        .lr-menu-closed .lr-second-menu-wrap span,
+        .lr-menu-closed .lr-second-menu-wrap .lr-menu-item-arrow {
+            display: none;
+        }
+
+        .lr-menu-closed .lr-second-menu-wrap a {
+            padding: 0px;
+            text-align: center;
+        }
+
+        .lr-menu-closed .lr-second-menu-wrap .lr-menu-item-icon {
+            margin: 0px;
+        }
+
+    .lr-menu-closed .lr-frame-menu-btn {
+        -webkit-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+        transform: rotate(-180deg);
+        width: 50px;
+    }
+
+    .lr-menu-closed .lr-frame-main {
+        padding: 100px 0px 0px 50px;
+    }
+
+    .lr-menu-closed .lr-frame-tabs {
+        padding-left: 50px;
+    }
+
+    /*即时通讯*/
+    .lr-im-bell {
+        position: fixed;
+        right: 105px;
+        top: 12px;
+        width: 30px;
+        height: 40px;
+        line-height: 40px;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+        z-index: 51;
+        display: none;
+    }
+
+        .lr-im-bell > i {
+            font-size: 20px;
+        }
+
+        .lr-im-bell > .point {
+            background: #D71012;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: none;
+        }
+
+
+    /*语言设置*/
+    .lr-lg-setting {
+        position: absolute;
+        top: 21px;
+        left: 333px;
+        font-size: 14px;
+        z-index: 4;
+        color: #c6c6c6;
+    }
+
+        .lr-lg-setting > a {
+            color: #c6c6c6;
+        }
+
+        .lr-lg-setting span {
+            color: #fff;
+        }
+</style>
+<div class="lr-frame-top">
+    <a class="lr-logo-title">
+        <img src="~/LR_SystemModule/Img/Down?id=logo_top">
+    </a>
+</div>
+<div class="lr-frame-menu-btn" id="lr_frame_menu_btn"><i class="fa fa-fw fa-dedent"></i></div>
+<div class="lr-second-menu-wrap"><div id="lr_second_menu_wrap"></div></div>
+<div class="lr-lg-setting" id="lr_lg_setting">
+    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">[<span></span>]</a>
+    <ul class="dropdown-menu"></ul>
+</div>
+
+<div class="lr-im-bell" title="消息中心">
+    <span class="point"></span>
+    <i class="fa fa-bell"></i>
+</div>
+
+<script>
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        // 菜单操作
+        var meuns = {
+            init: function () {
+                this.load();
+                this.bind();
+            },
+            load: function () {
+                var modulesTree = aycsoft.clientdata.get(['modulesTree']);
+                // 第一级菜单
+                var parentId = '0';
+                var modules = modulesTree[parentId] || [];
+                var $firstmenus = $('<ul class="lr-first-menu-list"></ul>');
+                for (var i = 0, l = modules.length; i < l; i++) {
+                    var item = modules[i];
+                    if (item.F_IsMenu == 1) {
+                        var $firstMenuItem = $('<li></li>');
+                        if (!!item.F_Description) {
+                            $firstMenuItem.attr('title', item.F_Description);
+                        }
+                        var menuItemHtml = '<a id="' + item.F_ModuleId + '" href="javascript:void(0);" class="lr-menu-item">';
+                        menuItemHtml += '<i class="' + item.F_Icon + ' lr-menu-item-icon"></i>';
+                        menuItemHtml += '<span class="lr-menu-item-text">' + item.F_FullName + '</span>';
+                        menuItemHtml += '</a>';
+                        $firstMenuItem.append(menuItemHtml);
+                        // 第二级菜单
+                        var secondModules = modulesTree[item.F_ModuleId] || [];
+                        var $secondMenus = $('<ul class="lr-second-menu-list"></ul>');
+                        var secondMenuHad = false;
+                        for (var j = 0, sl = secondModules.length; j < sl; j++) {
+                            var secondItem = secondModules[j];
+                            if (secondItem.F_IsMenu == 1) {
+                                secondMenuHad = true;
+                                var $secondMenuItem = $('<li></li>');
+                                if (!!secondItem.F_Description) {
+                                    $secondMenuItem.attr('title', secondItem.F_Description);
+                                }
+                                var secondItemHtml = '<a id="' + secondItem.F_ModuleId + '" href="javascript:void(0);" class="lr-menu-item" >';
+                                secondItemHtml += '<i class="' + secondItem.F_Icon + ' lr-menu-item-icon"></i>';
+                                secondItemHtml += '<span class="lr-menu-item-text">' + secondItem.F_FullName + '</span>';
+                                secondItemHtml += '</a>';
+
+                                $secondMenuItem.append(secondItemHtml);
+                                // 第三级菜单
+                                var threeModules = modulesTree[secondItem.F_ModuleId] || [];
+                                var $threeMenus = $('<ul class="lr-three-menu-list"></ul>');
+                                var threeMenuHad = false;
+                                for (var m = 0, tl = threeModules.length; m < tl; m++) {
+                                    var threeItem = threeModules[m];
+                                    if (threeItem.F_IsMenu == 1) {
+                                        threeMenuHad = true;
+                                        var $threeMenuItem = $('<li></li>');
+                                        $threeMenuItem.attr('title', threeItem.F_FullName);
+                                        var threeItemHtml = '<a id="' + threeItem.F_ModuleId + '" href="javascript:void(0);" class="lr-menu-item" >';
+                                        threeItemHtml += '<i class="' + threeItem.F_Icon + ' lr-menu-item-icon"></i>';
+                                        threeItemHtml += '<span class="lr-menu-item-text">' + threeItem.F_FullName + '</span>';
+                                        threeItemHtml += '</a>';
+                                        $threeMenuItem.append(threeItemHtml);
+                                        $threeMenus.append($threeMenuItem);
+
+                                        // 第四级菜单
+                                        var fourModules = modulesTree[threeItem.F_ModuleId] || [];
+                                        var $fourMenus = $('<ul class="lr-four-menu-list"></ul>');
+                                        var fourMenuHad = false;
+                                        for (var fi = 0, fl = fourModules.length; fi < fl; fi++) {
+                                            var fourItem = fourModules[fi];
+                                            if (fourItem.F_IsMenu == 1) {
+                                                fourMenuHad = true;
+                                                var $fourMenuItem = $('<li></li>');
+                                                $fourMenuItem.attr('title', fourItem.F_FullName);
+                                                var fourItemHtml = '<a id="' + fourItem.F_ModuleId + '" href="javascript:void(0);" class="lr-menu-item" >';
+                                                fourItemHtml += '<i class="' + fourItem.F_Icon + ' lr-menu-item-icon"></i>';
+                                                fourItemHtml += '<span class="lr-menu-item-text">' + fourItem.F_FullName + '</span>';
+                                                fourItemHtml += '</a>';
+                                                $fourMenuItem.append(fourItemHtml);
+                                                $fourMenus.append($fourMenuItem);
+                                            }
+                                        }
+                                        if (fourMenuHad) {
+                                            $threeMenuItem.addClass('lr-meun-had');
+                                            $threeMenuItem.find('a').addClass('open').append('<span class="lr-menu-item-arrow"><i class="fa fa-angle-left"></i></span>');
+                                            $threeMenuItem.append($fourMenus);
+                                        }
+
+
+                                    }
+                                }
+                                if (threeMenuHad) {
+                                    $secondMenuItem.addClass('lr-meun-had');
+                                    $secondMenuItem.find('a').append('<span class="lr-menu-item-arrow"><i class="fa fa-angle-left"></i></span>').addClass('open');
+                                    $secondMenuItem.append($threeMenus);
+                                }
+                                $secondMenus.append($secondMenuItem);
+                            }
+                        }
+                        if (secondMenuHad) {
+                            $secondMenus.attr('data-value', item.F_ModuleId);
+                            $('#lr_second_menu_wrap').append($secondMenus);
+                        }
+                        $firstmenus.append($firstMenuItem);
+                    }
+                }
+                $('#lr_frame_menu').html($firstmenus);
+
+                // 语言包翻译
+                $('.lr-menu-item-text').each(function () {
+                    var $this = $(this);
+                    var text = $this.text();
+                    aycsoft.language.get(text, function (_text) {
+                        $this.text(_text);
+                        $this.parent().parent().attr('title', _text);
+                    });
+                });
+
+            },
+            bind: function () {
+                $("#lr_frame_menu").lrscroll();
+                $("#lr_second_menu_wrap").lrscroll();
+
+                var w = 0;
+                var width = $('.lr-first-menu-list').children().each(function () {
+                    w += $(this).outerWidth();
+                });
+                $('.lr-first-menu-list').css({ 'width': w });
+                $('.lr-first-menu-list').parent().css({ 'width': w });
+
+                // 添加点击事件
+                $('#lr_frame_menu .lr-menu-item').on('click', function () {
+                    var $obj = $(this);
+                    var id = $obj.attr('id');
+                    var _module = aycsoft.clientdata.get(['modulesMap', id]);
+                    switch (_module.F_Target) {
+                        case 'iframe':// 窗口
+                            if (aycsoft.validator.isNotNull(_module.F_UrlAddress).code) {
+                                aycsoft.frameTab.open(_module);
+                            }
+                            else {
+
+                            }
+                            break;
+                        case 'expand':
+                            if (!$obj.hasClass('active')) {
+
+                                $('#lr_frame_menu .active').removeClass('active');
+                                $obj.addClass('active');
+                                $obj.parent().addClass('active');
+                                var $subMenu = $('#lr_second_menu_wrap');
+                                $subMenu.find('.lr-second-menu-list').hide();
+                                $subMenu.find('.lr-second-menu-list[data-value="' + id + '"]').show();
+                            }
+                            break;
+                    }
+                });
+
+                // 添加点击事件
+                $('#lr_second_menu_wrap .lr-menu-item').on('click', function () {
+                    var $obj = $(this);
+                    var id = $obj.attr('id');
+                    var _module = aycsoft.clientdata.get(['modulesMap', id]);
+                    switch (_module.F_Target) {
+                        case 'iframe':// 窗口
+                            if (aycsoft.validator.isNotNull(_module.F_UrlAddress).code) {
+                                aycsoft.frameTab.open(_module);
+                            }
+                            else {
+
+                            }
+                            break;
+                        case 'expand':// 打开子菜单
+                            var $ul = $obj.next();
+                            if ($ul.is(':visible')) {
+                                $ul.slideUp(500, function () {
+                                    $obj.removeClass('open');
+                                });
+                            }
+                            else {
+                                $ul.slideDown(300, function () {
+                                    $obj.addClass('open');
+                                });
+                            }
+                            break;
+                    }
+                });
+
+                $('.lr-first-menu-list>li').eq(0).find('a').trigger('click');
+
+                $('#lr_frame_menu_btn').on('click', function () {
+                    var $body = $('body');
+                    if ($body.hasClass('lr-menu-closed')) {
+                        $body.removeClass('lr-menu-closed');
+                    }
+                    else {
+                        $body.addClass('lr-menu-closed');
+                    }
+                });
+
+
+                $('#lr_second_menu_wrap a').hover(function () {
+                    if ($('body').hasClass('lr-menu-closed')) {
+                        var id = $(this).attr('id');
+                        var text = $('#' + id + '>span').text();
+                        layer.tips(text, $(this));
+                    }
+                }, function () {
+                    if ($('body').hasClass('lr-menu-closed')) {
+                        layer.closeAll('tips');
+                    }
+                });
+
+            }
+        };
+
+        meuns.init();
+
+
+        var companyMap = {};
+        var departmentMap = {};
+        var userMap = {};
+        var sysUserMap = {};
+
+        var imUserId = '';
+
+        var getHeadImg = function (user) {
+            var url = top.$.rootUrl;
+            switch (user.img) {
+                case '0':
+                    url += '/Content/images/head/on-girl.jpg';
+                    break;
+                case '1':
+                    url += '/Content/images/head/on-boy.jpg';
+                    break;
+                default:
+                    url += '/LR_OrganizationModule/User/GetImg?userId=' + user.id;
+                    break;
+            }
+            return url;
+        };
+        // 发送聊天信息
+        var sendMsg = function (msg, time) {
+            var loginInfo = aycsoft.clientdata.get(['userinfo']);
+            aycsoft.clientdata.getAsync('user', {
+                key: loginInfo.userId,
+                callback: function (data, op) {
+                    data.id = op.key;
+                    var _html = '\
+                <div class="me im-time">'+ (time || '') + '</div>\
+                <div class="im-me">\
+                    <div class="headimg"><img src="'+ getHeadImg(data) + '"></div>\
+                    <div class="arrow"></div>\
+                    <span class="content">'+ msg + '</span>\
+                </div>';
+
+                    $('.lr-im-msgcontent .lr-scroll-box').append(_html);
+                    $('.lr-im-msgcontent').lrscrollSet('moveBottom');
+                }
+            });
+        };
+        // 接收聊天消息
+        var revMsg = function (userId, msg, time) {
+            aycsoft.clientdata.getAsync('user', {
+                key: userId,
+                callback: function (data, op) {
+                    data.id = op.key;
+                    var _html = '\
+                <div class="im-time">'+ (time || '') + '</div>\
+                <div class="im-other">\
+                    <div class="headimg"><img src="'+ getHeadImg(data) + '"></div>\
+                    <div class="arrow"></div>\
+                    <span class="content">'+ msg + '</span>\
+                </div>';
+
+
+                    $('.lr-im-msgcontent .lr-scroll-box').append(_html);
+                    $('.lr-im-msgcontent').lrscrollSet('moveBottom');
+                }
+            });
+        };
+
+        var getTime = function (time) {
+            var d = new Date();
+            var c = d.DateDiff('d', time);
+            if (c <= 1) {
+                return aycsoft.formatDate(time, 'hh:mm:ss');
+            }
+            else {
+                return aycsoft.formatDate(time, 'yyyy/MM/dd');
+            }
+        }
+
+        // 即时通讯
+        var im = {
+            init: function () {
+                this.bind();
+                this.load();
+            },
+            load: function () {
+                // 获取下公司列表
+                aycsoft.clientdata.getAllAsync('company', {
+                    callback: function (data) {
+                        $.each(data, function (_id, _item) {
+                            companyMap[_item.parentId] = companyMap[_item.parentId] || [];
+                            _item.id = _id;
+                            companyMap[_item.parentId].push(_item);
+                        });
+                        var $list = $('#lr_im_content_userlist .lr-scroll-box');
+                        $.each(companyMap["0"], function (_index, _item) {
+                            var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-company" data-value="'+ _item.id + '"  data-deep="0" >\
+                                    <i class="fa fa-angle-right"></i>'+ _item.name + '\
+                                </div>\
+                            </div>';
+                            $list.append(_html);
+
+                        });
+                        // 获取部门列表
+                        aycsoft.clientdata.getAllAsync('department', {
+                            callback: function (data) {
+                                $.each(data, function (_id, _item) {
+                                    _item.id = _id;
+                                    if (_item.parentId == "0") {
+                                        departmentMap[_item.companyId] = departmentMap[_item.companyId] || [];
+                                        departmentMap[_item.companyId].push(_item);
+                                    }
+                                    else {
+                                        departmentMap[_item.parentId] = departmentMap[_item.parentId] || [];
+                                        departmentMap[_item.parentId].push(_item);
+                                    }
+                                });
+
+                                // 获取人员数据
+                                aycsoft.clientdata.getAllAsync('user', {
+                                    callback: function (data) {
+                                        $.each(data, function (_id, _item) {
+                                            _item.id = _id;
+                                            if (_item.departmentId) {
+                                                userMap[_item.departmentId] = userMap[_item.departmentId] || [];
+                                                userMap[_item.departmentId].push(_item);
+                                            }
+                                            else if (_item.companyId) {
+                                                userMap[_item.companyId] = userMap[_item.companyId] || [];
+                                                userMap[_item.companyId].push(_item);
+                                            }
+                                        });
+
+                                        // 获取最近联系人列表
+                                        aycsoft.im.getContacts(function (data, sysUserList) {
+                                            $.each(sysUserList, function (_index, _item) {
+                                                sysUserMap[_item.F_Code] = _item;
+                                            });
+
+                                            var $userList = $('#lr_immsg_userlist .lr-scroll-box');
+                                            $.each(data, function (_index, _item) {
+                                                var html = '<div class="msg-item' + (_item.F_IsRead == '1' ? 'imHasMsg' : '') + '" data-value="' + _item.F_OtherUserId + '" >';
+                                                html += '<div class="photo">';
+
+                                                if (sysUserMap[_item.F_OtherUserId]) {
+                                                    html += '<i class="' + sysUserMap[_item.F_OtherUserId].F_Icon + '" ></i>';
+                                                }
+                                                else {
+                                                    html += '<img src="' + top.$.rootUrl + '/Content/images/head/on-boy.jpg" >';
+                                                }
+
+                                                html += '<div class="point"></div>';
+                                                html += '</div>';
+                                                html += '<div class="name"></div>';
+                                                html += '<div class="msg">' + (_item.F_Content || '') + '</div>';
+                                                html += '<div class="date">' + getTime(_item.F_Time) + '</div>';
+                                                html += '</div>';
+
+                                                $userList.append(html);
+                                                if (sysUserMap[_item.F_OtherUserId]) {
+                                                    var _$item = $userList.find('[data-value="' + _item.F_OtherUserId + '"]');
+                                                    _$item.find('.name').text(sysUserMap[_item.F_OtherUserId].F_Name);
+                                                    _$item = null;
+                                                }
+                                                else {
+                                                    aycsoft.clientdata.getAsync('user', {
+                                                        key: _item.F_OtherUserId,
+                                                        callback: function (data, op) {
+                                                            var $item = $userList.find('[data-value="' + op.key + '"]');
+                                                            $item.find('.name').text(data.name);
+                                                            data.id = op.key;
+                                                            $item.find('img').attr('src', getHeadImg(data));
+                                                            $item = null;
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        });
+
+                                    }
+                                });
+
+                            }
+                        });
+
+                    }
+                });
+            },
+            bind: function () {
+                $('#lr_immsg_userlist').lrscroll();
+                $('#lr_im_content_userlist').lrscroll();
+                $('.lr-im-msgcontent').lrscroll();
+
+                // 打开关闭聊天窗
+                $('.lr-im-bell').on('click', function () {
+                    var $this = $(this);
+                    if ($this.hasClass('open')) {
+                        $this.removeClass('open');
+                        $('.lr-im-body').removeClass('open');
+
+                        $('.lr-im-black-overlay').hide();
+                        imUserId = '';
+                    }
+                    else {
+                        $this.addClass('open');
+                        $('.lr-im-bell .point').hide();
+                        $('.lr-im-body').addClass('open');
+                    }
+                });
+
+                // 最近消息 与 联系人之间的切换
+                $('.lr-im-title .title-item').on('click', function () {
+                    var $this = $(this);
+                    if (!$this.hasClass('active')) {
+                        $('.lr-im-body>.active').removeClass('active');
+                        $('.lr-im-title>.active').removeClass('active');
+                        $this.addClass('active');
+                        var v = $this.attr('data-value');
+                        $('#' + v).addClass('active');
+                    }
+                });
+
+                // 联系人
+                $('#lr_im_content_userlist .lr-scroll-box').on('click', function (e) {
+                    e = e || window.event;
+                    var et = e.target || e.srcElement;
+                    var $et = $(et);
+
+                    if (et.tagName == 'IMG' || et.tagName == 'I') {
+                        $et = $et.parent();
+                    }
+
+                    if ($et.hasClass('lr-im-company')) {// 点击公司项
+                        // 判断是否是打开的状态
+                        if ($et.hasClass('open')) {
+                            $et.removeClass('open');
+                            $et.parent().find('.lr-im-user-list').remove();
+
+                        } else {
+                            var id = $et.attr('data-value');
+                            var deep = parseInt($et.attr('data-deep'));
+                            var $list = $('<div class="lr-im-user-list" ></div>');
+                            $list.css({ 'padding-left': '10px' });
+                            var flag = false;
+                            // 加载员工
+                            $.each(userMap[id] || [], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-user" data-value="'+ _item.id + '" >\
+                                     <img src="'+ getHeadImg(_item) + '" >' + _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                                flag = true;
+                            });
+                            // 加载部门
+                            $.each(departmentMap[id] || [], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-department" data-value="'+ _item.id + '"  data-deep="' + (deep + 1) + '" >\
+                                    <i class="fa fa-angle-right"></i>'+ _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                                flag = true;
+                            });
+                            // 加载下属公司
+                            $.each(companyMap[id] || [], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-company" data-value="'+ _item.id + '"  data-deep="' + (deep + 1) + '" >\
+                                    <i class="fa fa-angle-right"></i>'+ _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                                flag = true;
+                            });
+
+
+
+                            if (flag) {
+                                $et.parent().append($list);
+                            }
+                            $et.addClass('open');
+                        }
+                        return false;
+                    }
+                    else if ($et.hasClass('lr-im-department')) {
+                        // 判断是否是打开的状态
+                        if ($et.hasClass('open')) {
+                            $et.removeClass('open');
+                            $et.parent().find('.lr-im-user-list').remove();
+
+                        } else {
+                            var id = $et.attr('data-value');
+                            var deep = parseInt($et.attr('data-deep'));
+                            var $list = $('<div class="lr-im-user-list" ></div>');
+                            $list.css({ 'padding-left': '10px' });
+                            var flag = false;
+                            // 加载员工
+                            $.each(userMap[id] || [], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-user" data-value="'+ _item.id + '" >\
+                                     <img src="'+ getHeadImg(_item) + '" >' + _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                                flag = true;
+                            });
+                            // 加载部门
+                            $.each(departmentMap[id] || [], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-department" data-value="'+ _item.id + '"  data-deep="' + (deep + 1) + '" >\
+                                    <i class="fa fa-angle-right"></i>'+ _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                                flag = true;
+                            });
+
+                            if (flag) {
+                                $et.parent().append($list);
+                            }
+                            $et.addClass('open');
+
+                        }
+
+                    }
+                    else if ($et.hasClass('lr-im-user')) {
+                        // 如果是用户列表
+                        // 1.打开聊天窗口
+                        // 2.添加一条最近联系人数据（如果没有添加的话）
+                        // 3.获取最近的20条聊天数据或者最近的聊天信息
+
+
+                        var id = $et.attr('data-value');
+                        var $userList = $('#lr_immsg_userlist .lr-scroll-box');
+                        var $userItem = $userList.find('[data-value="' + id + '"]');
+
+                        // 更新下最近的联系人列表数据
+                        $('.lr-im-title .title-item').eq(0).trigger('click');
+
+                        imUserId = id;
+                        if ($userItem.length > 0) {
+                            $userList.prepend($userItem);
+                            $userItem.trigger('click');
+                        }
+                        else {
+                            var imgurl = $et.find('img').attr('src');
+                            var _html = '\
+                            <div class="msg-item" data-value="' + id + '" >\
+                                <div class="photo">\
+                                    <img src="'+ imgurl + '">\
+                                    <div class="point"></div>\
+                                </div>\
+                                <div class="name"></div>\
+                                <div class="msg"></div>\
+                                <div class="date"></div>\
+                            </div>';
+                            $userList.prepend(_html);
+                            $userItem = $userList.find('[data-value="' + id + '"]');
+                            // 获取人员数据
+                            aycsoft.clientdata.getAsync('user', {
+                                key: id,
+                                callback: function (data, op) {
+                                    $userList.find('[data-value="' + op.key + '"] .name').text(data.name);
+                                    $userItem.trigger('click');
+                                }
+                            });
+                            aycsoft.im.addContacts(id);
+                        }
+
+                    }
+                });
+                // 最近联系人列表点击
+                $('#lr_immsg_userlist .lr-scroll-box').on('click', function (e) {
+                    e = e || window.event;
+                    var et = e.target || e.srcElement;
+                    var $et = $(et);
+
+                    if (!$et.hasClass('msg-item')) {
+                        $et = $et.parents('.msg-item');
+                    }
+                    if ($et.length > 0) {
+                        if (!$et.hasClass('active')) {
+                            var name = $et.find('.name').text();
+                            imUserId = $et.attr('data-value');
+
+                            $('#lr_immsg_userlist .lr-scroll-box .active').removeClass('active');
+                            $et.addClass('active');
+
+                            $('.lr-im-black-overlay').show();
+                            var $imdialog = $('.lr-im-dialog');
+                            $imdialog.find('.im-title').text("与" + name + "对话中");
+
+                            $('#lr_im_input').val('');
+                            $('#lr_im_input').select();
+
+                            $('.lr-im-msgcontent .lr-scroll-box').html('');
+                            // 获取聊天信息
+                            aycsoft.im.getMsgList(imUserId, function (data) {
+                                var len = data.length;
+                                if (len > 0) {
+                                    for (var i = len - 1; i >= 0; i--) {
+                                        var _item = data[i];
+                                        aycsoft.clientdata.getAsync('user', {
+                                            key: _item.userId,
+                                            msg: _item.content,
+                                            time: _item.time,
+                                            callback: function (data, op) {
+                                                data.id = op.key;
+                                                var loginInfo = aycsoft.clientdata.get(['userinfo']);
+                                                var _html = '\
+                                            <div class="im-time '+ (loginInfo.userId == op.key ? 'me' : '') + ' ">' + op.time + '</div>\
+                                            <div class="'+ (loginInfo.userId == op.key ? 'im-me' : 'im-other') + '">\
+                                                <div class="headimg"><img src="'+ getHeadImg(data) + '"></div>\
+                                                <div class="arrow"></div>\
+                                                <span class="content">'+ op.msg + '</span>\
+                                            </div>';
+                                                $('.lr-im-msgcontent .lr-scroll-box').prepend(_html);
+                                            }
+                                        });
+                                    }
+                                    $('.lr-im-msgcontent').lrscrollSet('moveBottom');
+                                }
+                            }, $et.hasClass('imHasMsg'));
+                            $et.removeClass('imHasMsg');
+                            aycsoft.im.updateContacts(imUserId);
+                        }
+                    }
+                });
+
+
+                // 联系人搜索
+                $('.lr-im-search input').on("keypress", function (e) {
+                    e = e || window.event;
+                    if (e.keyCode == "13") {
+                        var $this = $(this);
+                        var keyword = $this.val();
+                        var $list = $('#lr_im_content_userlist .lr-scroll-box');
+                        $list.html("");
+                        if (keyword) {
+                            aycsoft.clientdata.getAllAsync('user', {
+                                callback: function (data) {
+                                    $.each(data, function (_index, _item) {
+                                        if (_item.name.indexOf(keyword) != -1) {
+                                            _item.id = _index;
+                                            var _html = '\
+                                        <div class="lr-im-company-item">\
+                                            <div class="lr-im-item-name lr-im-user" data-value="'+ _item.id + '" >\
+                                                 <img src="'+ getHeadImg(_item) + '" >' + _item.name + '\
+                                            </div>\
+                                        </div>';
+                                            $list.append(_html);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            $.each(companyMap["0"], function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-im-company-item">\
+                                <div class="lr-im-item-name lr-im-company" data-value="'+ _item.id + '"  data-deep="0" >\
+                                    <i class="fa fa-angle-right"></i>'+ _item.name + '\
+                                </div>\
+                            </div>';
+                                $list.append(_html);
+                            });
+                        }
+
+                    }
+                });
+
+                // 发送消息
+                $('#lr_im_input').on("keypress", function (e) {
+                    e = e || window.event;
+                    if (e.keyCode == "13") {
+                        var text = $(this).val();
+                        $(this).val('');
+                        if (text.replace(/(^\s*)|(\s*$)/g, "") != '') {
+                            var time = aycsoft.im.sendMsg(imUserId, text);
+                            sendMsg(text, time);
+                            var $userItem = $('#lr_immsg_userlist .lr-scroll-box [data-value="' + imUserId + '"]');
+                            $userItem.find('.msg').text(text);
+                            $userItem.find('.date').text(getTime(aycsoft.getDate('yyyy-MM-dd hh:mm:ss')));
+                            $userItem = null;
+                        }
+                        return false;
+                    }
+                });
+                // 注册消息接收
+                aycsoft.im.registerRevMsg(function (userId, msg, dateTime) {
+                    var $userList = $('#lr_immsg_userlist .lr-scroll-box');
+                    var $userItem = $userList.find('[data-value="' + userId + '"]');
+                    // 判断当前账号是否打开聊天窗口
+                    if (userId == imUserId) {
+                        revMsg(userId, msg, dateTime);
+                        aycsoft.im.updateContacts(userId);
+                        $userItem.find('.msg').text(msg);
+                        $userItem.find('.date').text(getTime(dateTime));
+                    }
+                    else {
+                        if ($userItem.length > 0) {
+                            $userList.prepend($userItem);
+                            if (!$userItem.hasClass('imHasMsg')) {
+                                $userItem.addClass('imHasMsg');
+                            }
+                            $userItem.find('.msg').text(msg);
+                            $userItem.find('.date').text(getTime(dateTime));
+                        }
+                        else {
+                            var html = '<div class="msg-item" data-value="' + userId + '" >';
+                            html += '<div class="photo">';
+
+                            if (sysUserMap[userId]) {
+                                html += '<i class="' + sysUserMap[userId].F_Icon + '" ></i>';
+                            }
+                            else {
+                                html += '<img src="' + top.$.rootUrl + '/Content/images/head/on-boy.jpg" >';
+                            }
+
+                            html += '<div class="point"></div>';
+                            html += '</div>';
+                            html += '<div class="name"></div>';
+                            html += '<div class="msg">' + msg + '</div>';
+                            html += '<div class="date">' + getTime(dateTime) + '</div>';
+                            html += '</div>';
+                            $userList.prepend(html);
+
+                            if (sysUserMap[userId]) {
+                                var _$item = $userList.find('[data-value="' + userId + '"]');
+                                _$item.find('.name').text(sysUserMap[userId].F_Name);
+                                _$item = null;
+                            }
+                            else {
+                                aycsoft.clientdata.getAsync('user', {
+                                    key: userId,
+                                    callback: function (data, op) {
+                                        var $item = $userList.find('[data-value="' + op.key + '"]');
+                                        $item.find('.name').text(data.name);
+                                        data.id = op.key;
+                                        $item.find('img').attr('src', getHeadImg(data));
+                                        $item = null;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    if (!$('.lr-im-bell').hasClass('open')) {
+                        $('.lr-im-bell .point').show();
+                    }
+                });
+
+
+                // 查看聊天记录
+                $('#lr_im_look_msg_btn').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'LookMsgIndex',
+                        title: '查看聊天记录-' + $('#lr_im_msglist .lr-im-right .lr-im-touser').text(),
+                        url: top.$.rootUrl + '/LR_IM/IMMsg/Index?userId=' + imUserId,
+                        width: 800,
+                        height: 500,
+                        maxmin: true,
+                        btn: null
+                    });
+                });
+
+                $('.im-close').on('click', function () {
+                    $('#lr_immsg_userlist .lr-scroll-box [data-value="' + imUserId + '"]').removeClass('active');
+                    $('.lr-im-black-overlay').hide();
+                    imUserId = '';
+                });
+            }
+        };
+
+        //im.init();
+    };
+</script>

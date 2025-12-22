@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "添加节点审核人";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">节点</div>
+        <div id="auditorId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+</div>
+<script>
+    var layerId = request('layerId');
+
+var acceptClick;
+var auditorName = '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var nodeList = top[layerId].nodeList;
+
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('#auditorId').lrselect({
+                text: 'name',
+                value: 'id',
+                data: nodeList,//
+                select: function (item) {
+                    if (item) {
+                        auditorName = item.name;
+                    }
+                    else {
+                        auditorName = '';
+                    }
+                },
+            });
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+        formData.auditorName = auditorName;
+        formData.type = '6';//审核者类型1.岗位2.角色3.用户4.上下级5.表单指定字段6.某一个节点执行人
+        callBack(formData);
+        return true;
+    };
+    page.init();
+}
+</script>
+

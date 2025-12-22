@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "SetNameForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item" style="padding-left:30px;">
+        <input id="F_text" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+</div>
+<script>
+    var acceptClick;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var titleName = aycsoft.frameTab.currentIframe().titleName;
+
+        var page = {
+            init: function () {
+                page.initData();
+            },
+            initData: function () {
+                $('#F_text').val(titleName);
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            var postData = $('#form').lrGetFormData();
+            callBack(postData.F_text);
+            aycsoft.layerClose(window.name);
+        };
+        page.init();
+    }
+</script>
+

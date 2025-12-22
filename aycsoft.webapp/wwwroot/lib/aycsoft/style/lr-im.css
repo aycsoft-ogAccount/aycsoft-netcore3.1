@@ -1,0 +1,534 @@
+﻿.lr-im-body {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 248px;
+    height: 400px;
+    background: #fff;
+    z-index: 50;
+    padding-top: 40px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.50);
+    display: none;
+}
+
+    .lr-im-body.open {
+        display: block;
+    }
+
+.lr-im-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #F8F8F8;
+    border-bottom: 1px solid #F8F8F8;
+    width: 100%;
+    height: 40px;
+}
+
+
+    .lr-im-title .title-item {
+        position: absolute;
+        width: 50%;
+        height: 39px;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+        color: #404040;
+        font-size: 14px;
+        line-height: 39px;
+        text-align: center;
+    }
+
+        .lr-im-title .title-item.active {
+            color: #3285ED;
+            background: #fff;
+        }
+
+        .lr-im-title .title-item.title-item-two {
+            left: 124px;
+        }
+
+.lr-im-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none;
+    border-left: 0;
+}
+
+    .lr-im-content.active {
+        display: block;
+    }
+
+.lr-im-msg-list {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+    .lr-im-msg-list .msg-item {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        cursor: pointer;
+    }
+
+        .lr-im-msg-list .msg-item:after {
+            content: '';
+            display: block;
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background: #F8F8F8;
+            bottom: 0;
+            left: 0;
+        }
+
+        .lr-im-msg-list .msg-item .remove {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            color: #333;
+            font-size: 12px;
+            display: none;
+        }
+
+        .lr-im-msg-list .msg-item:hover .remove {
+            display: block;
+        }
+
+        .lr-im-msg-list .msg-item .photo {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+        }
+
+        .lr-im-msg-list .msg-item .icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+            background-color: #2B97DF;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .lr-im-msg-list .msg-item .point {
+            width: 8px;
+            height: 8px;
+            background: #DB3702;
+            border-radius: 50%;
+            position: absolute;
+            right: -4px;
+            top: -2px;
+            display: none;
+        }
+
+        .lr-im-msg-list .msg-item img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .lr-im-msg-list .msg-item .name {
+            position: absolute;
+            top: 8px;
+            left: 50px;
+            height: 16px;
+            color: #333333;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .lr-im-msg-list .msg-item .msg {
+            position: absolute;
+            top: 24px;
+            left: 50px;
+            height: 16px;
+            width: 188px;
+            color: #999;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .lr-im-msg-list .msg-item .date {
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            height: 16px;
+            color: #666;
+            font-size: 12px;
+            text-align: right;
+        }
+
+
+.lr-im-userlist {
+    padding-top: 40px;
+}
+
+.lr-im-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    font-size: 0;
+    padding: 8px;
+}
+
+    .lr-im-search i {
+        position: absolute;
+        left: 15px;
+        top: 14px;
+        font-size: 12px;
+        font-weight: 100;
+        color: #999;
+        z-index: 1;
+    }
+
+    .lr-im-search input {
+        position: relative;
+        text-align: left;
+        border: 1px solid transparent;
+        font-size: 12px;
+        width: 100%;
+        height: 100%;
+        background: #F8F8F8;
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: #999;
+        outline: none;
+        text-indent: 20px;
+    }
+
+        .lr-im-search input::-webkit-input-placeholder {
+            text-align: center;
+        }
+
+        .lr-im-search input::-moz-placeholder { /* Mozilla Firefox 19+ */
+            text-align: center;
+        }
+
+        .lr-im-search input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            text-align: center;
+        }
+
+        .lr-im-search input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            text-align: center;
+        }
+
+
+.lr-im-content-userlist {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+    .lr-im-content-userlist .lr-scroll-box {
+        padding: 0 10px;
+    }
+
+.lr-im-item-name {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+}
+
+    .lr-im-item-name > i {
+        color: #999;
+        font-size: 14px;
+        margin: 3px;
+    }
+
+
+.open>.lr-im-item-name > i {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.lr-im-user-list {
+    position: relative;
+    width: 100%;
+    display:none;
+}
+.open > .lr-im-user-list {
+    display: block;
+}
+
+.lr-im-user {
+    position: relative;
+    height: 43px;
+    line-height: 43px;
+    padding-left: 40px;
+}
+
+    .lr-im-user > img {
+        position: absolute;
+        top: 6px;
+        left: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+.lr-im-black-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(51,51,51,0.4);
+    z-index: 52;
+    display: none;
+}
+
+    .lr-im-black-overlay.open {
+        display: block;
+    }
+
+.lr-im-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -270px;
+    margin-top: -240px;
+    width: 540px;
+    height: 480px;
+    background: #f3f3f3;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.50);
+    padding-top: 40px;
+    padding-bottom: 135px;
+}
+
+.lr-im-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #E5E5E5;
+    line-height: 39px;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+}
+
+    .lr-im-header .im-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 12px;
+        color: #333;
+        font-weight: 100;
+    }
+
+.lr-im-msgcontent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.lr-im-msgcontent-tool {
+    position: absolute;
+    height: 25px;
+    line-height: 24px;
+    text-align: right;
+    width: 100%;
+    left: 0;
+    bottom: 110px;
+    padding-right: 10px;
+    border-top: 1px solid #E5E5E5;
+    background: #F8F8F8;
+}
+
+    .lr-im-msgcontent-tool > span {
+        cursor: pointer;
+    }
+
+.lr-im-input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    border-top: 1px solid #E5E5E5;
+}
+
+    .lr-im-input .inp {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: 0;
+        outline: 0;
+        padding: 5px;
+        background: transparent;
+    }
+
+.lr-im-msgcontent .im-time {
+    position: relative;
+    font-size: 12px;
+    color: #999;
+    width: 100%;
+    height: 15px;
+    line-height: 15px;
+    text-align: left;
+    padding: 0 50px;
+}
+
+.lr-im-msgcontent .me.im-time {
+    text-align: right;
+}
+
+.lr-im-msgcontent .im-me,
+.lr-im-msgcontent .im-other {
+    position: relative;
+    word-break: break-all;
+    height: auto;
+    overflow: hidden;
+    width: 100%;
+    padding: 0 50px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.lr-im-msgcontent .im-other {
+    text-align: left;
+}
+
+    .lr-im-msgcontent .im-other .headimg {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .lr-im-msgcontent .im-me img,
+    .lr-im-msgcontent .im-other img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .lr-im-msgcontent .im-me .content,
+    .lr-im-msgcontent .im-other .content {
+        display: inline-block;
+        background: #FFFFFF;
+        border: 1px solid #E5E5E5;
+        padding: 5px 13px 6px 19px;
+        font-size: 12px;
+        color: #333333;
+        box-sizing: border-box;
+        position: relative;
+        float: left;
+        max-width: 100%;
+        text-align: left;
+        line-height: 20px;
+    }
+.lr-im-msgcontent .im-me .content {
+    float: right;
+    background: #aad8f5;
+}
+
+.lr-im-msgcontent .im-other .arrow {
+    width: 8px;
+    height: 8px;
+    border: 1px solid #E5E5E5;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    background: #fff;
+    position: absolute;
+    top: 11px;
+    left: 46px;
+    z-index: 1;
+    clip: rect(0,8px,8px,0);
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.lr-im-msgcontent .im-me .headimg {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+
+.lr-im-msgcontent .im-me .arrow {
+    width: 8px;
+    height: 8px;
+    border: 1px solid #E5E5E5;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    background: #aad8f5;
+    position: absolute;
+    top: 11px;
+    right: 46px;
+    z-index: 1;
+    clip: rect(0,8px,8px,0);
+    border-top: 0;
+    border-left: 0;
+}
+
+.imHasMsg .point {
+    display: block;
+}
+
+
+.photo .fa {
+    display: block;
+    font-size: 20px;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    background-color: #985CE2;
+}
+
+.lr-im-loading-img {
+    position: absolute;
+    right: 0;
+    top: 7px;
+    display: none;
+}
+.lr-im-loading .lr-im-loading-img {
+    display: block;
+}

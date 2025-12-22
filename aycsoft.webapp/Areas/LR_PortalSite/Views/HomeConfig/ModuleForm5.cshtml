@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "ModuleForm5";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">文章分类<font face="宋体">*</font></div>
+        <div id="F_Category" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">文章<font face="宋体">*</font></div>
+        <div id="F_Article" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">比例<font face="宋体">*</font></div>
+        <div id="prop"></div>
+    </div>
+</div>
+<script>
+    var sort = request('sort');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var keyValue = '';
+    var currentModule = aycsoft.frameTab.currentIframe().currentModule;
+
+    var page = {
+        init: function () {
+            // 比例选择
+            $('#prop').lrselect({
+                data: [{ id: '0.5', text: '1/2' }, { id: '0.333333', text: '1/3' }, { id: '0.66666', text: '2/3' }, { id: '1', text: '1' }],
+                placeholder: false
+            }).lrselectSet('1');
+
+
+            $('#F_Category').lrDataItemSelect({ code: 'PortalSiteType' });
+            $('#F_Article').lrselect({
+                text: 'F_Title',
+                value: 'F_Id',
+                allowSearch: true
+            });
+            $('#F_Category').on('change', function () {
+                var v = $(this).lrselectGet();
+                if (v != '') {
+                    $('#F_Article').lrselectRefresh({
+                        data: [],
+                        url: top.$.rootUrl + '/LR_PortalSite/Article/GetList',
+                        param: { queryJson: JSON.stringify({ category: v }) }
+                    });
+                }
+                else {
+                    $('#F_Article').lrselectRefresh({
+                        data: [],
+                        url: false
+                    });
+                }
+            });
+            page.initData();
+        },
+        initData: function () {
+            if (currentModule) {
+                var schemeObj = JSON.parse(currentModule.F_Scheme);
+                currentModule.F_Category = schemeObj.category;
+                currentModule.F_Article = schemeObj.article;
+                currentModule.prop = schemeObj.prop;
+                $('#form').lrSetFormData(currentModule);
+
+                keyValue = currentModule.F_Id;
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+
+        var postData = {
+            F_Name: formData.F_Name,
+            F_Type: 9,
+            F_Scheme: JSON.stringify({ category: formData.F_Category, article: formData.F_Article, prop: formData.prop, type: "5" }),
+            F_Sort: sort
+        }
+
+        $.lrSaveForm(top.$.rootUrl + '/LR_PortalSite/HomeConfig/SaveForm?keyValue=' + keyValue, postData, function (res) {
+            postData.F_Id = res.data;
+            callBack && callBack(postData);
+        });
+    };
+    page.init();
+}
+</script>
+

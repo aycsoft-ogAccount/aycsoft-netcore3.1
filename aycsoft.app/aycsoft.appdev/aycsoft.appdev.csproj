@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\aycsoft.core\aycsoft.application\aycsoft.application.csproj" />
+    <ProjectReference Include="..\..\aycsoft.core\aycsoft.cache\aycsoft.cache.csproj" />
+    <ProjectReference Include="..\..\aycsoft.core\aycsoft.database\aycsoft.database.csproj" />
+    <ProjectReference Include="..\..\aycsoft.core\aycsoft.iapplication\aycsoft.iapplication.csproj" />
+    <ProjectReference Include="..\..\aycsoft.core\aycsoft.util\aycsoft.util.csproj" />
+    <ProjectReference Include="..\aycsoft.iappdev\aycsoft.iappdev.csproj" />
+  </ItemGroup>
+
+</Project>

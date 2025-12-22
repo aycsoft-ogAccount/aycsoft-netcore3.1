@@ -1,0 +1,370 @@
+﻿
+@{
+    ViewData["Title"] = "TreeSelectIndex";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .form-warp {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-left: 180px;
+}
+
+.form-warp-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 180px;
+    height: 100%;
+}
+
+
+.tree {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-right: 1px solid #ddd;
+}
+
+.form-warp-main {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-top: 28px;
+}
+
+.item-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-list {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.form-warp-right {
+    position: absolute;
+    top: 0;
+    right: -180px;
+    height: 100%;
+    width: 180px;
+    border-left: 1px solid #ddd;
+    padding-top: 28px;
+    background-color: #fff;
+    z-index: 10;
+}
+
+.form-warp-right-close {
+    position: absolute;
+    top: 7px;
+    right: 4px;
+    width: 12px;
+    height: 13px;
+    display: block;
+    background: url(/img/tab_close.png) no-repeat;
+    cursor: pointer;
+}
+
+    .form-warp-right-close:hover {
+        background-position: 0 -12px;
+    }
+
+.form-warp-right-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 28px;
+    line-height: 27px;
+    padding-left: 10px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    padding-right: 80px;
+}
+
+.selected-item-list-warp {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.item-selected-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 80px;
+    line-height: 27px;
+    text-align: center;
+    border-left: 1px solid #ddd;
+    cursor: pointer;
+    background-color: #eee;
+    color: #666;
+}
+
+    .item-selected-btn:hover {
+        color: #333;
+    }
+
+.form-control {
+    border: 0px;
+    height: 100%;
+}
+
+.input-query {
+    position: absolute;
+    right: 86px;
+    top: 2px;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.item-selected-box {
+    position: relative;
+    width: 160px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 5px 0 0 10px;
+}
+
+    .item-selected-box p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0;
+    }
+
+.item-reomve {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 13px;
+    display: block;
+    background: url(/img/tab_close.png) no-repeat;
+    cursor: pointer;
+}
+
+    .item-reomve:hover {
+        background-position: 0 -12px;
+    }
+</style>
+<div class="form-warp">
+    <div class="form-warp-left">
+        <div class="tree" id="tree"></div>
+    </div>
+    <div class="form-warp-main">
+        <div class="item-search">
+            <input id="txt_keyword" type="text" class="form-control" placeholder="请输入要查询关键字">
+            <span class="input-query" title="Search"><i class="fa fa-search"></i></span>
+            <div class="item-selected-btn" id="item_selected_btn">已选项</div>
+        </div>
+        <div class="item-list"><div id="gridtable"></div></div>
+    </div>
+    <div class="form-warp-right" id="form_warp_right">
+        <div class="form-warp-right-title">已选项<span class="form-warp-right-close" id="item_selected_btn_close" title="关闭"></span></div>
+        <div class="selected-item-list-warp">
+            <div id="selected_item_list"></div>
+        </div>
+    </div>
+</div>
+<script>
+var dfopid = request('dfopid');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectItem;
+
+    var gridData = null;
+    var op = null;
+    var treeValue = '';
+
+
+    var selectData = {};
+
+
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            op = top.lrlayerSelect[dfopid];
+
+            var _value = op._value.split(',');
+            var _text = op._text.split(',');
+            $.each(_value, function (_index, _item) {
+                if (_item != "") {
+                    selectData[_item] = _text[_index] || '';
+                }
+            });
+
+            // 初始化表格
+            $('#gridtable').jfGrid({
+                headData: op.grid,
+                isMultiselect: op.isMultiple,
+                mainId: op.dataValueId,
+                multiselectfield:'lrcheck',
+                onSelectRow: function (data, isCheck) {
+                    page.setSelect(data, isCheck);
+                }
+            });
+
+            // 设置树形数据
+            aycsoft.clientdata.getAllAsync('sourceData', {
+                code: op.treeCode,
+                callback: function (_data) {
+                    var treeData = $.lrtree.listTotree(_data, op.treeParentId, op.treeValueId, op.treeTextId, op.treeValueId, false);
+                    $('#tree').lrtree({
+                        data: treeData,
+                        nodeClick: function (item) {
+                            treeValue = item.value;
+                            page.search("");
+                        }
+                    });
+                }
+            });
+            // 获取表格数据
+            aycsoft.clientdata.getAllAsync('sourceData', {
+                code: op.dataCode,
+                callback: function (_data) {
+                    //gridData = _data;
+                    gridData = [];
+                    var $list = $('#selected_item_list');
+
+                    $.each(_data, function (_index, _item) {
+                        if (selectData[_item[op.dataValueId]]) {
+                            selectData[_item[op.dataValueId]] = _item[op.dataTextId];
+                            _item.lrcheck = 1;
+
+                            var _html = '<div class="item-selected-box" data-value="' + _item[op.dataValueId] + '" >';
+                            _html += '<p><span>' + _item[op.dataTextId] + '</span></p>';
+                            _html += '<span class="item-reomve" title="移除选中项"></span>';
+                            _html += '</div>';
+                            $list.append($(_html));
+                        } else {
+                            _item.lrcheck = 0;
+                        }
+                        gridData.push(_item);
+                    });
+
+                    $('#gridtable').jfGridSet('refreshdata', _data);
+                }
+            });
+
+            // 搜索框初始化
+            $('#txt_keyword').on("keypress", function (e) {
+                if (event.keyCode == "13") {
+                    var $this = $(this);
+                    var keyword = $this.val();
+                    page.search(keyword);
+                }
+            });
+
+            $('.input-query').on('click', function () {
+                var keyword = $('#txt_keyword').val();
+                page.search(keyword);
+            });
+
+            // 已选项
+            if (op.isMultiple) {
+                $('#item_selected_btn').on('click', function () {
+                    $('#form_warp_right').animate({ right: '0px' }, 300);
+                });
+                $('#item_selected_btn_close').on('click', function () {
+                    $('#form_warp_right').animate({ right: '-180px' }, 300);
+                });
+            }
+            else {
+                $('#item_selected_btn').remove();
+                $('.input-query').css('right','10px');
+            }
+
+            $('.selected-item-list-warp').lrscroll();
+
+            var $warp = $('#selected_item_list');
+            $warp.on('click', function (e) {
+                var et = e.target || e.srcElement;
+                var $et = $(et);
+                if ($et.hasClass('item-reomve')) {
+                    var id = $et.parent().attr('data-value');
+                    $et.parent().remove();
+                    delete selectData[id];
+                    var keyword = $('#txt_keyword').val();
+                    page.search(keyword);
+                }
+            });
+
+        },
+        search: function (text) {
+            if (gridData == null) {
+                setTimeout(function () {
+                    page.search(text);
+                }, 100);
+            }
+            else {
+                var _data = [];
+                $.each(gridData, function (_index, _item) {
+                    if (!!selectData[_item[op.dataValueId]]) {
+                        _item.lrcheck = 1;
+                    }
+                    else {
+                        _item.lrcheck = 0;
+                    }
+                    if (_item[op.dataTreeId] == treeValue || treeValue == "") {
+                        if (text == "" || _item[op.dataTextId].indexOf(text) != -1) {
+                            _data.push(_item);
+                        }
+                    }
+                });
+                $('#gridtable').jfGridSet('refreshdata', _data);
+
+            }
+        },
+        setSelect: function (data, ischeck) {
+            var $list = $('#selected_item_list');
+            if (ischeck) {
+                if ($list.find('[data-value="' + data[op.dataValueId] + '"]').length == 0) {
+                    selectData[data[op.dataValueId]] = data[op.dataTextId];
+                    var _html = '<div class="item-selected-box" data-value="' + data[op.dataValueId] + '" >';
+                    _html += '<p><span>' + data[op.dataTextId] + '</span></p>';
+                    _html += '<span class="item-reomve" title="移除选中项"></span>';
+                    _html += '</div>';
+                    $list.append($(_html));
+                }
+            }
+            else {
+                $list.find('[data-value="' + data[op.dataValueId] + '"]').remove();
+                delete selectData[data[op.dataValueId]];
+            }
+
+        }
+
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (op.isMultiple) {
+            callBack(selectData, dfopid);
+        } else {
+            var item = $('#gridtable').jfGridGet('rowdata');
+            selectData = {}; 
+            if (item) {
+                selectData[item[op.dataValueId]] = item[op.dataTextId];
+            }
+            callBack(selectData, dfopid);
+        }
+        return true;
+    };
+    page.init();
+}
+</script>

@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "语言类型";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item" style="padding-left:60px;">
+        <div class="lr-form-item-title" style="width:60px;">名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item" style="padding-left:60px;">
+        <div class="lr-form-item-title" style="width:60px;">编码<font face="宋体">*</font></div>
+        <input id="F_Code" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+</div>
+<script>  var acceptClick;
+    var keyValue = request('keyValue');
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                /*检测重复项*/
+                $('#F_Code').on('blur', function () {
+                    $.lrExistField(keyValue, 'F_Code', 'lr_lg_type', 'F_Id');
+                });
+            },
+            initData: function () {
+                if (!!selectedRow) {
+                    $('#form').lrSetFormData(selectedRow);
+                }
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            var postData = $('#form').lrGetFormData();
+            postData.F_Code = postData.F_Code.toLowerCase();
+            postData.F_IsMain = 0;
+            postData['__RequestVerificationToken'] = $.lrToken;
+            aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_LGManager/LGType/GetEntityByCode?keyValue=' + postData.F_Code, function (res) {
+                //判断编辑是否更改编码
+                if (res.data) {
+                    aycsoft.alert.warning("编码已存在");
+                    return false;
+                }
+                else {
+                    if (!(selectedRow && selectedRow.F_Code === postData.F_Code) && keyValue) {
+                        selectedRow.F_Code = postData.F_Code;
+                        selectedRow.F_Name = postData.F_Name;
+                        $.lrSaveForm(top.$.rootUrl + '/LR_LGManager/LGType/SaveForm?keyValue=' + keyValue, selectedRow, function (res) {
+                            // 保存成功后才回调
+                            if (!!callBack) {
+                                callBack();
+                            }
+                        });
+                    }
+                    else if (!keyValue) {
+                        $.lrSaveForm(top.$.rootUrl + '/LR_LGManager/LGType/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                            // 保存成功后才回调
+                            if (!!callBack) {
+                                callBack();
+                            }
+                        });
+                    }
+                }
+            });
+        };
+        page.init();
+    }
+
+</script>

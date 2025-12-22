@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "数据字典明细管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入项目名/项目值" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+var classify_itemCode = request('itemCode');
+
+var refreshGird;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.initGrid();
+            page.bind();
+        },
+        bind: function () {
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var keyword = $('#txt_Keyword').val();
+                page.search({ keyword: keyword });
+            });
+            // 刷新
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+            // 新增
+            $('#lr_add').on('click', function () {
+                top.selectedDataItemRow = null;
+                var parentId = $('#gridtable').jfGridValue('F_ItemDetailId') || '0';
+                aycsoft.layerForm({
+                    id: 'form',
+                    title: '添加字典',
+                    url: top.$.rootUrl + '/LR_SystemModule/DataItem/Form?parentId=' + parentId + '&itemCode=' + classify_itemCode,
+                    width: 500,
+                    height: 370,
+                    callBack: function (id) {
+                        return top[id].acceptClick(refreshGird);
+                    }
+                });
+            });
+            // 编辑
+            $('#lr_edit').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_ItemDetailId');
+                top.selectedDataItemRow = $('#gridtable').jfGridGet('rowdata');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '编辑字典',
+                        url: top.$.rootUrl + '/LR_SystemModule/DataItem/Form?itemCode=' + classify_itemCode,
+                        width: 500,
+                        height: 370,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGird);
+                        }
+                    });
+                }
+            });
+            // 删除
+            $('#lr_delete').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_ItemDetailId');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                        if (res) {
+                            aycsoft.deleteForm(top.$.rootUrl + '/LR_SystemModule/DataItem/DeleteDetailForm', { keyValue: keyValue }, function () {
+                                refreshGird();
+                            });
+                        }
+                    });
+                }
+            });
+        },
+        initGrid: function () {
+            $('#gridtable').jfGrid({
+                url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetDetailList',
+                headData: [
+                    { label: '项目名', name: 'F_ItemName', width: 200, align: 'left' },
+                    { label: '项目值', name: 'F_ItemValue', width: 200, align: 'left' },
+                    { label: '简拼', name: 'F_SimpleSpelling', width: 150, align: 'left' },
+                    { label: '排序', name: 'F_SortCode', width: 80, align: 'center' },
+                    {
+                        label: "有效", name: "F_EnabledMark", width: 50, align: "center",
+                        formatter: function (cellvalue) {
+                            return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    },
+                    { label: "备注", name: "F_Description", width: 200, align: "left" }
+                ],
+
+                isTree: true,
+                mainId: 'F_ItemDetailId',
+                parentId: 'F_ParentId',
+            });
+            page.search();
+        },
+        search: function (param) {
+            param = param || {};
+            param.itemCode = classify_itemCode;
+            $('#gridtable').jfGridSet('reload', param);
+        }
+    };
+
+    refreshGird = function () {
+        page.search();
+    };
+
+    page.init();
+}
+</script>
+

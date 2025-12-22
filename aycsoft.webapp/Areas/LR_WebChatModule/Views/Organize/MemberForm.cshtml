@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "微信成员管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout lr-layout-left-center " id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">公司信息</div>
+            <div id="companyTree" class="lr-layout-body"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                <span id="titleinfo">未选择公司</span> - 用户信息
+            </div>
+
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_synchro" class="btn btn-default"><i class="fa fa-reorder"></i>&nbsp;同步</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lr-layout-body" id="girdtable">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var selectedRow;
+    var refreshGirdData;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var companyId = '';
+        var departmentId = '';
+        var code = '';
+        var page = {
+            init: function () {
+                page.inittree();
+                page.initGird();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyword: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 同步
+                $('#lr_synchro').on('click', function () {
+                    var keyValue = $('#girdtable').jfGridValue('F_UserId');
+                    aycsoft.layerConfirm('是否确认同步该项！', function (res) {
+                        if (res) {
+                            aycsoft.postForm(top.$.rootUrl + '/LR_WebChatModule/Organize/SyncMember', { userId: keyValue }, function () {
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                });
+            },
+            inittree: function () {
+                $('#companyTree').lrtree({
+                    url: top.$.rootUrl + '/LR_OrganizationModule/Department/GetTree',
+                    param: { parentId: '0' },
+                    nodeClick: page.treeNodeClick
+                });
+                $('#companyTree').lrtreeSet('setValue', '53298b7a-404c-4337-aa7f-80b2a4ca6681');
+            },
+            treeNodeClick: function (item) {
+                $('#titleinfo').text(item.text);
+                code = item.exid1;
+                if (item.exid2 == "c") {
+                    companyId = item.id;
+                    departmentId = '';
+                    page.search();
+                }
+                else {
+                    companyId = "";
+                    departmentId = item.id;
+                    page.search();
+                }
+            },
+            initGird: function () {
+                $('#girdtable').lrAuthorizeJfGrid({
+                    url: top.$.rootUrl + '/LR_WebChatModule/Organize/GetUserPageList',
+                    headData: [
+                        { label: '账户', name: 'F_Account', width: 80, align: 'left' },
+                        { label: '姓名', name: 'F_RealName', width: 80, align: 'center' },
+                        {
+                            label: '性别', name: 'F_Gender', width: 45, align: 'center',
+                            formatter: function (cellvalue) {
+                                return cellvalue == 0 ? "女" : "男";
+                            }
+                        },
+                        { label: '手机', name: 'F_Mobile', width: 100, align: 'center' },
+                        {
+                            label: "状态", name: "F_EnabledMark", index: "F_EnabledMark", width: 50, align: "center",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == 1) {
+                                    return '<span class=\"label label-success\" style=\"cursor: pointer;\">正常</span>';
+                                }
+                                else if (cellvalue == 0) {
+                                    return '<span class=\"label label-default\" style=\"cursor: pointer;\">禁用</span>';
+                                }
+                            }
+                        },
+                        {
+                            label: "同步状态", name: "F_AnswerQuestion", index: "F_AnswerQuestion", width: 80, align: "left",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == "已同步") {
+                                    return '<span class=\"label label-info\" style=\"cursor: pointer;\">已同步</span>';
+                                }
+                                else return '<span class=\"label label-default\" style=\"cursor: pointer;\">未同步</span>';
+                            }
+                        }
+                    ],
+                    isPage: true,
+                    reloadSelected: true,
+                    mainId: 'F_UserId'
+                });
+            },
+            search: function (param) {
+                param = param || {};
+                param.companyId = companyId;
+                param.departmentId = departmentId;
+                param.code = code;
+
+                $('#girdtable').jfGridSet('reload', param);
+            }
+        };
+        refreshGirdData = function () {
+            $('#girdtable').jfGridSet('reload');
+        };
+        page.init();
+    }
+</script>

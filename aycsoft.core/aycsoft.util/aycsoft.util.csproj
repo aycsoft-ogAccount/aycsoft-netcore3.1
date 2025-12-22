@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>young</Authors>
+    <Company>广州轻创软件信息科技有限公司</Company>
+    <Product>Aycsoft敏捷框架Core版本</Product>
+    <Description>Aycsoft敏捷框架util通用方法</Description>
+    <PackageProjectUrl>https://www.aycsoft.cn</PackageProjectUrl>
+    <PackageIcon>applogo.png</PackageIcon>
+    <Copyright>https://www.aycsoft.cn</Copyright>
+    <PackageReleaseNotes>使用需要购买Aycsoft框架https://www.aycsoft.cn</PackageReleaseNotes>
+    <PackageId>lr.util</PackageId>
+    <Version>1.0.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\work\aycsoft-adms-core\aycsoft.framework.core\aycsoft.core\aycsoft.util\aycsoft.util.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ce.autofac.extension" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NPOI" Version="2.5.1" />
+    <PackageReference Include="YUICompressor.NET" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\applogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

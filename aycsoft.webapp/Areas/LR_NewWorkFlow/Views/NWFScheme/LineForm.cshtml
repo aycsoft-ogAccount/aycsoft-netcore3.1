@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewData["Title"] = "LineForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.tab-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+</style>
+<div style="position:relative;width:100%;height:100%;">
+    <div class="lr-form-tabs" id="lr_form_tabs">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-value="baseInfo"><span class="lrlg">基本配置</span></a></li>
+            <li><a data-value="operation"><span class="lrlg">绑定操作</span></a></li>
+        </ul>
+    </div>
+    <div class="tab-content" id="tab_content">
+        <div id="baseInfo" class="tab-pane  lr-form-wrap active">
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">名称</div>
+                <input id="name" type="text" class="form-control" placeholder="请输入名称" />
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">颜色</div>
+                <div id="color"></div>
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">通过策略</div>
+                <div id="strategy"></div>
+            </div>
+            <div class="col-xs-12 lr-form-item" style="display:none;">
+                <div class="lr-form-item-title">通过项</div>
+                <div id="agreeList"></div>
+            </div>
+        </div>
+        <div id="operation" class="tab-pane" style="position:relative;width:100%;height:100%;padding:5px;">
+            <div style="position:relative;border:1px solid #ccc;width:100%;height:100%;padding-top:39px;">
+                <div id="operationTypeDiv" style="position:absolute;top:0;left:0;width:100%;height:39px;border-bottom:1px solid #ccc;">
+                    <div class="col-xs-12 lr-form-item">
+                        <div class="lr-form-item-title"><span class="lrlg">操作类型</span></div>
+                        <div class="radio lr-radio" type="lr-radio" id="operationType">
+                            <label>
+                                <input name="operationType" type="radio" value="sql" checked="checked" />
+                                sql
+                            </label>
+                            <label>
+                                <input name="operationType" type="radio" value="interface" />
+                                <span class="lrlg">接口</span>
+                            </label>
+                            <label>
+                                <input name="operationType" type="radio" value="ioc" />
+                                <span class="lrlg">依赖注入方法</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="position:relative;width:100%;height:100%;">
+                    <div id="sql" class="operationDiv" style="position:relative;width:100%;height:100%;padding-top:73px;">
+                        <div style="position:absolute;height:66px;width:100%;padding:5px;top:0;left:0;">
+                            <div class="alert alert-danger" style="position:relative;text-align: left;margin:0;">
+                                <i class="fa fa-question-circle alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+                                <span class="lrlg">注意：请在开发人员指导下进行配置SQL语句（{processId}流程发起实例主键{userId}用户Id{userAccount}用户账号{companyId}用户公司{departmentId}用户部门{code}上一节点操作码）！</span>
+                            </div>
+                        </div>
+                        <div class="lr-form-wrap" style="padding:5px 5px 8px 5px;padding-top:40px;">
+                            <div style="position:absolute;left:0;top:5px;width:100%;height:28px;padding:0 5px;"><div id="dbId" style="position:relative;width:100%;height:100%;"></div></div>
+                            <textarea id="strSql" class="form-control" style="height: 50%" placeholder="请填写Sql语句"></textarea>
+                            <textarea id="strSqlR" class="form-control" style="height: 50%;margin-top:3px;" placeholder="请填写Sql语句（撤销执行）"></textarea>
+                        </div>
+                    </div>
+                    <div id="interface" class="operationDiv" style="position:relative;width:100%;height:100%;display:none;padding-top:90px;">
+                        <div style="position:absolute;height:54px;width:100%;padding:5px;top:0;left:0;">
+                            <div class="alert alert-danger" style="position:relative;text-align: left;margin:0;">
+                                <i class="fa fa-question-circle alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+                                <span class="lrlg">注意：必须要开发人员指导下进行配置支持Post方法的接口,json数据格式。{processId:'流程发起实例主键',userId:'用户Id',userAccount:'用户账号',companyId:'用户公司',departmentId:'用户部门',code:'上一节点操作码'}(或咨询Aycsoft售后人员)！</span>
+                            </div>
+                        </div>
+                        <div class="lr-form-wrap" style="padding:5px 5px 8px 5px;">
+                            <textarea id="strInterface" class="form-control" placeholder="请填写接口地址" style="height: 50%"></textarea>
+                            <textarea id="strInterfaceR" class="form-control" placeholder="请填写接口地址（撤销执行）" style="height: 50%;margin-top:3px;"></textarea>
+                        </div>
+
+                    </div>
+                    <div id="ioc" class="operationDiv" style="position:relative;width:100%;height:100%;display:none;padding-top:54px;">
+                        <div style="position:absolute;height:54px;width:100%;padding:5px;top:0;left:0;">
+                            <div class="alert alert-danger" style="position:relative;text-align: left;margin:0;">
+                                <i class="fa fa-question-circle alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+                                <span class="lrlg">注意：必须要开发人员指导下进行配置注册的IOC方法名(或咨询Aycsoft售后人员)！</span>
+                            </div>
+                        </div>
+                        <div class="lr-form-wrap" style="padding:5px 5px 8px 5px;">
+                            <textarea id="iocName" class="form-control" placeholder="请填写方法名" style="height: 50%"></textarea>
+                            <textarea id="iocNameR" class="form-control" placeholder="请填写方法名（撤销执行）" style="height: 50%;margin-top:3px;"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+<script>
+var layerId = request('layerId');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var currentLine = top[layerId].currentLine;
+    var fromNode = top[layerId].fromNode;
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#lr_form_tabs').lrFormTab();
+            $('#color').lrselect({// 1.黑 2.红 
+                placeholder: false,
+                data: [{ id: '1', text: '黑' }, { id: '2', text: '红' }]
+            }).lrselectSet('1');
+            $('#strategy').lrselect({
+                placeholder: false,
+                data: [{ id: '1', text: '所有情况都通过' }, { id: '2', text: '自定义设置' }],
+                select: function (item) {
+                    if (item && item.id == '2') {
+                        $('#agreeList').parent().show();
+                    }
+                    else {
+                        $('#agreeList').parent().hide();
+                    }
+                }
+            }).lrselectSet('1');
+            var agreeList = [{ name: '同意', code: 'agree' }, { name: '不同意', code: 'disagree' }];
+            // 处理上一节点的数据
+            switch (fromNode.type) {
+                case 'startround':   // 开始节点
+                case 'childwfnode':  // 子流程
+                    $('#strategy').parent().remove();
+                    $('#color').parent().remove();
+                    $('#agreeList').parent().remove();
+                    break;
+                case 'stepnode':     // 一般审核节点
+                    if (fromNode.btnList && fromNode.btnList.length > 0) {
+                        agreeList = [];
+                        $.each(fromNode.btnList, function (_index, _item) {
+                            var point = { name: _item.name, code: _item.code };
+                            agreeList.push(point);
+                        });
+                        if (fromNode.timeoutAction && fromNode.timeoutAction != '0') {
+                            agreeList.push({ name: '超时', code: 'lrtimeout' });
+                        }
+                    }
+                    $('#agreeList').lrselect({
+                        text: 'name',
+                        value: 'code',
+                        data: agreeList,
+                        type: 'multiple'
+                    }).lrselectSet('agree');
+                    break;
+                case 'confluencenode':  // 会签
+                    $('#agreeList').lrselect({
+                        data: agreeList,
+                        text: 'name',
+                        value: 'code',
+                        type: 'multiple'
+                    }).lrselectSet('agree');
+                    break;
+                case 'conditionnode':  // 条件
+                    $('#agreeList').lrselect({
+                        data: [{ name: '是', code: 'agree' }, { name: '否', code: 'disagree' }],
+                        text: 'name',
+                        value: 'code',
+                        type: 'multiple'
+                    }).lrselectSet('agree');
+                    break;
+            }
+
+            $('input[name="operationType"]').on('click', function () {
+                var value = $(this).val();
+                $('.operationDiv').hide();
+                $('#' + value).show();
+            });
+
+            $('#dbId').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                type: 'tree',
+                placeholder: '请选择数据库',
+                allowSearch: true
+            });
+        },
+        initData: function () {
+            $('#baseInfo').lrSetFormData(currentLine);
+            $('#operationTypeDiv').lrSetFormData(currentLine);
+            switch (currentLine.operationType) {
+                case 'sql':
+                    $('#dbId').lrselectSet(currentLine.dbId);
+                    $('#strSql').val(currentLine.strSql);
+                    $('#strSqlR').val(currentLine.strSqlR);
+                    break;
+                case 'interface':
+                    $('#strInterface').val(currentLine.strInterface);
+                    $('#strInterfaceR').val(currentLine.strInterfaceR);
+                    break;
+                case 'ioc':
+                    $('#iocName').val(currentLine.iocName);
+                    $('#iocNameR').val(currentLine.iocNameR);
+                    break;
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var baseInfo = $('#baseInfo').lrGetFormData();
+        var operation = $('#operationTypeDiv').lrGetFormData();
+
+        currentLine.name = baseInfo.name;
+        switch (fromNode.type) {
+            case 'stepnode':     // 一般审核节点
+            case 'confluencenode':  // 会签
+            case 'conditionnode':  // 条件
+                currentLine.name = baseInfo.name;
+                currentLine.color = baseInfo.color;
+                currentLine.strategy = baseInfo.strategy;
+                currentLine.agreeList = baseInfo.agreeList;
+                break;
+        }
+
+        currentLine.operationType = operation.operationType;
+        switch (currentLine.operationType) {
+            case 'sql':
+                currentLine.dbId = $('#dbId').lrselectGet();
+                currentLine.strSql = $('#strSql').val();
+                currentLine.strSqlR = $('#strSqlR').val();
+                break;
+            case 'interface':
+                currentLine.strInterface = $('#strInterface').val();
+                currentLine.strInterfaceR = $('#strInterfaceR').val();
+                break;
+            case 'ioc':
+                currentLine.iocName = $('#iocName').val();
+                currentLine.iocNameR = $('#iocNameR').val();
+                break;
+        }
+        
+
+        callBack();
+        return true;
+    };
+    page.init();
+}
+</script>
+

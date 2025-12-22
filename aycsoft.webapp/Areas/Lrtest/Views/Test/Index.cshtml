@@ -1,0 +1,384 @@
+@{
+    ViewData["Title"] = "代码生成器测试";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout lr-layout-left-center lr-layout-query" id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title lrlg ">分类目录</div>
+            <div class="lr-layout-body" id="lr_left_tree"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center" style="padding-top:250px;">
+        <!--60 38-->
+        <div class="lr-layout-query-form" style="height:250px;">
+            <div class="lr-form-wrap lr-rblock" id="queryForm">
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">单行文本</div>
+                    <input id="F_text" type="text" class="form-control" />
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">多行文本</div>
+                    <input id="F_textarea" type="text" class="form-control" />
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">单选项</div>
+                    <div id="F_radio"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">多选项</div>
+                    <div id="F_checkbox"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">下拉框</div>
+                    <div id="F_select"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">日期框1</div>
+                    <div id="F_date"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">日期框2</div>
+                    <div id="F_date2"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">日期区间</div>
+                    <input id="F_datev" type="text" class="form-control" />
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">当前时间</div>
+                    <div id="F_cdate"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">编 码</div>
+                    <input id="F_code" type="text" class="form-control" />
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">人员选择</div>
+                    <div id="F_user"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">部门选择</div>
+                    <div id="F_department"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">公司选择</div>
+                    <div id="F_company"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">当前公司</div>
+                    <div id="F_ccompany"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">当前部门</div>
+                    <div id="F_cdepartment"></div>
+                </div>
+                <div class="col-xs-4 lr-form-item">
+                    <div class="lr-form-item-title">登录人</div>
+                    <div id="F_cuser"></div>
+                </div>
+            </div>
+            <div class="lr-layout-query-form-btns">
+                <a id="lr_btn_qReset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                <a id="lr_btn_qSearch" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+            </div>
+        </div>
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                <span class="lrlg">列表数据</span>
+                <div class="lr-layout-title-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="btn_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                        <a id="btn_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="btn_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="btn_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                        <a id="btn_print" class="btn btn-default"><i class="fa fa-print"></i>&nbsp;<span class="lrlg">打印</span></a>
+                        <a id="btn_test" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">测试按钮</span></a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var bootstrap = function ($, aycsoft) {
+        var treeSelectId
+        var page = {
+            init: function () {
+                page.bind();
+                page.initCompont();
+                page.initTree();
+                page.initGrid();
+            },
+            bind: function () {
+                // 刷新
+                $('#btn_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 查询
+                $('#lr_btn_qSearch').on('click', function () {
+                    var queryData = $('#queryForm').lrGetFormData();
+                    page.search({ queryJson: JSON.stringify(queryData) });
+                });
+                // 重置
+                $('#lr_btn_qReset').on('click', function () {
+                    var queryData = $('#queryForm').lrGetFormData();
+                    for (var id in queryData) {
+                        queryData[id] = "";
+                    }
+                    $('#queryForm').lrSetFormData(queryData, true);
+                });
+                //新增
+                $('#btn_add').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '新增',
+                        url: top.$.rootUrl + '/Lrtest/Test/Form',
+                        height: 500,
+                        width: 600,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGird);
+                        }
+                    });
+                });
+                //编辑
+                $('#btn_edit').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/Lrtest/Test/Form?keyValue='+keyValue,
+                            height: 500,
+                            width: 600,
+                            callBack: function (id) {
+                                return top[id].acceptClick(refreshGird);
+                            }
+                        });
+                    }
+                });
+                //删除
+                $('#btn_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/Lrtest/Test/DeleteForm', { keyValue: keyValue }, function () {
+                                    refreshGird();
+                                });
+                            }
+                        });
+                    }
+                });
+                //打印
+                $('#btn_print').on('click', function () {
+                    $("#gridtable").jqprintTable({ title: '打印列表' });
+                });
+                //测试按钮
+                $('#btn_test').on('click', function () {
+                    //请在此处添加按钮处理事件
+                });
+
+
+            },
+            initCompont: function () {
+                $('#F_radio').lrRadioCheckbox({ code: 'test001', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid'  })
+                $('#F_checkbox').lrRadioCheckbox({ type: 'checkbox', code: 'ProStatus' ,dfvalue:'lr0' })
+                $('#F_select').lrDataSourceSelect({ code: 'dataitemc', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid' })
+                $('#F_date').lrdate({
+                    type:'right',
+                    dfvalue:'1'
+                })
+                $('#F_date2').lrdate({
+                    dfvalue:'1'
+                })
+                $('#F_cdate').lrdate({
+                    type:'right',
+                    dfvalue:'1'
+                })
+                $('#F_user').lrUserSelect('0')
+                $('#F_department').lrDepartmentSelect()
+                $('#F_company').lrCompanySelect()
+                $('#F_ccompany').lrCompanySelect()
+                $('#F_cdepartment').lrDepartmentSelect()
+                $('#F_cuser').lrUserSelect('0')
+
+            },
+            initTree: function () {
+                $('#lr_left_tree').lrtree({
+                    url: top.$.rootUrl + '/LR_SystemModule/DataSource/GetTree?code=dataitemc&parentId=f_parentid&Id=f_itemid&showId=f_itemname',
+                    nodeClick: function (item) {
+                        if (item) {
+                            treeSelectId = item.id
+                            page.search();
+                        }
+                    }
+                })
+
+            },
+            initGrid: function () {
+                $('#gridtable').jfGrid({
+                    url: top.$.rootUrl + '/Lrtest/Test/GetPageList',
+                    isPage: true,
+                    sidx:'',//排序字段只有在分页的情况下支持，多个字段用，隔开
+                    reloadSelected: true,
+                    mainId: 'F_Id',
+                    headData: [
+                        {
+                            label: "单行文本", name: "F_text", width: 100, align: "left"
+                        },
+                        {
+                            label: "多行文本", name: "F_textarea", width: 100, align: "left"
+                        },
+                        {
+                            label: "单选项", name: "F_radio", width: 100, align: "left"
+                            , formatterAsync: function (callback,value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('sourceData', {
+                                    key: value,
+                                    keyId: 'f_itemid',
+                                    code: 'test001',
+                                    callback: function (_data) {
+                                        callback(_data['f_itemname']);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "多选项", name: "F_checkbox", width: 100, align: "left"
+                            , formatterAsync: function (callback,value, row, op, $cell) {
+                                aycsoft.clientdata.getsAsync('dataItem', {
+                                    key: value,
+                                    code: 'ProStatus',
+                                    callback: function (_data) {
+                                        callback(_data.F_ItemName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "下拉框", name: "F_select", width: 100, align: "left"
+                            , formatterAsync: function (callback,value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('sourceData', {
+                                    key: value,
+                                    keyId: 'f_itemid',
+                                    code: 'dataitemc',
+                                    callback: function (_data) {
+                                        callback(_data['f_itemname']);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "日期框1", name: "F_date", width: 100, align: "left"
+                            , formatter: function (value, row, op, $cell) {
+                                return aycsoft.formatDate(value,'yyyy-MM-dd')
+                            }
+                        },
+                        {
+                            label: "日期框2", name: "F_date2", width: 100, align: "left"
+                            , formatter: function (value, row, op, $cell) {
+                                return aycsoft.formatDate(value,'yyyy-MM-dd')
+                            }
+                        },
+                        {
+                            label: "日期区间", name: "F_datev", width: 100, align: "left"
+                        },
+                        {
+                            label: "当前时间", name: "F_cdate", width: 100, align: "left"
+                            , formatter: function (value, row, op, $cell) {
+                                return aycsoft.formatDate(value,'yyyy-MM-dd hh:mm:ss')
+                            }
+                        },
+                        {
+                            label: "附件上传", name: "F_file", width: 100, align: "left"
+                        },
+                        {
+                            label: "编 码", name: "F_code", width: 100, align: "left"
+                        },
+                        {
+                            label: "人员选择", name: "F_user", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('user', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_RealName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "部门选择", name: "F_department", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('department', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_FullName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "公司选择", name: "F_company", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('company', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_FullName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "当前公司", name: "F_ccompany", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('company', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_FullName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "当前部门", name: "F_cdepartment", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('department', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_FullName);
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            label: "登录人", name: "F_cuser", width: 100, align: "left"
+                            , formatterAsync: function (callback, value, row, op, $cell) {
+                                aycsoft.clientdata.getAsync('user', {
+                                    key: value,
+                                    callback: function (item) {
+                                        callback(item.F_RealName);
+                                    }
+                                });
+                            }
+                        },
+                    ]
+                });
+
+                page.search();
+            },
+            search: function (param) {
+                param = param || {};
+                param.F_text = treeSelectId
+                $('#gridtable').jfGridSet('reload', param);
+            }
+        };
+        // 保存数据后回调刷新
+        window.refreshGird = function () {
+            page.search();
+        }
+
+        page.init();
+    }
+</script>

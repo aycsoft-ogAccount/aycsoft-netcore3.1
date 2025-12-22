@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewData["Title"] = "FinanceReport";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+.ui-report{display:inline-block;width:100%;position: relative;}
+.ui-report .lr-layout-wrap{border:0px;background-color: #F5F5F5;box-shadow:none;}
+.ui-report .lr-layout-tool{padding: 0;border: 1px solid #cfcfcf;box-shadow: 0 1px 3px rgba(0,0,0,0.2);background-color: #fff;}
+.ui-report .lr-layout-grid{margin-top: 5px;background: #fff;padding: 15px;box-shadow: 0 1px 3px rgba(0,0,0,0.2);border: 1px solid #cfcfcf;}
+.ui-report .lr-layout-grid .grid-title{font-size: 22px;text-align:center;width:100%;color: #444;}
+.ui-report .lr-layout-grid .grid-subtitle{width:100%;text-align:left;padding: 5px 0;}
+.ui-report .jfgrid-layout{border: 1px solid #ccc;}
+.ui-report .jfgrid-border{background-color: #fff;}
+.ui-report .jfgrid-head{background-color: #fff;}
+.ui-report .jfgrid-head-cell{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;}
+.ui-report .jfgrid-data-cell{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;}
+.price-box{width:860px;margin-left:auto;margin-right:auto;border: 1px solid #ddd;box-shadow: rgb(189, 189, 189) 0px 0px 10px;background: #fff;padding: 50px;padding-top:20px;margin-top: 25px;padding-bottom:0px;}
+.price-box .price-title{font-size: 28px;text-align: center;line-height:60px;font-weight: bold;color: #333;}
+.price-box .price-subtitle{text-align: center;}
+.price-box .price-info{margin-top:20px;margin-bottom:20px;}
+.price-box .price-info table .formTitle{text-align:left;width:50px;font-size: 12px;}
+.price-box .price-info table .formValue{text-align:left;font-size: 12px;}
+.price-box .price-info table .formValue input{box-shadow:none;border-top:none;border-right:none;border-left:none;height:22px!important;line-height:22px!important;font-size: 12px;}
+.price-box .price-table table{margin: 0px;margin-top:1px;border-collapse: collapse;width: 100%;border-left: 1px solid #ccc;}
+.price-box .price-table table thead tr td{border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;padding-top:5px;padding-bottom:5px;text-overflow:ellipsis;word-break:keep-all;overflow:hidden;font-weight:bold;padding-left:5px;padding-right:5px;font-size: 12px;}
+.price-box .price-table table tbody tr td{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;height:25px;line-height:25px;word-break: break-all;padding-left:5px;padding-right:5px;font-size: 12px;}
+.price-box .form{width:100%;margin:0px;padding:0px;border-collapse:collapse;border-width:3px 1px 1px;table-layout:fixed}
+.price-box .form .formTitle{position:relative;left:0px;text-align:right;white-space:nowrap;font-weight:normal;width:90px;padding-right:10px;}
+.price-box .form .formTitle font{color:red;position:absolute;right:0px;}
+.price-box .form .formTitle-top{vertical-align:top;padding-top:4px;}
+.price-box .form .formValue{position:relative;padding:5px;width:auto;}
+.price-box .form .formValue select{padding: 4px;padding-left:4px;}
+</style>
+<div class="lr-layout ui-report">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class="btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr-replace" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;<span class="lrlg">刷新</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-grid" style="overflow:auto;">
+                <div class="grid-title">
+                    <div style="overflow: hidden; padding-bottom: 20px; text-align: center; margin-left: auto; margin-right: auto;">
+                        <div id="main" style="float: left; margin-right: 20px; width: 500px; height: 350px;border: 1px solid #ccc;">
+                        </div>
+                        <div id="main1" style="float: left; margin-right: 20px; width: 500px; height: 350px;border: 1px solid #ccc;">
+                        </div>
+                    </div>
+                </div>
+                <div class="lr-layout-body" id="gridtable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/echarts/echarts.min.js"></script>
+
+<script>
+    var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.initGrid();
+            page.initChart();
+            page.bind();
+        },
+        bind: function () {
+            // 刷新
+            $('#lr-replace').on('click', function () {
+                location.reload();
+            });
+        },
+        initGrid: function () {
+            $(".lr-layout-grid").height($(window).height() - 110);
+            $('#gridtable').jfGrid({
+                url: top.$.rootUrl + '/LR_ReportModule/ReportTemplate/GetFinanceReportList',
+                headData: [
+                    { name: "month", label: "月份", width: 120, align: "center" },
+                    { name: "business", label: "业务摘要", width: 200, align: "left" },
+                    { name: "tradedate", label: "交易日期", width: 120, align: "center" },
+                    { name: "incomeMoney", label: "收入金额", width: 120, align: "left" },
+                    { name: "expenditureMoney", label: "支出金额", width: 120, align: "left" },
+                    { name: "balance", label: "余额", width: 120, align: "left" },
+                    { name: "description", label: "备注", width: 180, align: "left" }
+                ],
+                reloadSelected: true,
+                mainId: 'billNo',
+                isAutoHeight: true
+            });
+            page.search();
+        },
+        initChart: function () {
+            loadmain();
+            loadmain1();
+            function loadmain() {
+                var myChart = echarts.init(document.getElementById('main'));
+                var option = {
+                    title: {
+                        text: '各项支出分析图',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: ['代发工资', '代扣水电费', '贷款利息', '客户贷款']
+                    },
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '60%'],
+                            data: [
+                                { value: 335, name: '代发工资' },
+                                { value: 310, name: '代扣水电费' },
+                                { value: 234, name: '贷款利息' },
+                                { value: 135, name: '客户贷款' }
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            }
+            function loadmain1() {
+                var myChart = echarts.init(document.getElementById('main1'));
+                var option = {
+                    title: {
+                        text: '公司收支趋势图',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '收入',
+                            type: 'line',
+                            stack: '总量',
+                            data: [120, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name: '支付',
+                            type: 'line',
+                            stack: '总量',
+                            data: [220, 182, 191, 234, 290, 330, 310]
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+            }
+        },
+        search: function (param) {
+            param = param || {};
+            $('#gridtable').jfGridSet('reload', param);
+        }
+    };
+    page.init();
+}
+</script>

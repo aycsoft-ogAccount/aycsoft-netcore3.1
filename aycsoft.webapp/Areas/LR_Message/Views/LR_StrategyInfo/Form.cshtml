@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "消息策略";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">策略名称<font face="宋体">*</font></div>
+        <input id="F_StrategyName" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">策略编码<font face="宋体">*</font></div>
+        <input id="F_StrategyCode" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">发送角色</div>
+        <div id="F_SendRole" type="text"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">消息类型<font face="宋体">*</font></div>
+        <div id="F_MessageType" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">备注</div>
+        <textarea id="F_Description" type="text" class="form-control" style="height:100px;"></textarea>
+    </div>
+</div>
+<script>
+    var acceptClick;
+    var keyValue = request('keyValue');
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                $('#F_SendRole').lrselect({
+                    // 字段
+                    value: "F_RoleId",
+                    text: "F_FullName",
+                    type: 'multiple',
+                    // 展开最大高度
+                    maxHeight: 200,
+                    // 是否允许搜索
+                    allowSearch: true,
+                    // 访问数据接口地址
+                    url: top.$.rootUrl + '/LR_OrganizationModule/Role/GetList'
+                });
+                ///消息类型
+                $('#F_MessageType').lrselect({
+                    type: 'multiple',
+                    value: "id",
+                    text: "text",
+                    data: [{ id: '1', text: '邮件' }, { id: '2', text: '微信' }, { id: '3', text: '短信' }, { id: '4', text: '系统IM' }]//1邮箱2微信3短信4系统IM
+                });
+
+                $('#F_StrategyCode').on('blur', function () {
+                    $.lrExistField(keyValue, 'F_StrategyCode', 'lr_ms_strategyinfo', 'F_Id');
+                });
+            },
+            initData: function () {
+                if (!!selectedRow) {
+                    $('#form').lrSetFormData(selectedRow);
+                }
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            var postData = $('#form').lrGetFormData();
+            $.lrSaveForm(top.$.rootUrl + '/LR_Message/LR_StrategyInfo/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调
+                if (!!callBack) {
+                    callBack();
+                }
+            });
+        };
+        page.init();
+    }
+
+</script>

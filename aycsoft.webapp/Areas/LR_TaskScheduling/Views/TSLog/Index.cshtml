@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "任务日志";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <div id="multiple_condition_query">
+                            <div class="lr-query-formcontent">
+                                <div class="col-xs-12 lr-form-item">
+                                    <div class="lr-form-item-title">任务名称</div>
+                                    <input id="keyword" type="text" class="form-control" />
+                                </div>
+                                <div class="col-xs-12 lr-form-item">
+                                    <div class="lr-form-item-title">执行状态</div>
+                                    <div id="executeResult">
+                                        <ul>
+                                            <li data-value="1">成功</li>
+                                            <li data-value="2">失败</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>var selectedRow;
+    var refreshGirdData;
+    var dateBegin = '';
+    var dateEnd = '';
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initGird();
+                page.bind();
+            },
+            bind: function () {
+                $('#datesearch').lrdate({
+                    dfdata: [
+                        { name: '今天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00') }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近7天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'd', -6) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近1个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -1) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近3个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -3) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } }
+                    ],
+                    // 月
+                    mShow: false,
+                    premShow: false,
+                    // 季度
+                    jShow: false,
+                    prejShow: false,
+                    // 年
+                    ysShow: false,
+                    yxShow: false,
+                    preyShow: false,
+                    yShow: false,
+                    // 默认
+                    dfvalue: '1',
+                    selectfn: function (begin, end) {
+                        dateBegin = begin;
+                        dateEnd = end;
+                        page.search();
+                    }
+                });
+                $('#multiple_condition_query').lrMultipleQuery(function (queryJson) {
+                    queryJson.StartTime = dateBegin;
+                    queryJson.EndTime = dateEnd;
+                    $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(queryJson) });
+                }, 160);
+                // 执行状态
+                $('#executeResult').lrselect();
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+            },
+            initGird: function () {
+                $('#gridtable').lrAuthorizeJfGrid({
+                    url: top.$.rootUrl + '/LR_TaskScheduling/TSLog/GetPageList',
+                    headData: [
+                        { label: '任务名称', name: 'F_Name', width: 200, align: "left" },
+                        {
+                            label: "执行时间", name: "F_CreateDate", width: 135, align: "left",
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        {
+                            label: "执行结果", name: "F_ExecuteResult", width: 70, align: "center",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == '1') {
+                                    return "<span class=\"label label-success\">成功</span>";
+                                } else {
+                                    return "<span class=\"label label-danger\">失败</span>";
+                                }
+                            }
+                        },
+                        { label: '执行内容', name: 'F_Des', width: 400, align: "left" }
+                    ],
+                    mainId: 'F_Id',
+                    sidx: 'F_CreateDate desc',
+                    isPage: true
+                });
+                page.search();
+            },
+            search: function (param) {
+                param = param || {};
+                param.StartTime = dateBegin;
+                param.EndTime = dateEnd;
+                $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(param) });
+            }
+        };
+        refreshGirdData = function () {
+            page.search();
+        };
+        page.init();
+    }</script>

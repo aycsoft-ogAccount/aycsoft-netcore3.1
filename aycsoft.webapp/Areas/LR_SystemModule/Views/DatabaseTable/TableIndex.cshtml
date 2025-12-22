@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "数据库表管理";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.btn-tool-bar {
+    position:absolute;
+    top:0;
+    width:100%;
+    padding:5px;
+    border-bottom:1px solid #ddd;
+    z-index:2;
+}
+
+.tool-bar-item {
+    width:150px;
+    position:relative;
+    float:left;
+    line-height:26px;
+    height:28px;
+    margin-right:5px;
+}
+
+.tool-bar-item .btn {
+    height: 28px;
+    margin-bottom: 1px;
+    line-height: 14px;
+}
+
+body {
+    position:relative;
+    padding-top:39px;
+}
+</style>
+<div class="btn-tool-bar">
+    <div class="tool-bar-item" style="width:60px;" >查询条件:</div>
+    <div class="tool-bar-item" ><div id="field"></div></div>
+    <div class="tool-bar-item" >
+        <div id="logic">
+            <ul>
+                <li data-value="Equal">等于</li>
+                <li data-value="NotEqual">不等于</li>
+                <li data-value="Greater">大于</li>
+                <li data-value="GreaterThan">大于等于</li>
+                <li data-value="Less">小于</li>
+                <li data-value="LessThan">小于等于</li>
+                <li data-value="Null">为空</li>
+                <li data-value="NotNull">不为空</li>
+                <li data-value="Like">包含</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tool-bar-item" style="width:200px;">
+        <input id="keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+    </div>
+    <div class="tool-bar-item" style="width:60px;margin-left:5px;"><a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a></div>
+</div>
+<div id="gridtable"></div>
+<script>
+    var tableName = request('tableName');
+    var databaseLinkId = request('databaseLinkId');
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var fieldData;
+
+        var page = {
+            init: function () {
+                page.bind();
+            },
+            bind: function () {
+                //获取字段数据
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetFieldList', { dbCode: databaseLinkId, tableName: tableName }, function (data) {
+                    if (data) {
+                        fieldData = data;
+                        $('#field').lrselectRefresh({
+                            data: fieldData
+                        });
+                        var headData = [];
+
+                        for (var i = 0, l = data.length; i < l; i++) {
+                            var item = data[i];
+                            var point = { label: item.f_remark, name: item.f_column.toLowerCase(), width: 150, align: "left" };
+                            headData.push(point);
+                        }
+                        $('#gridtable').jfGrid({
+                            url: top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetTableDataList',
+                            headData: headData,
+                            isPage: true
+                        });
+                        page.search();
+                    }
+                });
+
+                // 功能选择
+                $('#field').lrselect({
+                    title: 'f_column',
+                    text: 'f_remark',
+                    value: 'f_column',
+                    maxHeight: 300,
+                    allowSearch: true
+                });
+
+                $('#logic').lrselect({
+                    maxHeight: 300
+                });
+
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    page.search();
+                });
+            },
+            search: function () {
+                var param = {};
+                param.dbCode = databaseLinkId;
+                param.tableName = tableName;
+
+                param.field = $('#field').lrselectGet();
+                param.logic = $('#logic').lrselectGet();
+
+                param.keyword = $('#keyword').val();
+
+                $('#gridtable').jfGridSet('reload', param);
+            }
+        };
+
+        page.init();
+    }
+</script>

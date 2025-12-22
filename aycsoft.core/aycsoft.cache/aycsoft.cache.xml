@@ -1,0 +1,990 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aycsoft.cache</name>
+    </assembly>
+    <members>
+        <member name="T:aycsoft.cache.CacheByRedis">
+            <summary>
+            版 本 V2018.3.28
+            Copyright (c) 2013-2050 上海Aycsoft信息技术有限公司
+            创建人：Aycsoft-系统开发组
+            日 期：2017.03.06
+            描 述：定义缓存接口
+            2018.4.6 bertchen 增加Redis 前缀
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.Read``1(System.String,System.Int32)">
+            <summary>
+            读取缓存
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.Write``1(System.String,``0,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="cacheKey">键</param>
+            <param name="value">对象数据</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.Write``1(System.String,``0,System.TimeSpan,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="expireTime">到期时间</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.Remove(System.String,System.Int32)">
+            <summary>
+            移除指定数据缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.RemoveAll(System.Int32)">
+            <summary>
+            移除全部缓存
+            </summary>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ReadAsync``1(System.String,System.Int32)">
+            <summary>
+            读取缓存
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.WriteAsync``1(System.String,``0,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.WriteAsync``1(System.String,``0,System.TimeSpan,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="timeSpan">到期时间</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.RemoveAsync(System.String,System.Int32)">
+            <summary>
+            移除指定数据缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.RemoveAllAsync(System.Int32)">
+            <summary>
+            移除全部缓存
+            </summary>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListRemove``1(System.String,``0,System.Int32)">
+            <summary>
+            移除指定ListId的内部List的值
+            </summary>
+            <param name="cacheKey">键值</param>
+            <param name="value">对象数据</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListRange``1(System.String,System.Int32)">
+            <summary>
+            获取指定key的List
+            </summary>
+            <param name="cacheKey">键值</param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListRightPush``1(System.String,``0,System.Int32)">
+            <summary>
+            入队
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListRightPop``1(System.String,System.Int32)">
+            <summary>
+            出队
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListLeftPush``1(System.String,``0,System.Int32)">
+            <summary>
+            入栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListLeftPop``1(System.String,System.Int32)">
+            <summary>
+            出栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.CacheByRedis.ListLength(System.String,System.Int32)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.cache.ICache">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：定义缓存接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.ICache.Read``1(System.String,System.Int32)">
+            <summary>
+            读取缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.Write``1(System.String,``0,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.Write``1(System.String,``0,System.TimeSpan,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="timeSpan">到期时间</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.Remove(System.String,System.Int32)">
+            <summary>
+            移除指定数据缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.RemoveAll(System.Int32)">
+            <summary>
+            移除全部缓存
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListRemove``1(System.String,``0,System.Int32)">
+            <summary>
+            移除指定ListId的内部List的值
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListRange``1(System.String,System.Int32)">
+            <summary>
+            获取指定key的List
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListRightPush``1(System.String,``0,System.Int32)">
+            <summary>
+            入队
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListRightPop``1(System.String,System.Int32)">
+            <summary>
+            出队
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListLeftPush``1(System.String,``0,System.Int32)">
+            <summary>
+            入栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListLeftPop``1(System.String,System.Int32)">
+            <summary>
+            出栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ListLength(System.String,System.Int32)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.ReadAsync``1(System.String,System.Int32)">
+            <summary>
+            读取缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.ICache.WriteAsync``1(System.String,``0,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.WriteAsync``1(System.String,``0,System.TimeSpan,System.Int32)">
+            <summary>
+            写入缓存
+            </summary>
+            <param name="value">对象数据</param>
+            <param name="cacheKey">键</param>
+            <param name="timeSpan">到期时间</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.RemoveAsync(System.String,System.Int32)">
+            <summary>
+            移除指定数据缓存
+            </summary>
+            <param name="cacheKey">键</param>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="M:aycsoft.cache.ICache.RemoveAllAsync(System.Int32)">
+            <summary>
+            移除全部缓存
+            </summary>
+            <param name="dbId">指定库ID,默认0</param>
+        </member>
+        <member name="T:aycsoft.cache.RedisCache">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：Redis缓存
+            </summary>
+        </member>
+        <member name="F:aycsoft.cache.RedisCache._conn">
+            <summary>
+            Redis连接
+            </summary>
+        </member>
+        <member name="F:aycsoft.cache.RedisCache.CustomKey">
+            <summary>
+            设置自定义键
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.#ctor(System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="dbNum"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.#ctor(System.Int32,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="dbNum"></param>
+            <param name="readWriteHosts"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSet(System.String,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            保存单个key value
+            </summary>
+            <param name="key">Redis Key</param>
+            <param name="value">保存的值</param>
+            <param name="expiry">过期时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSet(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{StackExchange.Redis.RedisKey,StackExchange.Redis.RedisValue}})">
+            <summary>
+            保存多个key value
+            </summary>
+            <param name="keyValues">键值对</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSet``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            保存一个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="obj"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGet(System.String)">
+            <summary>
+            获取单个key的值
+            </summary>
+            <param name="key">Redis Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGet(System.Collections.Generic.List{System.String})">
+            <summary>
+            获取多个Key
+            </summary>
+            <param name="listKey">Redis Key集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGet``1(System.String)">
+            <summary>
+            获取一个key的对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringIncrement(System.String,System.Double)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="val">可以为负</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringDecrement(System.String,System.Double)">
+            <summary>
+            为数字减少val
+            </summary>
+            <param name="key"></param>
+            <param name="val">可以为负</param>
+            <returns>减少后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSetAsync(System.String,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            保存单个key value
+            </summary>
+            <param name="key">Redis Key</param>
+            <param name="value">保存的值</param>
+            <param name="expiry">过期时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSetAsync(System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{StackExchange.Redis.RedisKey,StackExchange.Redis.RedisValue}})">
+            <summary>
+            保存多个key value
+            </summary>
+            <param name="keyValues">键值对</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringSetAsync``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            保存一个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="obj"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGetAsync(System.String)">
+            <summary>
+            获取单个key的值
+            </summary>
+            <param name="key">Redis Key</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGetAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            获取多个Key
+            </summary>
+            <param name="listKey">Redis Key集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringGetAsync``1(System.String)">
+            <summary>
+            获取一个key的对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringIncrementAsync(System.String,System.Double)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="val">可以为负</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.StringDecrementAsync(System.String,System.Double)">
+            <summary>
+            为数字减少val
+            </summary>
+            <param name="key"></param>
+            <param name="val">可以为负</param>
+            <returns>减少后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashExists(System.String,System.String)">
+            <summary>
+            判断某个数据是否已经被缓存
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashSet``1(System.String,System.String,``0)">
+            <summary>
+            存储数据到hash表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDelete(System.String,System.String)">
+            <summary>
+            移除hash中的某值
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDelete(System.String,System.Collections.Generic.List{StackExchange.Redis.RedisValue})">
+            <summary>
+            移除hash中的多个值
+            </summary>
+            <param name="key"></param>
+            <param name="dataKeys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashGet(System.String,System.String)">
+            <summary>
+            从hash表获取某个值
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashGet``1(System.String,System.String)">
+            <summary>
+            从hash表获取Model
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashGetList``1(System.String)">
+            <summary>
+            从hash表获取List
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashIncrement(System.String,System.String,System.Double)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="val">可以为负</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDecrement(System.String,System.String,System.Double)">
+            <summary>
+            为数字减少val
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="val">可以为负</param>
+            <returns>减少后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashKeys``1(System.String)">
+            <summary>
+            获取hashkey所有Redis key
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashExistsAsync(System.String,System.String)">
+            <summary>
+            判断某个数据是否已经被缓存
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashSetAsync``1(System.String,System.String,``0)">
+            <summary>
+            存储数据到hash表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDeleteAsync(System.String,System.String)">
+            <summary>
+            移除hash中的某值
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDeleteAsync(System.String,System.Collections.Generic.List{StackExchange.Redis.RedisValue})">
+            <summary>
+            移除hash中的多个值
+            </summary>
+            <param name="key"></param>
+            <param name="dataKeys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashGeAsync``1(System.String,System.String)">
+            <summary>
+            从hash表获取数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashIncrementAsync(System.String,System.String,System.Double)">
+            <summary>
+            为数字增长val
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="val">可以为负</param>
+            <returns>增长后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashDecrementAsync(System.String,System.String,System.Double)">
+            <summary>
+            为数字减少val
+            </summary>
+            <param name="key"></param>
+            <param name="dataKey"></param>
+            <param name="val">可以为负</param>
+            <returns>减少后的值</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.HashKeysAsync``1(System.String)">
+            <summary>
+            获取hashkey所有Redis key
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRemove``1(System.String,``0)">
+            <summary>
+            移除指定ListId的内部List的值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRange``1(System.String)">
+            <summary>
+            获取指定key的List
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRightPush``1(System.String,``0)">
+            <summary>
+            入队
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRightPop``1(System.String)">
+            <summary>
+            出队
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLeftPush``1(System.String,``0)">
+            <summary>
+            入栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLeftPop``1(System.String)">
+            <summary>
+            出栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLength(System.String)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRemoveAsync``1(System.String,``0)">
+            <summary>
+            移除指定ListId的内部List的值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRangeAsync``1(System.String)">
+            <summary>
+            获取指定key的List
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRightPushAsync``1(System.String,``0)">
+            <summary>
+            入队
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListRightPopAsync``1(System.String)">
+            <summary>
+            出队
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLeftPushAsync``1(System.String,``0)">
+            <summary>
+            入栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLeftPopAsync``1(System.String)">
+            <summary>
+            出栈
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ListLengthAsync(System.String)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetAdd``1(System.String,``0,System.Double)">
+            <summary>
+            添加
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="score"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetRemove``1(System.String,``0)">
+            <summary>
+            删除
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetRangeByRank``1(System.String)">
+            <summary>
+            获取全部
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetLength(System.String)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetAddAsync``1(System.String,``0,System.Double)">
+            <summary>
+            添加
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="score"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetRemoveAsync``1(System.String,``0)">
+            <summary>
+            删除
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetRangeByRankAsync``1(System.String)">
+            <summary>
+            获取全部
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SortedSetLengthAsync(System.String)">
+            <summary>
+            获取集合中的数量
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyDelete(System.String)">
+            <summary>
+            删除单个key
+            </summary>
+            <param name="key">redis key</param>
+            <returns>是否删除成功</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyDeleteAsync(System.String)">
+            <summary>
+            删除单个key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyDelete(System.Collections.Generic.List{System.String})">
+            <summary>
+            删除多个key
+            </summary>
+            <param name="keys">rediskey</param>
+            <returns>成功删除的个数</returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyExists(System.String)">
+            <summary>
+            判断key是否存储
+            </summary>
+            <param name="key">redis key</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyRename(System.String,System.String)">
+            <summary>
+            重新命名key
+            </summary>
+            <param name="key">就的redis key</param>
+            <param name="newKey">新的redis key</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.KeyExpire(System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置Key的时间
+            </summary>
+            <param name="key">redis key</param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.Subscribe(System.String,System.Action{StackExchange.Redis.RedisChannel,StackExchange.Redis.RedisValue})">
+            <summary>
+            Redis发布订阅  订阅
+            </summary>
+            <param name="subChannel"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.GetMessage(StackExchange.Redis.RedisChannel,StackExchange.Redis.RedisValue)">
+            <summary>
+            获取订阅消息（写法三）
+            </summary>
+            <param name="channel"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.Publish``1(System.String,``0)">
+            <summary>
+            Redis发布订阅  发布
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="channel"></param>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.Unsubscribe(System.String)">
+            <summary>
+            Redis发布订阅  取消订阅
+            </summary>
+            <param name="channel"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.UnsubscribeAll">
+            <summary>
+            Redis发布订阅  取消全部订阅
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.CreateTransaction">
+            <summary>
+            获取事物
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.CreateBatch">
+            <summary>
+            获取批处理（管道模式）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.GetDatabase">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.GetServer(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="hostAndPort"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.FlushDatabase(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="dbNum"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.FlushDatabaseAsync(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="dbNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.SetSysCustomKey(System.String)">
+            <summary>
+            设置前缀
+            </summary>
+            <param name="customKey">自定义键</param>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.AddSysCustomKey(System.String)">
+            <summary>
+            添加自定义键
+            </summary>
+            <param name="oldKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ConvertJson``1(``0)">
+            <summary>
+            序列化
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisCache.ConvertObj``1(StackExchange.Redis.RedisValue)">
+            <summary>
+            反序列化
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.cache.RedisConnectionHelp">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.02
+            描 述：Redis连接帮助类
+            </summary>
+        </member>
+        <member name="F:aycsoft.cache.RedisConnectionHelp.SysCustomKey">
+            <summary>
+            系统自定义Key前缀
+            </summary>
+        </member>
+        <member name="P:aycsoft.cache.RedisConnectionHelp.Instance">
+            <summary>
+            单例获取
+            </summary>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.GetConnectionMultiplexer(System.String)">
+            <summary>
+            缓存获取
+            </summary>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerConfigurationChanged(System.Object,StackExchange.Redis.EndPointEventArgs)">
+            <summary>
+            配置更改时
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerErrorMessage(System.Object,StackExchange.Redis.RedisErrorEventArgs)">
+            <summary>
+            发生错误时
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerConnectionRestored(System.Object,StackExchange.Redis.ConnectionFailedEventArgs)">
+            <summary>
+            重新建立连接之前的错误
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerConnectionFailed(System.Object,StackExchange.Redis.ConnectionFailedEventArgs)">
+            <summary>
+            连接失败 ， 如果重新连接成功你将不会收到这个通知
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerHashSlotMoved(System.Object,StackExchange.Redis.HashSlotMovedEventArgs)">
+            <summary>
+            更改集群
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:aycsoft.cache.RedisConnectionHelp.MuxerInternalError(System.Object,StackExchange.Redis.InternalErrorEventArgs)">
+            <summary>
+            redis类库错误
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+    </members>
+</doc>

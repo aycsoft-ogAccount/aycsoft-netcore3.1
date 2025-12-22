@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "BottomMenuIndex";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<style>
+    .lr-layout {
+        padding: 0px;
+    }
+
+    .lr-layout-wrap {
+        border-radius: 0px;
+    }
+</style>
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入菜单名" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var refreshGirdData; // 更新数据
+var selectedRow;
+var alldata = [];
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var page = {
+        init: function () {
+            page.initGrid();
+            page.bind();
+        },
+        bind: function () {
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var keyword = $('#txt_Keyword').val();
+                page.search({ keyword: keyword });
+            });
+            // 刷新
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+            // 新增
+            $('#lr_add').on('click', function () {
+                selectedRow = null;
+                aycsoft.layerForm({
+                    id: 'BottomMenuForm',
+                    title: '添加菜单',
+                    url: top.$.rootUrl + '/LR_PortalSite/HomeConfig/BottomMenuForm',
+                    width: 500,
+                    height: 400,
+                    callBack: function (id) {
+                        return top[id].acceptClick(refreshGirdData);
+                    }
+                });
+            });
+            // 编辑
+            $('#lr_edit').on('click', function () {
+                selectedRow = $('#gridtable').jfGridGet('rowdata');
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerForm({
+                        id: 'BottomMenuForm',
+                        title: '编辑菜单',
+                        url: top.$.rootUrl + '/LR_PortalSite/HomeConfig/BottomMenuForm',
+                        width: 500,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            });
+            // 删除
+            $('#lr_delete').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                        if (res) {
+                            aycsoft.deleteForm(top.$.rootUrl + '/LR_PortalSite/HomeConfig/DeleteForm', { keyValue: keyValue }, function () {
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                }
+            });
+        },
+        initGrid: function () {
+            $('#gridtable').jfGrid({
+                url: top.$.rootUrl + '/LR_PortalSite/HomeConfig/GetList?type=7',
+                headData: [
+                    { label: '名称', name: 'F_Name', width: 200, align: 'left' },
+                    { label: '排序码', name: 'F_Sort', width: 50, align: 'center' },
+                    {
+                        label: '链接类型', name: 'F_UrlType', width: 80, align: 'center',
+                        formatter: function (cellvalue, row) {
+                            if (cellvalue == 1) {
+                                return '<span class=\"label label-warning\" style=\"cursor: pointer;\">内部链接</span>';
+                            } else {
+                                return '<span class=\"label label-primary\" style=\"cursor: pointer;\">外部链接</span>';
+                            }
+                        }
+                    },
+                    {
+                        label: '链接地址', name: 'F_Url', width: 200, align: 'left',
+                        formatterAsync: function (callback, value, row) {
+                            if (row.F_UrlType == 1) {
+                                aycsoft.clientdata.getAsync('custmerData', {
+                                    url: '/LR_PortalSite/Page/GetList',
+                                    key: value,
+                                    keyId: 'F_Id',
+                                    callback: function (item) {
+                                        callback(item.F_Title);
+                                    }
+                                });
+                            } else {
+                                return callback(value);
+                            }
+                        }
+                    }
+                ],
+                isTree: true,
+                mainId: 'F_Id',
+                reloadSelected: true,
+                onRenderComplete: function (data) {
+                    alldata = data;
+                    aycsoft.frameTab.currentIframe().renderBottomMenu(alldata);
+                }
+            });
+            page.search();
+        },
+        search: function (param) {
+            $('#gridtable').jfGridSet('reload', param);
+        }
+    };
+
+    // 保存数据后回调刷新
+    refreshGirdData = function () {
+        $('#gridtable').jfGridSet('reload');
+
+    }
+
+    page.init();
+}
+</script>

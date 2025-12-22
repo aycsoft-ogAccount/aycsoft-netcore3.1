@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "功能授权";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span>功能权限<span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span>按钮权限<span class="chevron"></span></li>
+            <li data-target="#step-3"><span class="step">3</span>字段权限<span class="chevron"></span></li>
+            <li data-target="#step-4"><span class="step">4</span>表单权限<span class="chevron"></span></li>
+        </ul>
+    </div>
+    <div class="step-content" id="wizard-steps">
+        <div class="step-pane  active" id="step-1">
+        </div>
+        <div class="step-pane" id="step-2">
+
+        </div>
+        <div class="step-pane" id="step-3">
+
+        </div>
+        <div class="step-pane" id="step-4">
+
+        </div>
+    </div>
+
+    <div class="lr-form-bottom-button" id="wizard-actions">
+        <a id="btn_prev" class="btn btn-default btn-prev" disabled>上一步</a>
+        <a id="btn_next" class="btn btn-default btn-next">下一步</a>
+        <a id="btn_finish" disabled class="btn btn-success">完成</a>
+    </div>
+</div>
+<script>
+
+    /*
+     * 版 本 Learun-ADMS V7.0.3 Aycsoft敏捷开发框架(http://www.aycsoft.cn)
+     * Copyright (c) 2013-2018 上海Aycsoft信息技术有限公司
+     * 创建人：Aycsoft-前端开发组
+     * 日 期：2017.04.05
+     * 描 述：功能模块	
+     */
+    var objectId = request('objectId');
+    var objectType = request('objectType');
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var checkModuleIds = [];
+        var isUpdate = {
+            col: false,
+            form: false
+        };
+
+
+        function setTreeData(type) {
+            aycsoft.loading(true, '正在获取数据');
+            aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_SystemModule/Module/GetCheckTree?type=' + type + '&objectId=' + objectId, function (res) {
+                if (res.code == 200) {
+                    $('#step-' + type).lrtree({
+                        data: res.data
+                    });
+                    if (objectId) {
+                        aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_AuthorizeModule/Authorize/GetData?objectId=' + objectId + '&type=' + type, function (res) {//
+                            if (res.code == 200) {
+                                $('#step-' + type).lrtreeSet('setCheck', res.data);
+                            }
+                            else {
+                                $('#step-' + type).lrtreeSet('allNoCheck');
+                            }
+                            setTimeout(function () {
+                                aycsoft.loading(false);
+                            });
+                        });
+                    }
+                    else {
+                        aycsoft.loading(false);
+                    }
+                }
+                else {
+                    aycsoft.loading(false);
+                }
+            });
+        }
+        function saveForm(list, type, callback) {
+            var postData = {
+                objectId: objectId,
+                objectType: objectType,
+                strFormId: String(list),
+                type: type
+            };
+            $.lrSaveForm(top.$.rootUrl + '/LR_AuthorizeModule/Authorize/SaveForm', postData, function (res) { callback && callback(); }, true);
+        }
+
+
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            /*绑定事件和初始化控件*/
+            bind: function () {
+                // 加载导向
+                $('#wizard').wizard().on('change', function (e, data) {
+                    var $finish = $("#btn_finish");
+                    var $next = $("#btn_next");
+                    if (data.direction == "next") {
+                        if (data.step == 1) {
+                            checkModuleIds = $('#step-1').lrtreeSet('getCheckNodeIds');
+                            saveForm(checkModuleIds, 1, function () {
+                                setTreeData(2);
+                                isUpdate.col = true;
+                                isUpdate.form = true;
+                            }
+                            );
+                           
+                        } else if (data.step == 2) {
+                            var checkButtonIds = $('#step-2').lrtreeSet('getCheckNodeIds');
+                            var buttonList = [];
+                            $.each(checkButtonIds, function (id, item) {
+                                if (item.indexOf('_aycsoft_moduleId') == -1) {
+                                    buttonList.push(item);
+                                }
+                            });
+                            saveForm(buttonList, 2, function () {
+                                if (isUpdate.col) {
+                                    setTreeData(3);
+                                    isUpdate.col = false;
+                                }
+                            });
+
+                          
+                            
+                        }  else if (data.step == 3) {
+                            var checkColumnIds = $('#step-3').lrtreeSet('getCheckNodeIds');
+                            var columnList = [];
+                            $.each(checkColumnIds, function (id, item) {
+                                if (item.indexOf('_aycsoft_moduleId') == -1) {
+                                    columnList.push(item);
+                                }
+                            });
+                            saveForm(columnList, 3, function () {
+                                if (isUpdate.form) {
+                                    setTreeData(4);
+                                    isUpdate.form = false;
+                                }});
+
+                            
+
+                            $finish.removeAttr('disabled');
+                            $next.attr('disabled', 'disabled');
+                        } else {
+                            $finish.attr('disabled', 'disabled');
+                        }
+                    } else {
+                        $finish.attr('disabled', 'disabled');
+                        $next.removeAttr('disabled');
+                    }
+                });
+                // 保存数据按钮
+                $("#btn_finish").on('click', page.save);
+            },
+            /*初始化数据*/
+            initData: function () {
+                setTreeData(1);
+            },
+            /*保存数据*/
+            save: function () {
+                var formList = [];
+                var checkFormIds = $('#step-4').lrtreeSet('getCheckNodeIds');
+                $.each(checkFormIds, function (id, item) {
+                    if (item.indexOf('_aycsoft_moduleId') == -1) {
+                        formList.push(item);
+                    }
+                });
+                var postData = {
+                    objectId: objectId,
+                    objectType: objectType,
+                    strFormId: String(formList),
+                    type: 4
+                };
+                $.lrSaveForm(top.$.rootUrl + '/LR_AuthorizeModule/Authorize/SaveForm', postData, function (res) {});
+            }
+        };
+
+        page.init();
+    }
+</script>

@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "模块风格选择";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<style>
+    .body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+}
+
+.content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.box {
+    position: relative;
+    height: 50%;
+    width: 33.333%;
+    padding: 5px;
+    float: left;
+}
+
+.box-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding-bottom: 60px;
+    cursor: pointer;
+}
+
+    .box-content .img {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .box-content .img1, .box-content .img2 {
+        position: relative;
+        width: 100%;
+    }
+
+
+    .box-content .img2 {
+        display: none;
+    }
+
+    .box-content:hover,
+    .box-content:hover .img {
+        border-color: #156edb;
+    }
+
+        .box-content:hover .img1 {
+            display: none;
+        }
+
+        .box-content:hover .img2 {
+            display: block;
+        }
+
+
+    .box-content .text {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .box-content:hover .text {
+        color: #156edb;
+    }
+
+</style>
+<div class="body">
+    <div class="content">
+        <div class="box">
+            <div class="box-content" data-value="1">
+                <div class="img">
+                    <img class="img1" src="~/img/plhome/acoment1.png" />
+                    <img class="img2" src="~/img/plhome/acoment2.png" />
+                </div>
+                <div class="text">风格一</div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-content" data-value="2">
+                <div class="img">
+                    <img class="img1" src="~/img/plhome/new1.png" />
+                    <img class="img2" src="~/img/plhome/new2.png" />
+                </div>
+                <div class="text">风格二</div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-content" data-value="3">
+                <div class="img">
+                    <img class="img1" src="~/img/plhome/table1.png" />
+                    <img class="img2" src="~/img/plhome/table2.png" />
+                </div>
+                <div class="text">风格三</div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-content" data-value="4">
+                <div class="img">
+                    <img class="img1" src="~/img/plhome/work2.png" />
+                    <img class="img2" src="~/img/plhome/work1.png" />
+                </div>
+                <div class="text">风格四</div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-content" data-value="5">
+                <div class="img">
+                    <img class="img1" src="~/img/plhome/make1.png" />
+                    <img class="img2" src="~/img/plhome/make2.png" />
+                </div>
+                <div class="text">风格五</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('.box-content').on('click', function () {//1.公告；2消息列表；3消息列表2； 4图形列表；5详细列表
+                var value = $(this).attr('data-value');
+                aycsoft.frameTab.currentIframe().addModule(value);
+
+                aycsoft.layerClose(window.name);
+            });
+        }
+    };
+    page.init();
+}
+</script>

@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="~/favicon.ico">
+
+    <title>@ViewBag.Title</title>
+    <link href="~/font/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    @Html.AppendCssFile(
+        "/lib/aycsoft/style/lr-common.css",
+        "/lib/aycsoft/plugin/scroll/scroll.css",
+        "/lib/aycsoft/style/lr-iframe-form.css",
+
+        "/lib/aycsoft/plugin/wizard/wizard.css",
+        "/lib/aycsoft/plugin/tree/lr-tree.css",
+        "/lib/aycsoft/plugin/select/lr-select.css",
+        "/lib/aycsoft/plugin/layerselect/lr-layerselect.css",
+        "/lib/aycsoft/plugin/timeline/lr-timeline.css",
+        "/lib/aycsoft/plugin/formselect/lr-formselect.css",
+        "/lib/aycsoft/plugin/inputsearch/lr-isearch.css",
+        "/lib/aycsoft/plugin/grid/jfgrid.css",
+        "/lib/aycsoft/plugin/uploader/lr-uploader.css",
+        "/lib/aycsoft/plugin/date/lr-datepicker.css"
+     )
+    <script src="~/js/jquery-1.10.2.min.js"></script>
+    <script src="~/js/jquery.md5.min.js"></script>
+    <script src="~/lib/jqprint/jquery.jqprint-0.3.js"></script>
+    <script src="~/lib/laydate/laydate.js"></script>
+    <script src="~/lib/ueditor/ueditor.config.js"></script>
+    <script src="~/lib/ueditor/ueditor.all.min.js"></script>
+    <script src="~/lib/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="~/lib/bootstrap/html5shiv.min.js"></script>
+      <script src="~/lib/bootstrap/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        function request(d) { for (var c = location.search.slice(1).split("&"), a = 0; a < c.length; a++) { var b = c[a].split("="); if (b[0] == d) if ("undefined" == unescape(b[1])) break; else return decodeURI(unescape(b[1])) } return "" };
+    </script>
+    <style>
+        body {
+            background-color:#fff;
+        }
+        .edui-editor.edui-default {
+            width:100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="lr_form_bg" class="lr-form-bg">
+    </div>
+
+    @RenderBody()
+    @Html.AppendJsFile(
+    "/lib/aycsoft/plugin/resize/resize.js",
+    "/lib/aycsoft/plugin/mousewheel/mousewheel.js",
+    "/lib/aycsoft/plugin/scroll/scroll.js",
+
+    "/lib/aycsoft/script/lr-validator.js",
+    "/lib/aycsoft/script/lr-form.js",
+    "/lib/aycsoft/plugin/wizard/wizard.js",
+    "/lib/aycsoft/plugin/tree/lr-tree.js",
+    "/lib/aycsoft/plugin/select/lr-select.js",
+    "/lib/aycsoft/plugin/layerselect/lr-layerselect.js",
+    "/lib/aycsoft/plugin/timeline/lr-timeline.js",
+    "/lib/aycsoft/plugin/formselect/lr-formselect.js",
+    "/lib/aycsoft/plugin/inputsearch/lr-isearch.js",
+    "/lib/aycsoft/script/lr-fileupload.js",
+    "/lib/aycsoft/plugin/uploader/lr-uploader.js",
+    "/lib/aycsoft/plugin/date/lr-datepicker.js",
+    "/lib/aycsoft/plugin/grid/jfgrid.js"
+    )
+    <script>
+    $(function () {
+        $('#lr_form_bg').fadeOut();
+        // 翻译指定标签
+        $('.lrlg').each(function () {
+            var $this = $(this);
+            top.aycsoft.language.get($this.text(), function (text) {
+                $this.text(text);
+            });
+        });
+        // 翻译表单标题
+        $('.lr-form-item-title').each(function () {
+            var $this = $(this);
+            var $font = $this.find('font');
+            $font.remove();
+            top.aycsoft.language.get($this.text(), function (text) {
+                if ($font.length > 0) {
+                    $this.html(text + '<font face="宋体">*</font>');
+                }
+                else {
+                    $this.text(text);
+                }
+
+            });
+        });
+        // input placeholder 翻译
+        $('input[placeholder]').each(function () {
+            var $this = $(this);
+            var _text = $this.attr('placeholder');
+            top.aycsoft.language.get(_text, function (text) {
+                $this.attr('placeholder', text);
+            });
+        });
+
+        if (!!window.bootstrap) {
+            bootstrap(jQuery, top.aycsoft);
+
+            var lrForm = top.aycsoft.frameTab.currentIframe().lrModuleForms;
+            if (lrForm != null) {
+                $('[formAuth="yes"]').find('input,select,textarea,.lr-select,.lr-formselect,.lrUploader-wrap,.lr-radio,.lr-checkbox,.edui-default').each(function () {
+                    var $this = $(this);
+                    var id = $this.attr("id");
+                    if (!lrForm[id]) {
+                        $('#' + id).parents('.lr-form-item').remove();
+                    }
+                });
+            }
+        }
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,645 @@
+﻿@{
+    ViewBag.Title = "任务计划模板";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+
+
+
+
+
+
+
+    .show-content {
+        margin-top: 9px;
+        position: relative;
+    }
+
+    .lr-input-wdatepicker {
+        width: 215px;
+    }
+
+    .ip_item {
+        position: relative;
+        float: left;
+        width: 60px;
+        height: 28px;
+        margin-right: 5px;
+    }
+
+    .text_item {
+        position: relative;
+        float: left;
+        height: 28px;
+        line-height: 28px;
+        margin-right: 5px;
+    }
+
+    /* 明细频率设置*/
+    .add-more {
+        moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        color: #4898d5;
+    }
+
+        .add-more:hover {
+            color: #2e8ded;
+        }
+
+    .frequency-item {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        line-height: 29px;
+        border-bottom: 1px solid #ccc;
+        margin-top: 5px;
+    }
+
+        .frequency-item .text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .frequency-item .num {
+            font-style: normal;
+            margin: 0px 5px;
+        }
+
+    .edit-del {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #2F94EE;
+    }
+
+        .edit-del .btn-edit, .edit-del .btn-delete {
+            display: inline-block;
+            margin: 0px 5px;
+            color: #2F94EE;
+            cursor: pointer;
+        }
+
+    .btn-select-express {
+        height: 28px;
+        line-height: 26px;
+        padding: 0px 5px;
+        display: block;
+        font-size: 12px;
+        color: #333333;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+</style>
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span>基础信息<span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span>任务配置<span class="chevron"></span></li>
+        </ul>
+    </div>
+
+    <div class="step-content" id="wizard-steps">
+        <div class="step-pane lr-form-wrap active" id="step-1">
+            <div id="form">
+                <div class="col-xs-12 lr-form-item">
+                    <div class="lr-form-item-title">任务名称<font face="宋体">*</font></div>
+                    <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                </div>
+                <div class="col-xs-12 lr-form-item">
+                    <div class="lr-form-item-title">开始时间</div>
+                    <div class="lr-radio radio" type="lr-radio" id="startType">
+                        <label>
+                            <input type="radio" name="startType" value="1" checked />
+                            配置结束立即执行
+                        </label>
+                        <label>
+                            <input type="radio" name="startType" value="2" />
+                            设置开始时间
+                        </label>
+                    </div>
+                    <div class="show-content" id="start_time_set" style="        display: none;">
+                        <input id="startTime" type="text" class="form-control lr-input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss'})">
+                    </div>
+                </div>
+                <div class="col-xs-12 lr-form-item">
+                    <div class="lr-form-item-title">执行频率</div>
+                    <div id="executeType" class="lr-radio radio" type="lr-radio">
+                        <label>
+                            <input type="radio" name="executeType" value="1" checked />
+                            只执行一次
+                        </label>
+                        <label>
+                            <input type="radio" name="executeType" value="2" />
+                            简单重复执行
+                        </label>
+                        <label>
+                            <input type="radio" name="executeType" value="3" />
+                            明细频率设置
+                        </label>
+                        <label>
+                            <input type="radio" name="executeType" value="4" />
+                            表达式设置
+                        </label>
+                    </div>
+                    <div>
+                        <div id="execute-repeat" class="show-content" style="        display: none;">
+                            <div class="text_item">每隔</div>
+                            <div class="ip_item"><input class="form-control" id="simpleValue" type="text" /></div>
+                            <div class="ip_item"><div id="simpleType"></div></div>
+                            <div class="text_item">执行一次</div>
+                        </div>
+                        <div id="lr_frequency_set" class="show-content" style="        display: none;">
+                            <div>
+                                <a class="add-more" id="lr_frequency_add">添加明细频率</a>
+                            </div>
+                            <div id="frequencyList">
+                            </div>
+                        </div>
+                        <div id="express_set" class="show-content" style="        display: none;
+        padding-right: 100px">
+                            <input type="text" id="cornValue" class="form-control" />
+                            <a class="btn-select-express">添加预置表达式</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 lr-form-item">
+                    <div class="lr-form-item-title">结束时间</div>
+                    <div id="endType" class="lr-radio radio" type="lr-radio">
+                        <label>
+                            <input type="radio" name="endType" value="1" checked />
+                            无期限
+                        </label>
+                        <label>
+                            <input type="radio" name="endType" value="2" />
+                            设定结束时间
+                        </label>
+                    </div>
+                    <div id="end_time_set" class="show-content" style="        display: none">
+                        <input id="endTime" type="text" class="form-control lr-input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss'})">
+                    </div>
+                </div>
+                <div class="col-xs-12 lr-form-item">
+                    <div class="lr-form-item-title">任务重启</div>
+                    <div class="checkbox">
+                        <label>
+                            <input id="isRestart" type="checkbox" />
+                            任务中断按以下频率重新启动
+                        </label>
+                    </div>
+
+                    <div id="isShowRestartModule" style="        display: none;">
+                        <div class="show-content">
+                            <div class="text_item">重启频率:&nbsp;&nbsp;每隔</div>
+                            <div class="ip_item"><input id="restartMinute" type="text" class="form-control" /></div>
+                            <div class="text_item">分钟,执行一次;重启次数</div>
+                            <div class="ip_item"><input id="restartNum" type="text" class="form-control" /></div>
+                            <div class="text_item">次</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="step-pane  step-gird-pane lr-form-wrap" id="step-2">
+            <div class="col-xs-12 lr-form-item ">
+                <div class="lr-form-item-title">任务类型</div>
+                <div id="methodType" class="lr-radio radio" type="lr-radio">
+                    <label>
+                        <input name="methodType" value="1" type="radio" checked>
+                        SQL语句
+                    </label>
+                    <label>
+                        <input name="methodType" value="2" type="radio">
+                        存储过程
+                    </label>
+                    <label>
+                        <input name="methodType" value="3" type="radio">
+                        接口
+                    </label>
+                    <label>
+                        <input name="methodType" value="4" type="radio">
+                        Ioc依赖注入
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">数据库</div>
+                <div id="dbId"></div>
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">SQL语句</div>
+                <textarea id="strSql" type="text" class="form-control" style="        height: 100px;"></textarea>
+            </div>
+            <div class="col-xs-12 lr-form-item" style="        display: none">
+                <div class="lr-form-item-title">存储过程</div>
+                <textarea id="procName" type="text" class="form-control" style="        height: 100px;"></textarea>
+            </div>
+            <div class="col-xs-12 lr-form-item" style="        display: none">
+                <div class="lr-form-item-title">IOC方法名</div>
+                <textarea id="iocName" type="text" class="form-control" style="        height: 100px;"></textarea>
+            </div>
+            <div class="col-xs-12 lr-form-item" style="        display: none">
+                <div class="lr-form-item-title">接口类型</div>
+                <div id="urlType" class="lr-radio radio" type="lr-radio">
+                    <label>
+                        <input name="urlType" value="1" type="radio" checked>
+                        Get
+                    </label>
+                    <label>
+                        <input name="urlType" value="2" type="radio">
+                        Post
+                    </label>
+                </div>
+            </div>
+            <div id="inter" class="col-xs-12 lr-form-item" style="        display: none">
+                <div class="lr-form-item-title">接口路径</div>
+                <textarea id="url" type="text" class="form-control" style="        height: 100px;"></textarea>
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">功能描述</div>
+                <textarea id="F_Description" type="text" class="form-control" style="        height: 260px;"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="lr-form-bottom-button" id="wizard-actions">
+        <a id="btn_prev" class="btn btn-default btn-prev" disabled>上一步</a>
+        <a id="btn_next" class="btn btn-default btn-next">下一步</a>
+        <a id="btn_finish" class="btn btn-success" disabled>完成</a>
+    </div>
+</div>
+<script>var keyValue = request('keyValue');
+    var acceptClick;
+    var frequencyList = [];
+    var setCorn;
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var baseData;
+
+        setCorn = function (value) {
+            $('#cornValue').val(value);
+        };
+
+        var loadFrequencyData = function (data, rowid) {// 刷新条件
+            if (data) {
+                if (rowid != "") {
+                    frequencyList[rowid] = data;
+                } else {
+                    frequencyList.push(data);
+                }
+            }
+
+
+            var $list = $('#frequencyList');
+            $list.html('');
+            $.each(frequencyList, function (_index, _item) {
+                var text = '每' + _item.carryMounth + '月的';
+                switch (_item.type) {
+                    case 'day':
+                        text += '每天'
+                        break;
+                    case 'week':
+                        text += '每周' + _item.carryDate + '天';
+                        break;
+                    case 'month':
+                        text += _item.carryDate + '号';
+                        break;
+                }
+
+                text += _item.hour + '时' + _item.minute + '分执行';
+
+
+                var $item = $('<div class="frequency-item">\
+                                <div class="text">\
+                                    <i class="num">' + (_index + 1) + '.</i>' + text + '\
+                                </div>\
+                                <div class="edit-del">\
+                                    <a class="btn-edit" data-value="' + _index + '" >编辑</a>|<a class="btn-delete" data-value="' + _index + '">删除</a>\
+                                </div>\
+                            </div>');
+                $list.append($item);
+            });
+        };
+
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                //加载导向
+                $('#wizard').wizard().on('change', function (e, data) {
+                    var $finish = $("#btn_finish");
+                    var $next = $("#btn_next");
+                    if (data.direction == "next") {
+                        if (!$('#step-1').lrValidform()) {
+                            return false;
+                        }
+                        baseData = $('#form').lrGetFormData();
+
+                        if (baseData.startType == '2' && baseData.startTime == '') {
+                            aycsoft.alert.error('请选择开始时间');
+                            return false;
+                        }
+                        switch (baseData.executeType) {
+                            case '1':// 只执行一次
+                                break;
+                            case '2':// 简单重复执行
+                                if (baseData.simpleValue == "") {
+                                    aycsoft.alert.error('请填写间隔时间');
+                                    return false;
+                                }
+                                else if (!(/^[-+]?\d+$/).test(baseData.simpleValue)) {
+                                    aycsoft.alert.error('间隔时间必须为数字');
+                                    return false;
+                                }
+                                break;
+                            case '3':// 明细频率设置
+                                if (frequencyList.length <= 0) {
+                                    aycsoft.alert.error('请添加明细频率');
+                                    return false;
+                                } else {
+                                    baseData["frequencyList"] = frequencyList;
+                                }
+                                break;
+                            case '4':// 表达式设置
+                                if (baseData.cornValue == "") {
+                                    aycsoft.alert.error('请设置表达式');
+                                    return false;
+                                }
+                                break;
+                        }
+                        if (baseData.endType == '2' && baseData.endTime == '') {
+                            aycsoft.alert.error('请选择结束时间');
+                            return false;
+                        }
+                        if (baseData.isRestart == "1") {
+                            if (baseData.restartMinute == "") {
+                                aycsoft.alert.error('请填写重启间隔时间');
+                                return false;
+                            }
+
+                            if (baseData.restartNum == "") {
+                                aycsoft.alert.error('请填写重启次数');
+                                return false;
+                            }
+                        }
+
+                        $next.attr('disabled', 'disabled');
+                        $finish.removeAttr('disabled');
+                    }
+                    else if (data.direction == "previous") {
+                        $finish.attr('disabled', 'disabled');
+                        $next.removeAttr('disabled');
+                    }
+                    else {
+                        $finish.attr('disabled', 'disabled');
+                        $next.removeAttr('disabled');
+                    }
+                });
+
+                //开始时间
+                $("#startType").find('input[type="radio"]').on('click', function () {
+                    var $this = $(this);
+                    var v = $this.val();
+                    if (v == 2) {
+                        $('#start_time_set').show();
+                    }
+                    else {
+                        $('#start_time_set').hide();
+                    }
+                });
+
+                //执行频率
+                $("#executeType").find('input[type="radio"]').on('click', function () {
+                    var $this = $(this);
+                    var v = $this.val();
+                    $("#execute-repeat").hide();
+                    $("#lr_frequency_set").hide();
+                    $("#express_set").hide();
+                    switch (v) {
+                        case '1':// 只执行一次
+                            break;
+                        case '2':// 简单重复执行
+                            $("#execute-repeat").show();
+                            break;
+                        case '3':// 明细频率设置
+                            $("#lr_frequency_set").show();
+                            break;
+                        case '4':// 表达式设置
+                            $("#express_set").show();
+                            break;
+
+                    }
+
+                });
+                // 简单重复执行
+                $('#simpleType').lrselect({
+                    data: [{ id: 'minute', text: '分钟' }, { id: 'hours', text: '小时' }, { id: 'day', text: '天' }, { id: 'week', text: '周' }],
+                    placeholder: false
+                }).lrselectSet('minute');
+
+                // 明细频率设置
+                $('#lr_frequency_add').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'AddDetailedForm',
+                        title: '添加明细频率',
+                        url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/AddDetailedForm',
+                        width: 600,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(loadFrequencyData);
+                        }
+                    });
+                });
+                $('#frequencyList').on('click', '.edit-del a', function () {
+                    var $this = $(this);
+                    var _rowid = $this.attr('data-value');
+                    if ($this.hasClass('btn-edit')) {
+                        aycsoft.layerForm({
+                            id: 'AddDetailedForm',
+                            title: '编辑明细频率',
+                            url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/AddDetailedForm?rowid=' + _rowid,
+                            width: 600,
+                            height: 400,
+                            callBack: function (id) {
+                                return top[id].acceptClick(loadFrequencyData);
+                            }
+                        });
+                    }
+                    else if ($this.hasClass('btn-delete')) {
+                        frequencyList.splice(_rowid, 1);
+                        loadFrequencyData();
+                    }
+                });
+
+                // 添加预置表达式
+                $(".btn-select-express").on("click", function () {
+                    aycsoft.layerForm({
+                        id: 'SelectExpressForm',
+                        title: '添加预置表达式',
+                        url: top.$.rootUrl + '/LR_TaskScheduling/TSScheme/SelectExpressForm',
+                        width: 600,
+                        height: 500,
+                        btn: null
+                    });
+                });
+
+                //结束时间
+                $("#endType").find('input[type="radio"]').on('click', function () {
+                    var $this = $(this);
+                    var v = $this.val();
+                    if (v == 2) {
+                        $('#end_time_set').show();
+                    }
+                    else {
+                        $('#end_time_set').hide();
+                    }
+                });
+                //任务重启
+                $("#isRestart").on('click', function () {
+                    if (!$(this).is(':checked')) {
+                        $("#isShowRestartModule").hide();
+                    } else {
+                        $("#isShowRestartModule").show()
+                    }
+                });
+
+
+
+                //SQL语句,存储过程,dll文件
+                $("#methodType").find("input[type='radio']").on('click', function () {
+                    var v = $(this).val();
+
+                    $('#dbId').parent().hide();
+                    $('#strSql').parent().hide();
+                    $('#procName').parent().hide();
+                    $('#iocName').parent().hide();
+                    $('#urlType').parent().hide();
+                    $('#url').parent().hide();
+
+                    switch (v) {
+                        case '1':// SQL语句
+                            $('#dbId').parent().show();
+                            $('#strSql').parent().show();
+                            break;
+                        case '2':// 存储过程
+                            $('#dbId').parent().show();
+                            $('#procName').parent().show();
+                            break;
+                        case '3':// 接口
+                            $('#urlType').parent().show();
+                            $('#url').parent().show();
+                            break;
+                        case '4':// Ioc依赖注入
+                            $('#iocName').parent().show();
+                            break;
+                    }
+                });
+                //数据库
+                $('#dbId').lrselect({
+                    url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                    type: 'tree',
+                    placeholder: '请选择数据库',
+                    allowSearch: true
+                });
+
+
+
+                $("#btn_finish").on('click', function () {
+                    acceptClick();
+                })
+            },
+            initData: function () {
+                if (keyValue) {
+                    $.lrSetForm(top.$.rootUrl + '/LR_TaskScheduling/TSScheme/GetFormData?keyValue=' + keyValue, function (data) {//
+                        $('#wizard-steps').lrSetFormData(data);
+                        var scheme = JSON.parse(data.F_Scheme);
+                        $('#wizard-steps').lrSetFormData(scheme);
+                        frequencyList = scheme.frequencyList || [];
+                        loadFrequencyData();
+                    });
+                }
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            var postData = {
+                F_Name: baseData.F_Name,
+                F_Description: baseData.F_Description
+            }
+
+            var strScheme = {
+                startType: baseData.startType,
+                startTime: baseData.startTime,
+                endType: baseData.endType,
+                endTime: baseData.endTime,
+                executeType: baseData.executeType,
+                isRestart: baseData.isRestart
+            };
+            switch (strScheme.executeType) {
+                case '1':// 只执行一次
+                    break;
+                case '2':// 简单重复执行
+                    strScheme.simpleValue = baseData.simpleValue;
+                    strScheme.simpleType = baseData.simpleType;
+                    break;
+                case '3':// 明细频率设置
+                    strScheme.frequencyList = baseData.frequencyList;
+                    break;
+                case '4'://  表达式设置
+                    strScheme.cornValue = baseData.cornValue;
+                    break;
+            }
+
+            if (strScheme.isRestart == '1') {
+                strScheme.restartMinute = baseData.restartMinute;
+                strScheme.restartNum = baseData.restartNum;
+            }
+
+
+            var excu = $("#step-2").lrGetFormData();
+
+            strScheme.methodType = excu.methodType;
+
+            switch (excu.methodType) {
+                case '1':// SQL语句
+                    strScheme.dbId = excu.dbId;
+                    strScheme.strSql = excu.strSql;
+                    break;
+                case '2':// 存储过程
+                    strScheme.dbId = excu.dbId;
+                    strScheme.procName = excu.procName;
+                    break;
+                case '3':// 接口
+                    strScheme.urlType = excu.urlType;
+                    strScheme.url = excu.url;
+                    break;
+                case '4':// Ioc依赖注入
+                    strScheme.iocName = excu.iocName;
+                    break;
+            }
+
+            postData.F_Scheme = JSON.stringify(strScheme);
+
+
+            $.lrSaveForm(top.$.rootUrl + '/LR_TaskScheduling/TSScheme/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调
+                aycsoft.frameTab.currentIframe().refreshGirdData();//index页列表刷新
+            });
+        };
+
+        page.init();
+    }</script>

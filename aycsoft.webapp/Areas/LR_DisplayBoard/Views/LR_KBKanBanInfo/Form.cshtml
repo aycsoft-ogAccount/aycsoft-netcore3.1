@@ -1,0 +1,2176 @@
+﻿@{
+    ViewBag.Title = "看板信息";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .box {
+    position: absolute;
+    padding: 10px;
+}
+
+.box-module {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 2px 1px rgba(0,0,0,0.09);
+    overflow: hidden;
+    padding-top: 45px;
+}
+
+.box-module-edit {
+    border: 1px solid #fff;
+}
+
+    .box-module-edit:hover {
+        border: 1px dashed #ccc;
+    }
+
+.box-module .del,
+.box-module .edit,
+.box-module .add,
+.box-module .edited,
+.box-module .deleted {
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+.box-module .edited,
+.box-module .deleted {
+    padding:2px 5px;
+}
+.box-module .edit-del, .box-module .edited-del {
+    background: #666;
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    display: none;
+    border-radius: 0 0 2px 2px;
+    padding: 0 10px;
+    color: #515151;
+    z-index:1;
+}
+.box-module .edited-del {
+    right:10px;
+    left:auto;
+}
+.box-module-edit .informationContentItem:hover {
+    border:1px dashed #ccc;
+}
+.box-module-edit .informationContentItem:hover .edited-del {
+    display: block;
+}
+
+.box-module-edit:hover .edit-del {
+    display: block;
+}
+
+
+    .box-module .title {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 0;
+        height: 30px;
+        line-height: 30px;
+        background: #3398DC;
+        font-size: 16px;
+        color: #FFFFFF;
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .box-module .title .arrow {
+        position: absolute;
+        right: -35px;
+        top: 50%;
+        margin-top: -15px;
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-left: 20px solid #3398DC;
+    }
+
+.box-module-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 15px;
+}
+
+.box-module .information {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+}
+
+.box-module .informationContent, .box-module .informationContentList, .box-module-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.box-module .informationImg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.box-module .informationContentItem {
+    position: relative;
+    width: 20%;
+    height: 100%;
+    min-width: 100px;
+    text-align: center;
+    color: #fff;
+    padding-top: 21px;
+    cursor: pointer;
+    float: left;
+}
+
+    .box-module .informationContentItem .title2 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        line-height: 22px;
+        height: 22px;
+    }
+    .box-module .informationContentItem .sub-title {
+        font-size: 12px;
+    }
+
+    .box-module .informationContentItem .value {
+        font-size: 36px;
+        margin-bottom: 5px;
+        line-height:50px;
+        height:50px;
+    }
+    .box-module .informationContentItem .sub-value {
+        margin-left:10px;
+    }
+
+
+.box-module .edit-add {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    border-radius: 0 0 2px 2px;
+    display: none;
+    background: #666;
+    z-index: 1;
+}
+.box-module-edit .edit-add {
+    display: block;
+}
+
+.box-module-content-text {
+    position:absolute;
+    top:50%;
+    left:0%;
+    margin-top:-15px;
+    height:30px;
+    line-height:30px;
+    width:100%;
+    text-align:center;
+    font-size:18px;
+    color:#ccc;
+}
+
+
+.table-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    overflow: auto;
+    background: #F8F8F8;
+}
+.table-body-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow:hidden;
+}
+
+    .table-body {
+        position: relative;
+        width: 100%;
+    }
+.table-body-row {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    line-height:30px;
+}
+    .table-body-row:nth-child(even) {
+        background: #F8F8F8;
+    }
+.table-head-item, .table-body-item {
+    position: relative;
+    float: left;
+    height: 30px;
+    width: 30px;
+    padding: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.box-module-more {
+    font-size: 12px;
+    color: #8F8D8E;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 15px;
+    line-height: 30px;
+    z-index: 9999;
+}
+</style>
+<style>
+    .lr-form-wrap {
+    padding-top: 129px;
+    padding-right:0;
+}
+.lr-form-item {
+    position: absolute;
+    left: 0;
+    height: 38px;
+    width: 100%;
+    padding-right: 30px;
+}
+
+.lr-form-item-text {
+    position: absolute;
+    top: 7px;
+    right: 30px;
+    padding: 4px 8px;
+    color: #000;
+}
+
+/*【弹出层样式开始】*/
+.model {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 100;
+}
+
+    .model .lr-box {
+        background: #fff;
+        padding: 10px;
+        width: 785px;
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -392px;
+        margin-top: -296px;
+    }
+
+    .model .blank-space {
+        display: inline-block;
+        background: #fff;
+        width: 192px;
+        height: 118px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        border-radius: 2px;
+    }
+
+    .model .lr-cover-box {
+        position: relative;
+        float: left;
+        height: 250px;
+        width: 235px;
+        border: 1px solid #cccccc;
+        margin: 10px;
+        padding: 9px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    .model .lr-cover-img {
+        height: 140px;
+        background-color: #efefef;
+        width: 100%;
+        text-align: center;
+        padding-top: 40px;
+        margin-bottom: 10px;
+    }
+
+        .model .lr-cover-img img {
+            width: 195px;
+            height: 120px;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            border-radius: 2px;
+        }
+
+        .model .lr-cover-img .lr-cover-img2 {
+            display: none;
+        }
+
+    .model .lr-cover-info {
+        position: relative;
+        padding: 26px 0 0 15px;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+        color: #787878;
+        font-size: 15px;
+    }
+
+    .model .lr-cover-box:hover {
+        border: 1px solid #156edb;
+        -moz-box-shadow: 0px 0px 5px #cccccc; /* 老的 Firefox */
+        box-shadow: 5px 5px 10px #cccccc;
+    }
+
+        .model .lr-cover-box:hover .lr-cover-img1 {
+            display: none;
+        }
+
+        .model .lr-cover-box:hover .lr-cover-img2 {
+            display: block;
+        }
+
+        .model .lr-cover-box:hover .lr-cover-img {
+            background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #156edb); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Firefox 3.6 - 15 */
+            background: linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* 标准的语法 */
+        }
+
+        .model .lr-cover-box:hover .lr-cover-info {
+            color: #156edb;
+        }
+/*【弹出层样式结束】*/
+.container-left {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 118px;
+    padding: 8px 0 8px 8px;
+}
+    .container-left .content {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+.container-right {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    overflow-y:auto;
+}
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+}
+/*【左侧模版开始】*/
+.container-left .lr-cover-box {
+    display: block;
+    border: 1px solid #ccc;
+    margin: 6px 6px 0 6px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+    .container-left .lr-cover-box:hover,
+    .container-left .lr-cover-box.active {
+        border: 1px solid #156edb;
+        -moz-box-shadow: 2px 2px 5px #cccccc; /* 老的 Firefox */
+        box-shadow: 2px 2px 10px #cccccc;
+    }
+
+    .container-left .lr-cover-box:hover,
+    .container-left .lr-cover-box.active {
+        background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #156edb); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Firefox 3.6 - 15 */
+        background: linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* 标准的语法 */
+    }
+
+        .container-left .lr-cover-box:hover .lr-cover-info, .container-left .lr-cover-box.active .lr-cover-info{
+            color: #fff;
+        }
+
+        .container-left .lr-cover-box:hover .lr-cover-img1, .container-left .lr-cover-box.active .lr-cover-img1 {
+            display: none;
+        }
+
+        .container-left .lr-cover-box:hover .lr-cover-img2, .container-left .lr-cover-box.active .lr-cover-img2 {
+            display: block;
+        }
+
+.container-left .lr-cover-img {
+    height: 70px;
+    border-radius: 2px;
+    margin: 3px;
+}
+
+    .container-left .lr-cover-img img {
+        width: 100%;
+        height: 70px;
+        border-radius: 2px;
+    }
+
+    .container-left .lr-cover-img .lr-cover-img2 {
+        display: none;
+    }
+
+.container-left .lr-cover-info {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    margin: 5px 0px;
+    color: #787878;
+    font-size: 10px;
+}
+/*【左侧模版结束】*/
+</style>
+
+<script src="~/lib/echarts/echarts.min.js"></script>
+
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span>基础信息<span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span>看板配置<span class="chevron"></span></li>
+        </ul>
+    </div>
+    <div class="step-content" id="wizard-steps">
+        <div class="step-pane lr-form-wrap active" id="step-1">
+            <div class="col-xs-12 lr-form-item " style="top:15px;">
+                <div class="lr-form-item-title">看板编号<font face="宋体">*</font></div>
+                <input id="F_KanBanCode" type="text" value="@ViewBag.KanBanCode" readonly class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-12 lr-form-item " style="top:53px;">
+                <div class="lr-form-item-title">看板名称<font face="宋体">*</font></div>
+                <input id="F_KanBanName" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-12 lr-form-item " style="top:91px;">
+                <div class="lr-form-item-title">刷新时间</div>
+                <input id="F_RefreshTime" type="text" class="form-control" />
+                <span class="lr-form-item-text">分钟</span>
+            </div>
+            <div class="col-xs-12 lr-form-item " style="position:relative;width:100%;height:100%;">
+                <div class="lr-form-item-title">看板说明</div>
+                <textarea id="F_Description" class="form-control" style="height: 100%;"></textarea>
+            </div>
+        </div>
+        <div class="step-pane step-gird-pane lr-form-layout" id="step-2" style="padding-left:118px;">
+            <div class="container-left">
+                <div class="content">
+                    <a class="lr-cover-box" id="lr_statistics" title="点击新增统计指标">
+                        <div class="lr-cover-img">
+                            <img class="lr-cover-img1" src="~/img/kanban/Statistics1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/Statistics2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>统计指标</small>
+                        </div>
+                    </a>
+                    <a class="lr-cover-box" id="lr_table" title="点击新增表格">
+                        <div class="lr-cover-img">
+                            <img class="lr-cover-img1" src="~/img/kanban/table1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/table2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>表格</small>
+                        </div>
+                    </a>
+                    <a class="lr-cover-box" id="lr_pieChart" title="点击新增饼图">
+                        <div class="lr-cover-img">
+                            <img class="lr-cover-img1" src="~/img/kanban/piechart1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/piechart2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>饼图</small>
+                        </div>
+
+                    </a>
+                    <a class="lr-cover-box" id="lr_barChart" title="点击新增柱状图">
+                        <div class="lr-cover-img ">
+                            <img class="lr-cover-img1" src="~/img/kanban/histogram1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/histogram2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>柱状图</small>
+                        </div>
+
+                    </a>
+                    <a class="lr-cover-box" id="lr_lineChart" title="点击新增折线图">
+                        <div class="lr-cover-img">
+                            <img class="lr-cover-img1" src="~/img/kanban/linechart1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/linechart2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>折线图</small>
+                        </div>
+
+                    </a>
+                    <a class="lr-cover-box" id="lr_gaugeChart" title="点击新增仪表盘">
+                        <div class="lr-cover-img">
+                            <img class="lr-cover-img1" src="~/img/kanban/dashboard1.png" />
+                            <img class="lr-cover-img2" src="~/img/kanban/dashboard2.jpg" />
+                        </div>
+                        <div class="lr-cover-info">
+                            <small>仪表盘</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="container-right">
+                <div class="content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lr-form-bottom-button" id="wizard-actions">
+        <a id="btn_prev" class="btn btn-default btn-prev" disabled>上一步</a>
+        <a id="btn_next" class="btn btn-default btn-next">下一步</a>
+        <a id="btn_finish" class="btn btn-success" disabled>完成</a>
+    </div>
+</div>
+<!--弹出层-->
+<div class="model" id="typelayer">
+    <div class="lr-box">
+        <div class="lr-cover-box" data-value="one">
+            <div class="lr-cover-img">
+                <img class="lr-cover-img1" src="~/img/kanban/Template1-1.png" />
+                <img class="lr-cover-img2" src="~/img/kanban/Template1-0.png" />
+            </div>
+            <div class="lr-cover-info">
+                <small>模板一</small>
+            </div>
+        </div>
+        <div class="lr-cover-box" data-value="two">
+            <div class="lr-cover-img">
+                <img class="lr-cover-img1" src="~/img/kanban/Template2-1.png" />
+                <img class="lr-cover-img2" src="~/img/kanban/Template2-0.png" />
+            </div>
+            <div class="lr-cover-info">
+                <small>模板二</small>
+            </div>
+        </div>
+        <div class="lr-cover-box" data-value="three">
+            <div class="lr-cover-img">
+                <img class="lr-cover-img1" src="~/img/kanban/Template3-1.png" />
+                <img class="lr-cover-img2" src="~/img/kanban/Template3-0.png" />
+            </div>
+            <div class="lr-cover-info">
+                <small>模板三</small>
+            </div>
+        </div>
+        <div class="lr-cover-box" data-value="four">
+            <div class="lr-cover-img">
+                <img class="lr-cover-img1" src="~/img/kanban/Template4-1.png" />
+                <img class="lr-cover-img2" src="~/img/kanban/Template4-0.png" />
+            </div>
+            <div class="lr-cover-info">
+                <small>模板四</small>
+            </div>
+        </div>
+        <div class="lr-cover-box" data-value="five">
+            <div class="lr-cover-img">
+                <img class="lr-cover-img1" src="~/img/kanban/Template5-1.png" />
+                <img class="lr-cover-img2" src="~/img/kanban/Template5-0.png" />
+            </div>
+            <div class="lr-cover-info">
+                <small>模板五</small>
+            </div>
+        </div>
+        <div class="lr-cover-box" data-value="six">
+            <div class="lr-cover-img">
+                <div class="blank-space"></div>
+            </div>
+            <div class="lr-cover-info">
+                <small>空模板</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var lrDisplayBoardTamplates = {
+    one: [
+    {
+        F_ModeName: "统计数据",
+        F_Type: "statistics",
+        F_TopValue: "0",
+        F_LeftValue: "0",
+        F_HightValue: "257",
+        F_WidthValue: "1",
+        F_RefreshTime: '',
+        F_Configuration: ""
+    },
+    {
+        F_Configuration: "",
+        F_HightValue: "360",
+        F_LeftValue: "0",
+        F_ModeName: "柱状图",
+        F_RefreshTime: null,
+        F_Type: "barChart",
+        F_TopValue: "257",
+        F_WidthValue: "2/3"
+    },
+    {
+        F_Configuration: "",
+        F_HightValue: "360",
+        F_LeftValue: "2/3",
+        F_ModeName: "表格数据",
+        F_RefreshTime: null,
+        F_Type: "table",
+        F_TopValue: "257",
+        F_WidthValue: "1/3"
+    },
+    {
+        F_Configuration: "",
+        F_HightValue: "360",
+        F_LeftValue: "0",
+        F_ModeName: "折线图",
+        F_RefreshTime: null,
+        F_Type: "lineChart",
+        F_TopValue: "617",
+        F_WidthValue: "1/2"
+    },
+    {
+        F_Configuration: "",
+        F_HightValue: "360",
+        F_LeftValue: "1/2",
+        F_ModeName: "仪表盘",
+        F_RefreshTime: null,
+        F_Type: "gaugeChart",
+        F_TopValue: "617",
+        F_WidthValue: "1/2"
+    }
+    ]
+    , two: [
+            {
+                F_Configuration: "",
+                F_HightValue: "257",
+                F_LeftValue: "0",
+                F_ModeName: "统计数据",
+                F_RefreshTime: null,
+                F_Type: "statistics",
+                F_TopValue: "0",
+                F_WidthValue: "2/3"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "360",
+                F_LeftValue: "0",
+                F_ModeName: "折线图",
+                F_RefreshTime: null,
+                F_Type: "lineChart",
+                F_TopValue: "257",
+                F_WidthValue: "2/3"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "463",
+                F_LeftValue: "0",
+                F_ModeName: "表格数据",
+                F_RefreshTime: null,
+                F_Type: "table",
+                F_TopValue: "617",
+                F_WidthValue: "2/3"
+            },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "2/3",
+            F_ModeName: "柱状图",
+            F_RefreshTime: null,
+            F_Type: "barChart",
+            F_TopValue: "0",
+            F_WidthValue: "1/3"
+        },
+
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "2/3",
+            F_ModeName: "饼图",
+            F_RefreshTime: null,
+            F_Type: "pieChart",
+            F_TopValue: "360",
+            F_WidthValue: "1/3"
+        },
+
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "2/3",
+            F_ModeName: "仪表盘",
+            F_RefreshTime: null,
+            F_Type: "gaugeChart",
+            F_TopValue: "720",
+            F_WidthValue: "1/3"
+        }
+    ]
+    , three: [
+            {
+                F_Configuration: "",
+                F_HightValue: "500",
+                F_LeftValue: "0",
+                F_ModeName: "表格数据",
+                F_RefreshTime: null,
+                F_Type: "table",
+                F_TopValue: "0",
+                F_WidthValue: "1/4"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "374",
+                F_LeftValue: "0",
+                F_ModeName: "仪表盘",
+                F_RefreshTime: null,
+                F_Type: "gaugeChart",
+                F_TopValue: "500",
+                F_WidthValue: "1/4"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "360",
+                F_LeftValue: "1/4",
+                F_ModeName: "饼图",
+                F_RefreshTime: null,
+                F_Type: "pieChart",
+                F_TopValue: "0",
+                F_WidthValue: "1/4"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "360",
+                F_LeftValue: "1/2",
+                F_ModeName: "折线图",
+                F_RefreshTime: null,
+                F_Type: "lineChart",
+                F_TopValue: "0",
+                F_WidthValue: "1/2"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "257",
+                F_LeftValue: "1/4",
+                F_ModeName: "统计数据",
+                F_RefreshTime: null,
+                F_Type: "statistics",
+                F_SortCode: 1,
+                F_TopValue: "360",
+                F_WidthValue: "3/4"
+            },
+            {
+                F_Configuration: "",
+                F_HightValue: "257",
+                F_LeftValue: "1/4",
+                F_ModeName: "柱状图",
+                F_RefreshTime: null,
+                F_Type: "barChart",
+                F_SortCode: 1,
+                F_TopValue: "617",
+                F_WidthValue: "3/4"
+            }
+
+    ]
+    , four: [
+        {
+            F_Configuration: "",
+            F_HightValue: "257",
+            F_LeftValue: "0",
+            F_ModeName: "统计数据",
+            F_RefreshTime: null,
+            F_Type: "statistics",
+            F_TopValue: "0",
+            F_WidthValue: "1"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "0",
+            F_ModeName: "折线图",
+            F_RefreshTime: null,
+            F_Type: "lineChart",
+            F_TopValue: "257",
+            F_WidthValue: "2/3"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "2/3",
+            F_ModeName: "饼图",
+            F_RefreshTime: null,
+            F_Type: "pieChart",
+            F_TopValue: "257",
+            F_WidthValue: "1/3"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "0",
+            F_ModeName: "仪表盘",
+            F_RefreshTime: null,
+            F_Type: "gaugeChart",
+            F_TopValue: "617",
+            F_WidthValue: "1/4"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "1/4",
+            F_ModeName: "表格数据",
+            F_RefreshTime: null,
+            F_Type: "table",
+            F_TopValue: "617",
+            F_WidthValue: "1/4"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "1/2",
+            F_ModeName: "柱状图",
+            F_RefreshTime: null,
+            F_Type: "barChart",
+            F_TopValue: "617",
+            F_WidthValue: "1/2",
+        }
+    ]
+    , five: [
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "0",
+            F_ModeName: "饼图",
+            F_RefreshTime: null,
+            F_Type: "pieChart",
+            F_TopValue: "0",
+            F_WidthValue: "1/3"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "1/3",
+            F_ModeName: "柱状图",
+            F_RefreshTime: null,
+            F_Type: "barChart",
+            F_TopValue: "0",
+            F_WidthValue: "1/3",
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "360",
+            F_LeftValue: "2/3",
+            F_ModeName: "仪表盘",
+            F_RefreshTime: null,
+            F_Type: "gaugeChart",
+            F_TopValue: "0",
+            F_WidthValue: "1/3"
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "257",
+            F_LeftValue: "0",
+            F_ModeName: "折线图",
+            F_RefreshTime: null,
+            F_Type: "lineChart",
+            F_TopValue: "360",
+            F_WidthValue: "3/4"
+        },
+        {
+
+            F_Configuration: "",
+            F_HightValue: "257",
+            F_LeftValue: "0",
+            F_ModeName: "统计数据",
+            F_RefreshTime: null,
+            F_Type: "statistics",
+            F_TopValue: "617",
+            F_WidthValue: "3/4",
+        },
+        {
+            F_Configuration: "",
+            F_HightValue: "514",
+            F_LeftValue: "3/4",
+            F_ModeName: "表格数据",
+            F_RefreshTime: null,
+            F_Type: "table",
+            F_TopValue: "360",
+            F_WidthValue: "1/4"
+        }
+    ]
+}
+
+
+
+</script>
+
+<script>
+        (function ($, aycsoft) {
+        "use strict";
+        // 方法：将分数转换为百分比
+        function percent (score) {
+            score == null ? 0 : parseInt(score);
+            return eval(score) * 100 + '%';
+        }
+        // 计算模块位置和大小
+        function setOffset(component) {
+            component._top = component.F_TopValue ? parseInt(component.F_TopValue) : 0;
+            component._height = component.F_HightValue ? parseInt(component.F_HightValue) : 0;
+            component._width = component.F_WidthValue ? percent(component.F_WidthValue) : '100%';
+            component._left = component.F_LeftValue ? percent(component.F_LeftValue) : 0;
+        }
+
+        function openWindowForm(url) {
+            if (url) {
+                if (url.indexOf("http") != -1 || url.indexOf("www") != -1) {
+                    if (url.indexOf("http") == -1) {
+                        url = "http://" + url;
+                    }
+                }
+                else {
+                    url = top.$.rootUrl + url
+                }
+                aycsoft.layerForm({
+                    id: 'more',
+                    title: '更多内容',
+                    url: url,
+                    width: 1000,
+                    height: 900,
+                    btn: null
+                });
+            }
+        }
+
+        var _displayBoard = {
+            getContainer: function (component, isEdit) {
+                setOffset(component);
+                var $component = null;
+                if (!component.id) {
+                    component.id = aycsoft.newGuid();
+
+                    var $component = $('<div id="' + component.id + '" style="width:' + component._width + ';left:' + component._left + ';top: ' + component._top + 'px;height:' + component._height + 'px;" class="box"></div>');
+                    var templateStr = "";
+                    templateStr += '<div class="box-module ' + (isEdit ? 'box-module-edit' : '') + '">';
+                    templateStr += '<div class="edit-del">';
+                    templateStr += '<a href="#" class="edit">编辑</a>｜<a href="#" class="del">删除</a>';
+                    templateStr += '</div>';
+
+                    templateStr += '<h3 class="title title-marBottom">' + component.F_ModeName + '<i class="arrow"></i></h3>';
+
+                    switch (component.F_Type) {
+                        case 'statistics':
+                            templateStr += '<div class="information"><div class="informationContent" >';
+                            templateStr += '<div class="edit-add">';
+                            templateStr += '<a href="#" class="add">添加统计项</a></a>';
+                            templateStr += '</div>';
+                            templateStr += '<img class="informationImg" src="' + top.$.rootUrl + '/img/kanban/bg.png' + '">';
+                            templateStr += '<div class="informationContentList"></div>';
+                            templateStr += '</div></div>';
+                            break;
+                        case 'table':
+                        case 'pieChart':
+                        case 'lineChart':
+                        case 'barChart':
+                        case 'gaugeChart':
+                            if (component._configuration.F_LinkInfo) {
+                                templateStr += '<div class="box-module-more">更多</div>';
+                            }
+                            templateStr += '<div class="box-module-container"><div class="box-module-content" >';
+                            templateStr += '<div class="box-module-content-text" >鼠标移入模块点击编辑数据</div>';
+                            templateStr += '</div></div>';
+                            if (!isEdit) {
+                                $component.on('click', '.box-module-more', function () {
+                                    var $box = $(this).parents('.box');
+                                    var url = $box[0].lrdata._configuration.F_LinkInfo;
+                                    openWindowForm(url);
+                                });
+                            }
+                          
+                            break;
+                    }
+                    templateStr += '</div>';
+                    $component.append(templateStr);
+
+                    $component[0].lrdata = component;
+                }
+                else {
+                    $component = $('#' + component.id);
+                    $component.css({
+                        top: component._top,
+                        left: component._left,
+                        width: component._width,
+                        height: component._height
+                    });
+                    $component.find('.title-marBottom').html(component.F_ModeName + '<i class="arrow"></i>');
+                }
+                return $component;
+            }
+        };
+
+        function refreshDataByTime(id, time) {
+            var $component = $('#' + id);
+            if ($component.length > 0) {
+                var configInfoList = [];
+                var component = $component[0].lrdata;
+                switch (component.F_Type) {
+                    case 'statistics':
+                        $.each(component._configuration.colData, function (_index, _item) {
+                            configInfoList.push({
+                                id: _item.id,
+                                type: _item.F_TInterface == '' ? '1' : '2',
+                                dataType: 'main',
+                                modelType: 'statistics',
+                                dbId: _item.F_TBaseData,
+                                sql: _item.F_TSQL,
+                                url: _item.F_TInterface
+                            });
+                            configInfoList.push({
+                                id: _item.id,
+                                type: _item.F_TInterface == '' ? '1' : '2',
+                                dataType: 'sub',
+                                modelType: 'statistics',
+                                dbId: _item.F_TBaseData,
+                                sql: _item.F_SubSQL,
+                                url: _item.F_TInterface
+                            });
+                        });
+                        break;
+                    case 'table':
+                    case 'pieChart':
+                    case 'lineChart':
+                    case 'barChart':
+                    case 'gaugeChart':
+                        if (component._configuration.F_DataSourceId || component._configuration.F_Interface) {
+                            configInfoList.push({
+                                id: component.id,
+                                type: component._configuration.F_Interface == '' ? '1' : '2',
+                                modelType: component.F_Type,
+                                dbId: component._configuration.F_DataSourceId,
+                                sql: component._configuration.F_Sql,
+                                url: component._configuration.F_Interface
+                            });
+                        }
+                        break;
+                }
+
+                aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                    if (data) {
+                        $.each(data, function (_index, _item) {
+                            if (_item.modelType == 'statistics') {
+                                var point = {};
+                                point.id = _item.id;
+                                var colData = $('#' + _item.id)[0].lrdata;
+                                if (_item.type == '1') {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[0][colData.F_TitleValue] || '';
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[0][colData.F_SubtitleValue] || '';
+                                    }
+                                }
+                                else {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[colData.F_TitleValue] || '';
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[colData.F_SubtitleValue] || '';
+                                    }
+                                }
+                                $.lrDisplayBoardComponents.statistics.renderData(point);
+                            }
+                            else {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents[_component.F_Type].renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            }
+                        });
+                        $('.top-title-time').text(aycsoft.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss'));
+                    }
+                    setTimeout(function () {
+                        refreshDataByTime(id, time);
+                    }, time);
+                });
+               
+            }
+        }
+
+        $.lrDisplayBoardComponents = {
+            load: function ($container, isRefresh, time) {
+                var configInfoList = [];
+                $container.find('.box').each(function () {
+                    var $this = $(this);
+                    var component = $this[0].lrdata;
+                   
+                    if (isRefresh) {
+                        component._refreshTime = component.F_RefreshTime || time;
+                        if (component._refreshTime) {
+                            component._refreshTime = parseInt(component._refreshTime) * 60 * 1000;
+                        }
+                    }
+
+                    switch (component.F_Type) {
+                        case 'statistics':
+                            $.each(component._configuration.colData, function (_index, _item) {
+                                configInfoList.push({
+                                    id: _item.id,
+                                    type: _item.F_TInterface == '' ? '1' : '2',
+                                    dataType: 'main',
+                                    modelType: 'statistics',
+                                    dbId: _item.F_TBaseData,
+                                    sql: _item.F_TSQL,
+                                    url: _item.F_TInterface
+                                });
+                                configInfoList.push({
+                                    id: _item.id,
+                                    type: _item.F_TInterface == '' ? '1' : '2',
+                                    dataType: 'sub',
+                                    modelType: 'statistics',
+                                    dbId: _item.F_TBaseData,
+                                    sql: _item.F_SubSQL,
+                                    url: _item.F_TInterface
+                                });
+                                var _data = {
+                                    id: _item.id,
+                                    title: _item.F_Title,
+                                    subTitle: _item.F_Subtitle
+                                };
+                                $.lrDisplayBoardComponents.statistics.renderData(_data, component);
+                            });
+                            break;
+                        case 'table':
+                        case 'pieChart':
+                        case 'lineChart':
+                        case 'barChart':
+                        case 'gaugeChart':
+                            if (component._configuration.F_DataSourceId || component._configuration.F_Interface) {
+                                configInfoList.push({
+                                    id: component.id,
+                                    type: component._configuration.F_Interface == '' ? '1' : '2',
+                                    modelType: component.F_Type,
+                                    dbId: component._configuration.F_DataSourceId,
+                                    sql: component._configuration.F_Sql,
+                                    url: component._configuration.F_Interface
+                                });
+                            }
+                            break;
+                    }
+                  
+                });
+                aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                    if (data) {
+                        $.each(data, function (_index, _item) {
+                            if (_item.modelType == 'statistics') {
+                                var point = {};
+                                point.id = _item.id;
+                                var colData = $('#' + _item.id)[0].lrdata;
+                                if (_item.type == '1') {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[0][colData.F_TitleValue] || '';
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[0][colData.F_SubtitleValue] || '';
+                                    }
+                                }
+                                else {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[colData.F_TitleValue] || '';
+                                       
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[colData.F_SubtitleValue] || '';
+                                    }
+                                    
+                                }
+                                if (_item.dataType == 'main') {
+                                    var _component2 = $('#' + _item.id).parents('.box')[0].lrdata;
+                                    if (!_component2._isRefreshTime) {
+                                        _component2._isRefreshTime = true;
+                                        if (_component2._refreshTime > 0) {
+
+                                            setTimeout(function () {
+                                                refreshDataByTime(_item.id, _component2._refreshTime);
+                                            }, _component2._refreshTime);
+
+                                        }
+                                    }
+                                }
+
+                                $.lrDisplayBoardComponents.statistics.renderData(point);
+                            }
+                            else {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents[_component.F_Type].renderData(_item.data, _component);
+                                    $component = null;
+                                    if (_component._refreshTime > 0) {
+                                        setTimeout(function () {
+                                            refreshDataByTime(_item.id, _component._refreshTime);
+                                        }, _component._refreshTime);
+                                    }
+                                    
+                                }
+                            }
+                        });
+                    }
+                    $('.top-title-time').text(aycsoft.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss'));
+                });
+            },
+            statistics: {
+                init: function (component, isEdit) {
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {
+                            num: 0,
+                            colData: {}
+                        };
+                    }
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    var $item = $('#' + data.id);
+                    if ($item.length == 0) {
+                        var $list = $('#' + component.id + ' .informationContentList');
+                        $item = $('<div class="informationContentItem" id="' + data.id + '" ></div>');
+                        $item.append('<div class="edited-del"><a href="#"  class="edited">编辑</a>｜<a href="#" class="deleted">删除</a></div>');
+                        $item.append('<div class="title2" >' + data.title + '</div>');
+                        $item.append('<div class="value" >' + (data.titleValue || '') + '</div>');
+                        $item.append('<div class="sub-title" ><span class="sub-title-text" >' + data.subTitle + '</span><span class="sub-value" >' + (data.subtTitleValue || '') + '</span></div>');
+                        $item[0].lrdata = component._configuration.colData[data.id];
+                        $list.append($item);
+                        $item.on('click', function () {
+                            var $this = $(this);
+                            if ($this.parents('.box-module-edit').length == 0) {
+                                var url = $this[0].lrdata.F_Link;
+                                openWindowForm(url);
+                            }
+                        });
+                    }
+                    else {
+                        if (data.title != null && data.title != undefined) {
+                            $item.find('.title2').text(data.title);
+                        }
+                        if (data.titleValue != null && data.titleValue != undefined) {
+                            $item.find('.value').text(data.titleValue);
+                        }
+                        if (data.subTitle != null && data.subTitle != undefined) {
+                            $item.find('.sub-title-text').text(data.subTitle);
+                        }
+                        if (data.subtTitleValue != null && data.subtTitleValue != undefined) {
+                            $item.find('.sub-value').text(data.subtTitleValue);
+                        }
+                    }
+                },
+                load: function (data, component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: data.id,
+                        type: data.F_TInterface == '' ? '1' : '2',
+                        dataType: 'main',
+                        modelType: 'statistics',
+                        dbId: data.F_TBaseData,
+                        sql: data.F_TSQL,
+                        url: data.F_TInterface
+                    });
+                    configInfoList.push({
+                        id: data.id,
+                        type: data.F_TInterface == '' ? '1' : '2',
+                        dataType:'sub',
+                        modelType: 'statistics',
+                        dbId: data.F_TBaseData,
+                        sql: data.F_SubSQL,
+                        url: data.F_TInterface
+                    });
+                    var _data = {
+                        id:data.id,
+                        title:data.F_Title,
+                        subTitle:data.F_Subtitle
+                    };
+                    $.lrDisplayBoardComponents.statistics.renderData(_data, component);
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var point = {};
+                                point.id = _item.id;
+                                var colData = $('#' + _item.id)[0].lrdata;
+
+                                if (_item.type == '1') {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[0][colData.F_TitleValue] || '';
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[0][colData.F_SubtitleValue] || '';
+                                    }
+                                }
+                                else {
+                                    if (_item.dataType == 'main') {
+                                        point.titleValue = _item.data[colData.F_TitleValue] || '';
+                                    }
+                                    else {
+                                        point.subtTitleValue = _item.data[colData.F_SubtitleValue] || '';
+                                    }
+                                }
+                                $.lrDisplayBoardComponents.statistics.renderData(point);
+                            });
+                        }
+                    });
+                }
+            },
+            table: {
+                init: function (component, isEdit) {
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {};
+                    }
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                    
+                  
+                    if (component._configuration.grid && component._configuration.grid.length > 0) {
+                        var $content = $component.find('.box-module-content');
+                        $content.hide();
+                        $content.html('');
+                        // 表头
+                        var $head = $('<div class="table-head" ></div>');
+                        $.each(component._configuration.grid || [], function (_index, _item) {
+                            var $item = $('<div class="table-head-item" title="' + _item.F_HeadTitle + '" >' + _item.F_HeadTitle + '</div>').css({ width: _item.F_Width + '%', 'text-align': (_item.F_Align || 'left') });
+                            $head.append($item);
+                        });
+                        $content.append($head);
+                        $content.append('<div class="table-body-container"><div class="table-body"></div></div>');
+                        $content.css({ 'padding-top': '30px' });
+
+                        $content.find('.table-body-container').Carousel();
+
+                        $content.show();
+                    }
+                  
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    var $list = $('#' + component.id + ' .table-body');
+                    $list.html('');
+                    $.each(data || [], function (_index, _item) {
+                        var $row = $('<div class="table-body-row" ></div>');
+                        $.each(component._configuration.grid || [], function (_jindex,_jitem) {
+                            var $item = $('<div class="table-body-item" title="' + (_item[_jitem.F_FullName] || '') + '"  >' + (_item[_jitem.F_FullName] || '') + '</div>').css({ width: _jitem.F_Width + '%', 'text-align': (_jitem.F_Align || 'left') });
+                            $row.append($item);
+                        });
+                        $list.append($row);
+                    });
+                },
+                load: function (component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: component.id,
+                        type: component._configuration.F_Interface == '' ? '1' : '2',
+                        modelType: 'table',
+                        dbId: component._configuration.F_DataSourceId,
+                        sql: component._configuration.F_Sql,
+                        url: component._configuration.F_Interface
+                    });
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents.table.renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+            pieChart: {
+                init: function (component, isEdit) {
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {};
+                    }
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                   
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    if (!component.eChart) {
+                        component.eChart = echarts.init($('#' + component.id + ' .box-module-content')[0]);
+                        $(window).resize(function () {
+                            component.eChart.resize();
+                        });
+                    }
+                    var _data = eCharts.dataFormate(data, component._configuration.F_FullName, component._configuration.F_Value);
+                    eCharts.optionTemplates.loadPie(component.eChart, _data);
+                },
+                load: function (component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: component.id,
+                        type: component._configuration.F_Interface == '' ? '1' : '2',
+                        modelType: 'pieChart',
+                        dbId: component._configuration.F_DataSourceId,
+                        sql: component._configuration.F_Sql,
+                        url: component._configuration.F_Interface
+                    });
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents.pieChart.renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+            lineChart: {
+                init: function (component, isEdit) {
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {};
+                    }
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    if (!component.eChart) {
+                        component.eChart = echarts.init($('#' + component.id + ' .box-module-content')[0]);
+                        $(window).resize(function () {
+                            component.eChart.resize();
+                        });
+                    }
+                    var _data = eCharts.dataFormate(data, component._configuration.F_FullName, component._configuration.F_Value);
+                    eCharts.optionTemplates.loadLines(component.eChart, _data);
+                },
+                load: function (component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: component.id,
+                        type: component._configuration.F_Interface == '' ? '1' : '2',
+                        modelType: 'lineChart',
+                        dbId: component._configuration.F_DataSourceId,
+                        sql: component._configuration.F_Sql,
+                        url: component._configuration.F_Interface
+                    });
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents.lineChart.renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+            barChart: {
+                init: function (component, isEdit) {
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {};
+                    }
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    if (!component.eChart) {
+                        component.eChart = echarts.init($('#' + component.id + ' .box-module-content')[0]);
+                        $(window).resize(function () {
+                            component.eChart.resize();
+                        });
+                    }
+                    var _data = eCharts.dataFormate(data, component._configuration.F_FullName, component._configuration.F_Value);
+                    eCharts.optionTemplates.loadBars(component.eChart, _data);
+                },
+                load: function (component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: component.id,
+                        type: component._configuration.F_Interface == '' ? '1' : '2',
+                        modelType: 'barChart',
+                        dbId: component._configuration.F_DataSourceId,
+                        sql: component._configuration.F_Sql,
+                        url: component._configuration.F_Interface
+                    });
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents.barChart.renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+            gaugeChart: {
+                init: function (component, isEdit) {
+                    if (component.F_Configuration && !component._configuration) {
+                        component._configuration = JSON.parse(component.F_Configuration);
+                    }
+                    else {
+                        component._configuration = component._configuration || {};
+                    }
+                    var $component = _displayBoard.getContainer(component, isEdit);
+                    return $component;
+                },
+                renderData: function (data, component) {
+                    if (!component.eChart) {
+                        component.eChart = echarts.init($('#' + component.id + ' .box-module-content')[0]);
+                        $(window).resize(function () {
+                            component.eChart.resize();
+                        });
+                    }
+                    var _data = eCharts.dataFormate(data, component._configuration.F_FullName, component._configuration.F_Value);
+                    eCharts.optionTemplates.loadGauge(component.eChart, _data);
+                },
+                load: function (component) {
+                    var configInfoList = [];
+                    configInfoList.push({
+                        id: component.id,
+                        type: component._configuration.F_Interface == '' ? '1' : '2',
+                        modelType: 'gaugeChart',
+                        dbId: component._configuration.F_DataSourceId,
+                        sql: component._configuration.F_Sql,
+                        url: component._configuration.F_Interface
+                    });
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetConfigData', { configInfoList: JSON.stringify(configInfoList) }, function (data) {
+                        if (data) {
+                            $.each(data, function (_index, _item) {
+                                var $component = $('#' + _item.id);
+                                if ($component.length > 0) {
+                                    var _component = $component[0].lrdata;
+                                    $.lrDisplayBoardComponents.gaugeChart.renderData(_item.data, _component);
+                                    $component = null;
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        };
+
+        $.fn.Carousel = function (options) {
+            //默认配置
+            var defaults = {
+                speed: 40,  //滚动速度,值越大速度越慢
+                rowHeight: 30 //每行的高度
+            };
+
+            var opts = $.extend({}, defaults, options), intId = [];
+
+            function marquee(obj, step) {
+                obj.find(".table-body").animate({
+                    marginTop: '-=1'
+                }, 0, function () {
+                    var s = Math.abs(parseInt($(this).css("margin-top")));
+                    if (s >= step) {
+
+                        $(this).find("table-body-row").slice(0, 1).appendTo($(this));
+                        $(this).css("margin-top", 0);
+                    }
+                });
+            }
+
+            this.each(function (i) {
+                var sh = opts["rowHeight"], speed = opts["speed"], _this = $(this);
+                var _fn = function () {
+                    if (_this.find(".table-body").height() > _this.height()) {
+                        marquee(_this, sh);
+                    }
+                    intId[i] = setTimeout(_fn, speed);
+                };
+                _fn();
+                _this.hover(function () {
+                    clearInterval(intId[i]);
+                }, function () {
+                    _fn();
+                });
+            });
+        };
+
+        var eCharts = {
+            dataFormate: function (data, text, value) {
+                var categories = [];
+                var datas = [];
+                for (var i = 0, l = data.length; i < l; i++) {
+                    categories.push(data[i][text] || "");
+                    datas.push({ name: data[i][text], value: data[i][value] || 0 });
+                }
+                return { category: categories, data: datas };
+            },
+            optionTemplates: {
+                loadPie: function (chart, data) {
+                    var option = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            bottom: '3%',
+                            data: data.category
+                        },
+                        series: [
+                            {
+                                name: "占比",
+                                type: 'pie',
+                                radius: '60%',
+                                center: ['50%', '50%'],
+                                data: data.data,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+
+                            }
+                        ]
+                    };
+                    option.color = ['#9558E1', '#48D4D7', '#33A1FF', '#df4d4b', '#304552', '#52bbc8', 'rgb(224,134,105)', '#8dd5b4', '#5eb57d', '#d78d2f'];//在这里设置colorList，是一个数组，图片颜色会按顺序选取
+                    chart.setOption(option);
+                },
+                loadLines: function (chart, data) {
+                    var option = {
+                        color: ['#33A1FF'],//在这里设置colorList，是一个数组，图片颜色会按顺序选取
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        grid: {
+                            show: false,
+                            left: '60px',
+                            right: '30px',
+                            top: '60px',
+                            bottom: '40px',
+                            borderColor: '#C0C4CC'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: true,
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#909399'
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#F2F6FC'
+                                }
+                            },
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            data: data.category,
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#909399'
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#F2F6FC'
+                                }
+                            }
+                        },
+                        series: [{
+                            data: data.data,
+                            type: 'line'
+                        }]
+                    };
+                    chart.setOption(option);
+                },
+                loadBars: function (chart, data) {
+                    var option = {
+                        color: ['#33A1FF'],
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        grid: {
+                            show: false,
+                            left: '60px',
+                            right: '30px',
+                            top: '60px',
+                            bottom: '40px',
+                            borderColor: '#C0C4CC'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: true,
+                            axisLine:{
+                                lineStyle:{
+                                    color:'#909399'
+                                }
+                            },
+                            splitLine:{
+                                show:true,
+                                lineStyle:{
+                                    color:'#F2F6FC'
+                                }
+                            },
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            data: data.category,
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#909399'
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#F2F6FC'
+                                }
+                            }
+                        },
+                        series: [{
+                            data: data.data,
+                            type: 'bar',
+                            barWidth: '60%',
+                        }]
+                    };
+                    chart.setOption(option);
+                },
+                loadGauge: function (chart, data) {
+                    var option = {
+                        tooltip: {
+                            formatter: "{a} <br/>{b} : {c}%"
+                        },
+                        series: [
+                            {
+                                type: 'gauge',
+                                detail: { formatter: '{value}%' },
+                                data: data.data
+                            }
+                        ]
+                    };
+                    option.color = ['#9558E1', '#48D4D7', '#33A1FF', '#df4d4b', '#304552', '#52bbc8', 'rgb(224,134,105)', '#8dd5b4', '#5eb57d', '#d78d2f'];//在这里设置colorList，是一个数组，图片颜色会按顺序选取
+                    chart.setOption(option);
+                }
+            }
+        };
+    })(jQuery, top.aycsoft);
+</script>
+
+
+
+<script>
+    var isFirst = true;
+
+var selectedModel;  // 模块选中数据
+var selectColData;  // 统计项选中数据
+
+var keyValue = request('keyValue');
+var configData = [];//配置信息数组
+var containerHeight = 0;
+
+var displayBoard;
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('.container-left .content').lrscroll();
+            // 加载导向
+            $('#wizard').wizard().on('change', function (e, data) {
+                var $finish = $("#btn_finish");
+                var $next = $("#btn_next");
+                if (data.direction === "next") {
+                    if (!$('#step-1').lrValidform()) {
+                        return false;
+                    }
+                    if (isFirst) {
+                        isFirst = false;
+                        if (keyValue) {
+                            setTimeout(function () {
+                                var $container = $(".container-right .content");
+                                $container.find('.box').each(function () {
+                                    var $this = $(this);
+                                    var item = $this[0].lrdata;
+                                    item.eChart && item.eChart.resize();
+                                });
+                            }, 100);
+                        }
+                        else {
+                            setTimeout(function () {
+                                $(".model").show();
+                            }, 100);
+                        }
+                    }
+
+
+                    $next.attr('disabled', 'disabled');
+                    $finish.removeAttr('disabled');
+                }
+                else if (data.direction == "previous") {
+                    $finish.attr('disabled', 'disabled');
+                    $next.removeAttr('disabled');
+                }
+                else {
+                    $finish.attr('disabled', 'disabled');
+                    $next.removeAttr('disabled');
+                }
+            });
+            // 加载预设模板
+            $('#typelayer .lr-cover-box').on('click', function () {
+                $(".model").hide();
+                var value = $(this).attr('data-value');
+                if (value != 'six') {
+                    configData = lrDisplayBoardTamplates[value];
+                    displayBoard.init();
+                }
+            });
+
+            ///模块风格
+            $("#lr_statistics").on('click', function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'statisticsForm',
+                    title: '新增统计指标',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/StatisticsForm',
+                    width: 500,
+                    height: 330,
+                    callBack: function (id) {
+                        return top[id].acceptClick(function (data) {
+                            displayBoard.add(data);
+                        });
+                    }
+                });
+            });
+            $("#lr_table").on("click", function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'tableForm',
+                    title: '新增表格',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/TableForm',
+                    width: 650,
+                    height: 600,
+                    btn: null
+                });
+            });
+            $("#lr_pieChart").on("click", function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'ChartForm',
+                    title: '新增饼图',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ChartForm?type=pieChart',
+                    width: 650,
+                    height: 600,
+                    btn: null
+                });
+            });
+            $("#lr_barChart").on("click", function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'ChartForm',
+                    title: '新增柱状图',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ChartForm?showtype=barChart',
+                    width: 650,
+                    height: 600,
+                    btn: null
+                });
+
+            });
+            $("#lr_lineChart").on("click", function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'ChartForm',
+                    title: '新增折线图',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ChartForm?type=lineChart',
+                    width: 650,
+                    height: 600,
+                    btn: null
+                });
+            });
+            $("#lr_gaugeChart").on("click", function () {
+                selectedModel = null;
+                aycsoft.layerForm({
+                    id: 'ChartForm',
+                    title: '新增仪表盘',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ChartForm?type=gaugeChart',
+                    width: 650,
+                    height: 600,
+                    btn: null
+                });
+
+            });
+
+            //模块编辑
+            $(".container-right").on("click", ".edit", function () {
+                selectedModel = $(this).parents('.box')[0].lrdata;
+                switch (selectedModel.F_Type) {
+                    case 'statistics':
+                        aycsoft.layerForm({
+                            id: 'statisticsForm',
+                            title: '编辑统计指标',
+                            url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/StatisticsForm',
+                            width: 500,
+                            height: 330,
+                            callBack: function (id) {
+                                return top[id].acceptClick(function (data) {
+                                    displayBoard.update(selectedModel);
+                                });
+                            }
+                        });
+                        break;
+                    case 'table':
+                        aycsoft.layerForm({
+                            id: 'tableForm',
+                            title: '编辑表格',
+                            url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/TableForm',
+                            width: 650,
+                            height: 600,
+                            btn: null
+                        });
+                        break;
+                    case 'pieChart':
+                    case 'lineChart':
+                    case 'barChart':
+                    case 'gaugeChart':
+                        aycsoft.layerForm({
+                            id: 'ChartForm',
+                            title: '编辑图表',
+                            url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ChartForm?type=' + selectedModel.F_Type,
+                            width: 650,
+                            height: 600,
+                            btn: null
+                        });
+                        break;
+                }
+            });
+            //模块删除
+            $(".container-right").on("click", ".del", function () {
+                var $box = $(this).parents('.box');
+                aycsoft.layerConfirm('是否确认删除该项！', function (res, index) {
+                    if (res) {
+                        $box.remove();
+                        top.layer.close(index); //再执行关闭 
+                    }
+                });
+            });
+
+
+            // 新增统计指标数据
+            $(".container-right").on("click", ".add", function () {
+                var component = $(this).parents('.box')[0].lrdata;
+                selectColData = null;
+                if (component._configuration.num < 5) {
+                    aycsoft.layerForm({
+                        id: 'ColStatisForm',
+                        title: '添加统计项配置',
+                        url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ColStatisForm',
+                        width: 700,
+                        height: 665,
+                        callBack: function (id) {
+                            return top[id].acceptClick(function (data) {
+                                component._configuration.num++;
+                                component._configuration.colData[data.id] = data;
+                                $.lrDisplayBoardComponents.statistics.load(data, component);
+                            });
+                        }
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('最多添加五项');
+                }
+            });
+            $(".container-right").on("click", ".edited", function () {
+                selectColData = $(this).parents('.informationContentItem')[0].lrdata;
+                aycsoft.layerForm({
+                    id: 'ColStatisForm',
+                    title: '修改配置',
+                    url: top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/ColStatisForm',
+                    height: 665,
+                    width: 700,
+                    callBack: function (id) {
+                        return top[id].acceptClick(function (data) {
+                            $.lrDisplayBoardComponents.statistics.load(selectColData);
+                        });
+                    }
+                });
+            });
+            $(".container-right").on("click", ".deleted", function (event) {
+                var $item = $(this).parents('.informationContentItem');
+                var item = $item[0].lrdata;
+                var component = $item.parents('.box')[0].lrdata;
+                var _id = item.id;
+                aycsoft.layerConfirm('是否确认删除该项！', function (res, index) {
+                    if (res) {
+                        component._configuration.num--;
+                        delete component._configuration.colData[item.id];
+                        $item.remove();
+                        top.layer.close(index); //再执行关闭 
+                    }
+                });
+            });
+
+            ///完成方法
+            $("#btn_finish").on('click', function () {
+                if (!$('#step-1').lrValidform()) {
+                    return false;
+                }
+                var kanbaninfo = $('#step-1').lrGetFormData();
+
+                var _configData = [];
+                var $container = $(".container-right .content");
+                $container.find('.box').each(function () {
+                    var $this = $(this);
+                    var item = $this[0].lrdata;
+                    var _item = {};
+                    _item.F_ModeName = item.F_ModeName,
+                    _item.F_TopValue = item.F_TopValue,
+                    _item.F_LeftValue = item.F_LeftValue,
+                    _item.F_WidthValue = item.F_WidthValue,
+                    _item.F_HightValue = item.F_HightValue,
+                    _item.F_RefreshTime = item.F_RefreshTime,
+                    _item.F_Type = item.F_Type,
+                    _item.F_Configuration = JSON.stringify(item._configuration);
+                    _configData.push(_item);
+                });
+
+                var postData = {
+                    kanbaninfo: JSON.stringify(kanbaninfo),
+                    kbconfigInfo: JSON.stringify(_configData)
+                };
+                $.lrSaveForm(top.$.rootUrl + '/LR_DisplayBoard/LR_KBKanBanInfo/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                    // 保存成功后才回调
+                    aycsoft.frameTab.currentIframe().refreshGirdData();//index页列表刷新
+                });
+            });
+        },
+        initData: function () {
+            //编辑看板信息
+            if (keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_DisplayBoard/LR_KBKanBanInfo/GetFormData?keyValue=' + keyValue, function (data) {
+                    $('#step-1').lrSetFormData(data.baseinfo);
+                    configData = data.configinfo;
+                    displayBoard.init();
+                    $.lrDisplayBoardComponents.load($(".container-right .content"));
+                });
+            }
+        }
+    };
+
+    displayBoard = {
+        init: function () {
+            var $container = $(".container-right .content");
+            $container.hide();
+            $container.html("");
+            $.each(configData || [], function (_Index, _Item) {
+                if (_Item && _Item.F_Type) {
+                    var _fn = $.lrDisplayBoardComponents[_Item.F_Type];
+                    if (_fn) {
+                        $container.append(_fn.init(_Item, true));
+                        var _height = _Item._height + _Item._top;
+                        if (containerHeight < _height) {
+                            containerHeight = _height;
+                        }
+                    }
+                }
+            });
+            if (containerHeight > 0) {
+                $container.height(containerHeight);
+            }
+            $container.show();
+            $container = null;
+        },
+        add: function (data) {
+            var $container = $(".container-right .content");
+            $container.hide();
+            var _fn = $.lrDisplayBoardComponents[data.F_Type];
+            if (_fn) {
+                $container.append(_fn.init(data, true));
+                var _height = data._height + data._top;
+                if (containerHeight < _height) {
+                    containerHeight = _height;
+                }
+            }
+            $container.height(containerHeight);
+            $container.show();
+            $container = null;
+        },
+        update: function (data) {
+            var _fn = $.lrDisplayBoardComponents[data.F_Type];
+            if (_fn) {
+                _fn.init(data, true);
+                var _height = data._height + data._top;
+                if (containerHeight < _height) {
+                    containerHeight = _height;
+                }
+            }
+            var $container = $(".container-right .content");
+            $container.height(containerHeight);
+            $container = null;
+        },
+
+        addModel: function (data) {
+            displayBoard.add(data);
+            $.lrDisplayBoardComponents[data.F_Type].load(data);
+        },
+        updateModel: function (data) {
+            displayBoard.update(data);
+            $.lrDisplayBoardComponents[data.F_Type].load(data);
+        }
+    }
+    page.init();
+};
+</script>
+
+

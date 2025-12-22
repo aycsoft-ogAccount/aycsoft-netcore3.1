@@ -1,0 +1,739 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aycsoft.workflow</name>
+    </assembly>
+    <members>
+        <member name="T:aycsoft.workflow.DbFindTableMethod">
+            <summary>
+            定义一个委托方法
+            </summary>
+            <param name="dbId">数据库ID</param>
+            <param name="sql">sql语句</param>
+            <param name="parameter">参数</param>
+        </member>
+        <member name="T:aycsoft.workflow.GetConfluenceNumMethod">
+            <summary>
+            判断节点是否审核同意
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <param name="nodeId">流程节点Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.workflow.NWFEngineConfig">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流引擎配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineConfig.ParamConfig">
+            <summary>
+            流程参数配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineConfig.DbFindTable">
+            <summary>
+            获取数据库数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineConfig.GetAgreeNum">
+            <summary>
+            获取审核同意数
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineConfig.GetDisAgreeNum">
+            <summary>
+            获取审核不同意数
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFEngineParamConfig">
+            <summary>
+            流程模板引擎参数配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.HasInstance">
+            <summary>
+            是否已经有流程实例
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.IsChild">
+            <summary>
+            是否是子流程 1是 0不是
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.ParentTaskId">
+            <summary>
+            父级流程任务主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.ParentProcessId">
+            <summary>
+            父级流程实例主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.Scheme">
+            <summary>
+            流程模板
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.SchemeName">
+            <summary>
+            流程模板名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.SchemeCode">
+            <summary>
+            流程模板编码
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.SchemeId">
+            <summary>
+            流程模板主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.ProcessId">
+            <summary>
+            流程实例Id
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.ProcessLevel">
+            <summary>
+            流程实例等级 1-普通，2-重要，3-紧急
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.Title">
+            <summary>
+            流程标题
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.Auditers">
+            <summary>
+            审核人信息
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.CreateUser">
+            <summary>
+            创建用户
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.CurrentUser">
+            <summary>
+            当前用户
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFEngineParamConfig.State">
+            <summary>
+            流程状态 0 默认运行状态 1 重新发起 2 运行结束
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFUserInfo">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：流程人员信息
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.Id">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.Account">
+            <summary>
+            用户账号
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.Name">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.CompanyId">
+            <summary>
+            公司主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.DepartmentId">
+            <summary>
+            部门主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.Mark">
+            <summary>
+            标记 0需要审核1暂时不需要审核
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFUserInfo.noPeople">
+            <summary>
+            是否有审核人
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFEngine">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流引擎
+            </summary>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.#ctor(aycsoft.workflow.NWFEngineConfig)">
+            <summary>
+            
+            </summary>
+            <param name="nWFEngineConfig"></param>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.CalcCondition(aycsoft.workflow.NWFNodeInfo)">
+            <summary>
+            计算条件
+            </summary>
+            <param name="node">节点信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.CalcConfluence(aycsoft.workflow.NWFNodeInfo,System.String,System.Boolean)">
+            <summary>
+            计算会签
+            </summary>
+            <param name="wfNodeInfo">节点信息</param>
+            <param name="preNodeId">上一节点Id</param>
+            <param name="isAgree">同意</param>
+            <returns>0 不做处理 1 通过 -1 不通过</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetScheme">
+            <summary>
+            获取流程模板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetSchemeObj">
+            <summary>
+            获取流程模板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetStartNode">
+            <summary>
+            获取开始节点
+            </summary>
+            <returns>节点信息</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetNode(System.String)">
+            <summary>
+            获取节点
+            </summary>
+            <param name="nodeId">流程处理节点ID</param>
+            <returns>节点信息</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetLines(System.String,System.String,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            获取两节点间的线条
+            </summary>
+            <param name="fromNodeId">开始节点</param>
+            <param name="toNodeId">结束节点</param>
+            <param name="list">线条列表</param>
+            <param name="nodes"></param>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetNextNodes(System.String,System.String,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo})">
+            <summary>
+            获取下一节点
+            </summary>
+            <param name="nodeId">当前节点Id</param>
+            <param name="code">节点操作码 agree 同意 disagree 不同意 lrtimeout 超时</param>
+            <param name="lineList"></param>
+            <returns>节点信息列表</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetPreNodes(System.String)">
+            <summary>
+            获取上一节点列表
+            </summary>
+            <param name="nodeId">当前节点Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.IsToNode(System.String,System.String)">
+            <summary>
+            判断两节点是否连接
+            </summary>
+            <param name="formNodeId">开始节点</param>
+            <param name="toNodeId">结束节点</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetConfig">
+            <summary>
+            获取配置参数信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFEngine.GetNextTaskNode(aycsoft.workflow.NWFNodeInfo,System.String,System.Boolean,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo})">
+            <summary>
+            获取接下来的任务节点信息
+            </summary>
+            <param name="beginNode">起始节点</param>
+            <param name="code">节点操作码 agree 同意 disagree 不同意 lrtimeout 超时</param>
+            <param name="isGetAuditors">是否获取下一节点审核人</param>
+            <param name="lineList">经过的线段需要执行操作的</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.workflow.NWFIEngine">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流引擎
+            </summary>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetScheme">
+            <summary>
+            获取流程模板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetSchemeObj">
+            <summary>
+            获取流程模板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetStartNode">
+            <summary>
+            获取开始节点
+            </summary>
+            <returns>节点信息</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetNode(System.String)">
+            <summary>
+            获取节点
+            </summary>
+            <param name="nodeId">流程处理节点ID</param>
+            <returns>节点信息</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetLines(System.String,System.String,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            获取两节点间的线条
+            </summary>
+            <param name="fromNodeId">开始节点</param>
+            <param name="toNodeId">结束节点</param>
+            <param name="list">线条列表</param>
+            <param name="nodes"></param>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetNextNodes(System.String,System.String,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo})">
+            <summary>
+            获取下一节点
+            </summary>
+            <param name="nodeId">当前节点Id</param>
+            <param name="code">节点操作码 agree 同意 disagree 不同意 lrtimeout 超时</param>
+            <param name="lineList"></param>
+            <returns>节点信息列表</returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetPreNodes(System.String)">
+            <summary>
+            获取上一节点列表
+            </summary>
+            <param name="nodeId">当前节点Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.IsToNode(System.String,System.String)">
+            <summary>
+            判断两节点是否连接
+            </summary>
+            <param name="formNodeId">开始节点</param>
+            <param name="toNodeId">结束节点</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetConfig">
+            <summary>
+            获取配置参数信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.workflow.NWFIEngine.GetNextTaskNode(aycsoft.workflow.NWFNodeInfo,System.String,System.Boolean,System.Collections.Generic.List{aycsoft.workflow.NWFLineInfo})">
+            <summary>
+            获取接下来的任务节点信息
+            </summary>
+            <param name="beginNode">起始节点</param>
+            <param name="code">节点操作码 agree 同意 disagree 不同意 lrtimeout 超时</param>
+            <param name="isGetAuditors">是否获取下一节点审核人</param>
+            <param name="lineList">经过的线段需要执行操作的</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.workflow.NWFLineInfo">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流线段
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.id">
+            <summary>
+            线条Id
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.name">
+            <summary>
+            线条名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.from">
+            <summary>
+            开始端节点ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.to">
+            <summary>
+            结束端节点ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.strategy">
+            <summary>
+            通过策略 1.所有情况都通过 2.自定义设置（默认该值为1）
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.agreeList">
+            <summary>
+            自定义通过策略 agree 同意 disagree 不同意 lrtimeout 超时
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.operationType">
+            <summary>
+            绑定的操作类型sql interface ioc
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.dbId">
+            <summary>
+            绑定数据ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.strSql">
+            <summary>
+            绑定的sql语句
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.strSqlR">
+            <summary>
+            绑定的sql语句(撤销的时候执行)
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.strInterface">
+            <summary>
+            绑定的接口
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.strInterfaceR">
+            <summary>
+            绑定的接口(撤销的时候执行)
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.iocName">
+            <summary>
+            绑定的ioc名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFLineInfo.iocNameR">
+            <summary>
+            绑定的ioc名称（撤销的时候执行）
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFAuditor">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流审核者
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.auditorId">
+            <summary>
+            审核者主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.auditorAccount">
+            <summary>
+            审核者账号
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.auditorName">
+            <summary>
+            审核者名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.type">
+            <summary>
+            审核者类型1.岗位2.角色3.用户4.上下级5.表单指定字段6.某一个节点执行人
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFAuditor.condition">
+            <summary>
+            限制条件1.同一个部门2.同一个公司
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFCondition">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流流转字段条件
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.dbId">
+            <summary>
+            数据库主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.table">
+            <summary>
+            表格
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.field1">
+            <summary>
+            关联字段
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.field2">
+            <summary>
+            比较字段
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.compareType">
+            <summary>
+            比较类型1.等于2.不等于3.大于4.大于等于5.小于6.小于等于7.包含8.不包含9.包含于10.不包含于
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCondition.value">
+            <summary>
+            数据值
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFNodeInfo">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流节点
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.id">
+            <summary>
+            节点Id
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.name">
+            <summary>
+            节点名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.type">
+            <summary>
+            节点类型-》开始startround;结束endround;一般stepnode;会签节点:confluencenode;条件判断节点：conditionnode;查阅节点：auditornode;子流程节点：childwfnode
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.notice">
+            <summary>
+            通知方式，绑定的消息策略编码
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.isAllAuditor">
+            <summary>
+            审核方式（1只要其中一人审核2都需要审核）
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.auditExecutType">
+            <summary>
+            审核执行策略（1有人不同意就往下流程（默认）2需要所有人审完才往下走）
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.auditorType">
+            <summary>
+            审核方式(1并行2串行)
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.auditorAgainType">
+            <summary>
+            再次审核 1.已通过不需要审核 2.已通过需要审核
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.auditors">
+            <summary>
+            审核者们
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.timeoutNotice">
+            <summary>
+            超时时间 0 的话不执行
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.timeoutInterval">
+            <summary>
+            超时通知间隔 0  的话只执行一次
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.timeoutStrategy">
+            <summary>
+            超时通知绑定的消息策略编码
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.timeoutAction">
+            <summary>
+            超时时间（超时后可流转下一节点）0 的话不执行
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.confluenceType">
+            <summary>
+            会签策略1-所有步骤通过，2-一个步骤通过即可，3-按百分比计算
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.confluenceRate">
+            <summary>
+            会签比例
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.childFlow">
+            <summary>
+            子流程模板编码
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.childType">
+            <summary>
+            子流程执行策略 1 同步 2 异步
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.conditions">
+            <summary>
+            工作流条件节点-条件字段（优先执行）
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.dbConditionId">
+            <summary>
+            条件判断sql语句所在数据库主键
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.conditionSql">
+            <summary>
+            条件判断sql语句
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.userList">
+            <summary>
+            实际审核人信息
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.confluenceRes">
+            <summary>
+            会签审核结果0 不做处理 1 通过 -1 不通过
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.operationType">
+            <summary>
+            绑定的操作类型sql interface ioc
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.dbId">
+            <summary>
+            绑定数据ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.strSql">
+            <summary>
+            绑定的sql语句
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.strInterface">
+            <summary>
+            绑定的接口
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.iocName">
+            <summary>
+            绑定的ioc名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.isBatchAudit">
+            <summary>
+            是否允许批量审核1允许 其他值都不允许
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.agreeGz">
+            <summary>
+            自动同意规则 1.处理人就是提交人 2.处理人和上一步的处理人相同 3.处理人审批过
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFNodeInfo.noPeopleGz">
+            <summary>
+            无对应处理人  1或者其他 超级管理员处理 2.跳过此步骤 3.不能提交
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFCloseDo">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：流程撤销作废的时候执行的方法
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCloseDo.F_CloseDoType">
+            <summary>
+            方法执行类型sql，ioc，interface
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCloseDo.F_CloseDoDbId">
+            <summary>
+            执行sql语句的数据库ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCloseDo.F_CloseDoSql">
+            <summary>
+            执行sql语句
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCloseDo.F_CloseDoIocName">
+            <summary>
+            执行的ioc名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFCloseDo.F_CloseDoInterface">
+            <summary>
+            执行接口
+            </summary>
+        </member>
+        <member name="T:aycsoft.workflow.NWFScheme">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2019.11.22
+            描 述：工作流模板模型
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFScheme.nodes">
+            <summary>
+            节点数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFScheme.lines">
+            <summary>
+            线条数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.workflow.NWFScheme.closeDo">
+            <summary>
+            流程撤销作废的时候执行的方法
+            </summary>
+        </member>
+    </members>
+</doc>

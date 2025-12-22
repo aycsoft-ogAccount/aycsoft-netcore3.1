@@ -1,0 +1,965 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aycsoft.webapi</name>
+    </assembly>
+    <members>
+        <member name="T:aycsoft.webapi.Controllers.AnnexesController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.17
+            描 述：附件API
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.#ctor(aycsoft.iapplication.AnnexesFileIBLL)">
+            <summary>
+            初始方法
+            </summary>
+            <param name="annexesFileIBLL">附件方法</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.List(System.String)">
+            <summary>
+            获取附件列表
+            </summary>
+            <param name="folderId">文件夹Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.Upload(System.String,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            上传附件图片文件
+            </summary>
+            <param name="folderId">文件夹Id</param>
+            <param name="file">文件</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.Delete(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="fileId">文件主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.Down(System.String)">
+            <summary>
+            下载文件
+            </summary>
+            <param name="fileId">文件主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.FileInfo(System.String)">
+            <summary>
+            获取文件信息
+            </summary>
+            <param name="fileId">文件主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.AnnexesController.ToBase64(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            获取图片文件的 Base64 编码 (钉钉端获取手写签名)
+            </summary>
+            <param name="file">文件</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.CodeRuleController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.21
+            描 述：编码规则接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CodeRuleController.#ctor(aycsoft.iapplication.CodeRuleIBLL)">
+            <summary>
+            初始方法
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CodeRuleController.Code(System.String)">
+            <summary>
+            获取编码单号
+            </summary>
+            <param name="code">编码</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.CompanyController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.21
+            描 述：公司接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CompanyController.#ctor(aycsoft.iapplication.CompanyIBLL)">
+            <summary>
+            初始化方法
+            </summary>
+            <param name="companyIBLL"></param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CompanyController.AllList">
+            <summary>
+            获取所有公司数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CompanyController.List(System.String)">
+            <summary>
+            获取子公司数据
+            </summary>
+            <param name="pId">父级Id，第一级为0</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CompanyController.Info(System.String)">
+            <summary>
+            获公司具体信息
+            </summary>
+            <param name="companyId">公司主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CompanyController.ByKeywords(System.String)">
+            <summary>
+            根据关键字获取公司列表
+            </summary>
+            <param name="keywords">检索关键字</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.CustmerController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.21
+            描 述：自定义表单接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CustmerController.#ctor(aycsoft.iapplication.FormSchemeIBLL)">
+            <summary>
+            初始化方法
+            </summary>
+            <param name="formSchemeIBLL"></param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.CustmerController.PageList(aycsoft.util.Pagination,System.String,System.String)">
+            <summary>
+            获取自定义表单功能分页数据
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="formId">表单主键</param>
+            <param name="queryJson">查询参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.DataItemController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.21
+            描 述：数据字典接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DataItemController.#ctor(aycsoft.iapplication.DataItemIBLL)">
+            <summary>
+            初始化方法
+            </summary>
+            <param name="dataItemIBLL">数据字典业务接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DataItemController.Details(System.String)">
+            <summary>
+            获取数据字典详细列表
+            </summary>
+            <param name="code">数据字典编码</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.DataSourceController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：数据源接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DataSourceController.#ctor(aycsoft.iapplication.DataSourceIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="dataSourceIBLL">数据源接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DataSourceController.DataTable(System.String)">
+            <summary>
+            获取数据源数据
+            </summary>
+            <param name="code">数据源编码</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.DepartmentController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：部门接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DepartmentController.#ctor(aycsoft.iapplication.DepartmentIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="departmentIBLL">部门接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DepartmentController.List(System.String)">
+            <summary>
+            根据公司 id 获取部门列表
+            </summary>
+            <param name="companyId">公司主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DepartmentController.Info(System.String)">
+            <summary>
+            根据 id 获取单个部门详情
+            </summary>
+            <param name="departmentId">部门主键</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.DesktopController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：桌面配置接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DesktopController.#ctor(aycsoft.iapplication.DTTargetIBLL,aycsoft.iapplication.DTListIBLL,aycsoft.iapplication.DTChartIBLL,aycsoft.iapplication.DataSourceIBLL,aycsoft.iapplication.DTImgIBLL,aycsoft.iapplication.ImgIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="dTTargetIBLL">统计数据接口</param>
+            <param name="dTListIBLL">列表接口</param>
+            <param name="dTChartIBLL">图标接口</param>
+            <param name="dataSourceIBLL">数据库连接接口</param>
+            <param name="dTImgIBLL">桌面图片接口</param>
+            <param name="imgIBLL">图片接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DesktopController.Setting">
+            <summary>
+            获取桌面配置信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DesktopController.Data(System.String,System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="type">类型 target,chart,list </param>
+            <param name="id">主键ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DesktopController.Imgid">
+            <summary>
+            获取桌首页图片
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.DesktopController.Img(System.String)">
+            <summary>
+            获取图片
+            </summary>
+            <param name="id">主键</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.FormController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：自定义表单接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FormController.#ctor(aycsoft.iapplication.FormSchemeIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="formSchemeIBLL">表单接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FormController.Scheme(System.String)">
+            <summary>
+            获取表单模板数据
+            </summary>
+            <param name="id">模板主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FormController.Data(System.String,System.String,System.String)">
+            <summary>
+            获取自定义表单数据
+            </summary>
+            <param name="schemeInfoId">模板信息主键</param>
+            <param name="keyValue">主键值</param>
+            <param name="processIdName">流程绑定字段名</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FormController.Save(System.String,System.String,System.String,System.String)">
+            <summary>
+            保存表单数据
+            </summary>
+            <param name="schemeInfoId">模板信息主键</param>
+            <param name="keyValue">主键值</param>
+            <param name="processIdName">流程绑定字段名</param>
+            <param name="formData">表单数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FormController.DeleteForm(System.String,System.String)">
+            <summary>
+            删除表单数据
+            </summary>
+            <param name="schemeInfoId">模板信息主键</param>
+            <param name="keyValue">主键值</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.FunctionController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：移动应用
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FunctionController.#ctor(aycsoft.iapplication.MyFunctionIBLL,aycsoft.iapplication.FunctionIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="myFunctionIBLL">我的功能</param>
+            <param name="functionIBLL">移动端功能</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FunctionController.List">
+            <summary>
+            获取全部移动功能数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FunctionController.MyList">
+            <summary>
+            获取我的常用应用数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.FunctionController.UpdateMyList(System.String)">
+            <summary>
+            更新我的常用应用
+            </summary>
+            <param name="ids">功能id集合字串</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.IMController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.22
+            描 述：即时通讯
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.#ctor(aycsoft.iapplication.IMSysUserIBLL,aycsoft.iapplication.IMMsgIBLL,aycsoft.iapplication.IMContactsIBLL)">
+            <summary>
+            初始化方法
+            </summary>
+            <param name="iMSysUserIBLL">即时通讯系统用户</param>
+            <param name="iMMsgIBLL">消息方法</param>
+            <param name="iMContactsIBLL">联系人方法</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.contacts(System.String)">
+            <summary>
+            获取最近联系人列表
+            </summary>
+            <param name="time">开始时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.Send(System.String,System.String)">
+            <summary>
+            发送消息
+            </summary>
+            <param name="userId">接收人主键</param>
+            <param name="content">内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.AddContact(System.String)">
+            <summary>
+            添加一条最近的联系人
+            </summary>
+            <param name="otherUserId">联系人</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.Update(System.String)">
+            <summary>
+            更新消息读取状态
+            </summary>
+            <param name="otherUserId">消息发送者ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.LastMsg(System.String)">
+            <summary>
+            获取最近10条聊天记录
+            </summary>
+            <param name="otherUserId">消息发送者ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.MsgList(System.String,System.DateTime)">
+            <summary>
+            获取小于某时间点的5条记录
+            </summary>
+            <param name="otherUserId">消息交谈方Id</param>
+            <param name="time">时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.IMController.MsgList2(System.String,System.DateTime)">
+            <summary>
+            获取大于某时间点的所有数据
+            </summary>
+            <param name="otherUserId">消息交谈方Id</param>
+            <param name="time">时间</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.NewWorkFlowController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.17
+            描 述：流程api
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.#ctor(aycsoft.iapplication.NWFSchemeIBLL,aycsoft.iapplication.NWFProcessIBLL,aycsoft.iapplication.FormSchemeIBLL)">
+            <summary>
+            初始化
+            </summary>
+            <param name="nWFSchemeIBLL">流程模板</param>
+            <param name="nWFProcessIBLL">流程实例</param>
+            <param name="formSchemeIBLL">表单模板</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.MyProcessList(aycsoft.util.Pagination,System.String)">
+            <summary>
+            获取我的流程实例信息
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="queryJson">查询条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.MyTaskList(aycsoft.util.Pagination,System.String)">
+            <summary>
+            /获取我的任务列表
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="queryJson">查询条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.MyMakeTaskList(aycsoft.util.Pagination,System.String)">
+            <summary>
+            获取我已处理的任务列表
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="queryJson">查询条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SchemePageList(aycsoft.util.Pagination,System.String)">
+            <summary>
+            获取流程模板
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="queryJson">查询条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SchemeByCode(System.String)">
+            <summary>
+            获取流程模板
+            </summary>
+            <param name="code">流程编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.NextAuditors(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            获取流程下一节点审核人员
+            </summary>
+            <param name="code">流程编码</param>
+            <param name="processId">流程进程主键</param>
+            <param name="taskId">任务主键</param>
+            <param name="nodeId">节点ID</param>
+            <param name="operationCode">操作编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.ProcessDetails(System.String,System.String)">
+            <summary>
+            获取流程进程信息
+            </summary>
+            <param name="processId">进程主键</param>
+            <param name="taskId">任务主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.Create(System.String,System.String,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            创建流程实例
+            </summary>
+            <param name="code">流程模板编码</param>
+            <param name="processId">流程实例主键</param>
+            <param name="title">流程标题</param>
+            <param name="level">流程等级</param>
+            <param name="auditors">下一节点审核人信息</param>
+            <param name="formreq">自定义表单请求参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.AgainCreateFlow(System.String,System.String)">
+            <summary>
+            重新创建流程
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <param name="formreq">自定义表单请求参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.CreateChildFlow(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            创建流程(子流程)
+            </summary>
+            <param name="code">流程模板编码</param>
+            <param name="processId">流程实例主键</param>
+            <param name="parentProcessId">父级流程实例主键</param>
+            <param name="parentTaskId">父级流程任务主键</param>
+            <param name="formreq">表单请求数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SaveDraft(System.String,System.String,System.String)">
+            <summary>
+            保存草稿(流程)
+            </summary>
+            <param name="code">流程模板编码</param>
+            <param name="processId">流程实例主键</param>
+            <param name="formreq">表单请求数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.DeleteDraft(System.String)">
+            <summary>
+            删除草稿
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.AuditFlow(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            审批流程
+            </summary>
+            <param name="operationCode">审核编码</param>
+            <param name="operationName">审核编码中文意思</param>
+            <param name="processId">流程实例主键</param>
+            <param name="taskId">任务主键</param>
+            <param name="des">审核备注信息</param>
+            <param name="auditors">下一节点审核人信息</param>
+            <param name="signUrl">审核人签名信息</param>
+            <param name="formreq">自定义表单信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SignFlow(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            流程加签
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <param name="taskId">任务主键</param>
+            <param name="des">审核备注信息</param>
+            <param name="userId">加签人ID</param>
+            <param name="formreq">自定义表单信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SignAuditFlow(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            流程加签审核
+            </summary>
+            <param name="operationCode">审核码</param>
+            <param name="processId">流程实例主键</param>
+            <param name="taskId">任务主键</param>
+            <param name="des">审核备注信息</param>
+            <param name="userId">加签人ID</param>
+            <param name="formreq">自定义表单信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.UrgeFlow(System.String)">
+            <summary>
+            催办流程
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.RevokeFlow(System.String)">
+            <summary>
+            撤销流程（只有在该流程未被处理的情况下）
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.ReferFlow(System.String,System.String)">
+            <summary>
+            确认阅读
+            </summary>
+            <param name="processId">流程实例主键</param>
+            <param name="taskId">任务主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.NewWorkFlowController.SaveForm(System.String)">
+            <summary>
+            保存自定义表单数据
+            </summary>
+            <param name="formreq">请求参数</param>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.NewWorkFlowController.FormParam">
+            <summary>
+            自定义表单提交参数
+            </summary>
+        </member>
+        <member name="P:aycsoft.webapi.Controllers.NewWorkFlowController.FormParam.schemeInfoId">
+            <summary>
+            流程模板id
+            </summary>
+        </member>
+        <member name="P:aycsoft.webapi.Controllers.NewWorkFlowController.FormParam.processIdName">
+            <summary>
+            关联字段名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.webapi.Controllers.NewWorkFlowController.FormParam.keyValue">
+            <summary>
+            数据主键值
+            </summary>
+        </member>
+        <member name="P:aycsoft.webapi.Controllers.NewWorkFlowController.FormParam.formData">
+            <summary>
+            表单数据
+            </summary>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.UserController">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.17
+            描 述：用户api
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.#ctor(aycsoft.iapplication.UserIBLL,aycsoft.iapplication.PostIBLL,aycsoft.iapplication.RoleIBLL,aycsoft.iapplication.UserRelationIBLL,aycsoft.iapplication.LogIBLL,aycsoft.operat.IOperator,aycsoft.iapplication.ImgIBLL,Microsoft.AspNetCore.Http.IHttpContextAccessor,aycsoft.iapplication.DepartmentIBLL)">
+            <summary>
+            构造方法，注入依赖项
+            </summary>
+            <param name="userIBLL">用户操作接口</param>
+            <param name="postIBLL">岗位操作接口</param>
+            <param name="roleIBLL">角色操作接口</param>
+            <param name="userRelationIBLL">用户关系操作接口</param>
+            <param name="logIBLL">日志接口</param>
+            <param name="ioperator">会话操作接口</param>
+            <param name="imgIBLL">图片操作接口</param>
+            <param name="iHttpContextAccessor">请求上下文</param>
+            <param name="departmentIBLL">请求上下文</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.Login(System.String,System.String)">
+            <summary>
+            登录接口
+            </summary>
+            <param name="username">账号</param>
+            <param name="password">密码</param>
+            <returns>登录令牌信息</returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.Modifypw(System.String,System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="newpassword">新密码</param>
+            <param name="oldpassword">旧密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.Current">
+            <summary>
+            获取登录者用户信息
+            </summary>
+            <returns>登录者用户信息</returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.HeadImg(System.String)">
+            <summary>
+            根据用户 id 获取用户头像
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.Info(System.String)">
+            <summary>
+            按 id 获取用户信息
+            </summary>
+            <returns>单个用户信息</returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.Infos(System.String)">
+            <summary>
+            根据传入的 id 获取多个用户信息
+            </summary>
+            <returns>多个用户信息的数组</returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.UserController.ByOrganize(System.String,System.String,System.String)">
+            <summary>
+            根据公司/部门/关键字搜索获取用户
+            </summary>
+            <param name="companyId">公司 id</param>
+            <param name="departmentId">部门 id</param>
+            <param name="keywords">搜索关键字</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Controllers.TestApiController">
+            <summary>
+            Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期： 2020-06-17 11:18:18
+            描 述： 测试代码生成器 f_parent
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.#ctor(aycsoft.iappdev.ITestBLL)">
+            <summary>
+            初始方法
+            </summary>
+            <param name="iTestBLL">接口</param>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.GetList(System.String)">
+            <summary>
+            获取主表f_parent的所有列表数据
+            </summary>
+            <param name="queryJson">查询参数,json字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.GetPageList(aycsoft.util.Pagination,System.String)">
+            <summary>
+            获取主表f_parent的分页列表数据
+            </summary>
+            <param name="pagination">分页参数</param>
+            <param name="queryJson">查询参数,json字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.GetF_childrenList(System.String)">
+            <summary>
+            获取f_children(f_children)的列表实体数据
+            </summary>
+            <param name="f_parentId">与表f_parent的关联字段</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.GetForm(System.String)">
+            <summary>
+            获取表单数据
+            </summary>
+            <param name="keyValue">主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.DeleteForm(System.String)">
+            <summary>
+            删除表单数据
+            </summary>
+            <param name="keyValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.Controllers.TestApiController.SaveForm(System.String,System.String,System.String)">
+            <summary>
+            新增,更新
+            </summary>
+            <param name="keyValue">主键值</param>
+            <param name="strF_parentEntity">f_parent实体数据</param>
+            <param name="strF_childrenList">f_children实体数据列表JSON字串</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.AddAuthTokenHeaderParameter">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2020.04.17
+            描 述：给api添加权限验证信息参数
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.AddAuthTokenHeaderParameter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            给接口添加隐性参数
+            </summary>
+            <param name="operation">api操作接口</param>
+            <param name="context">上下文</param>
+        </member>
+        <member name="T:aycsoft.webapi.ExceptionFilter">
+            <summary>
+            异常过滤器
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.ExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            发生异常时进入
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:aycsoft.webapi.MvcControllerBase">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：基础控制器
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.CurrentUser(System.String)">
+            <summary>
+            获取当前用户信息
+            </summary>
+            <param name="userId">用户id</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.GetRuleCode(System.String)">
+            <summary>
+            获取编码
+            </summary>
+            <param name="code">编码规则编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.UseRuleSeed(System.String)">
+            <summary>
+            占用编码
+            </summary>
+            <param name="code">编码规则编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.GetUserName">
+            <summary>
+            获取登录者用户名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.GetUserId">
+            <summary>
+            获取登录者用户Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.GetUserAccount">
+            <summary>
+            获取登录者用户账号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.Success(System.Object)">
+            <summary>
+            返回成功数据
+            </summary>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.Success(System.String,System.Object)">
+            <summary>
+            返回成功消息
+            </summary>
+            <param name="info">信息</param>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.SuccessInfo(System.String)">
+            <summary>
+            返回成功数据
+            </summary>
+            <param name="info">信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.Fail(System.String)">
+            <summary>
+            返回失败消息
+            </summary>
+            <param name="info">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.MvcControllerBase.GetCookies(System.String)">
+            <summary>
+            获取cookies
+            </summary>
+            <param name="key">键</param>
+            <returns>返回对应的值</returns>
+        </member>
+        <member name="T:aycsoft.webapi.AuthorizeMiddleware">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：权限中间件
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.AuthorizeMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,aycsoft.operat.IOperator)">
+            <summary>
+            构造方法
+            </summary>
+            <param name="next">请求委托</param>
+            <param name="ioperator">验证登录信息方法</param>
+        </member>
+        <member name="M:aycsoft.webapi.AuthorizeMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            执行
+            </summary>
+            <param name="httpContext">请求连接</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.webapi.AuthorizeMiddleware.RespondWithJson(Microsoft.AspNetCore.Http.HttpResponse,System.Object)">
+            <summary>
+            返回请求信息
+            </summary>
+            <param name="response">返回头</param>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Program">
+            <summary>
+            程序启动项
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Program.Main(System.String[])">
+            <summary>
+            入口方法
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:aycsoft.webapi.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            主体构建
+            </summary>
+            <param name="args">参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.webapi.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:aycsoft.webapi.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:aycsoft.webapi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:aycsoft.webapi.Startup.ConfigureContainer(Autofac.ContainerBuilder)">
+            <summary>
+            
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:aycsoft.webapi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

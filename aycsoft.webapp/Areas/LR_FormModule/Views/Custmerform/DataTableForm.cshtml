@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "表单设计数据表添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">数据表名<font face="宋体">*</font></div>
+        <div id="name" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">数据表字段<font face="宋体">*</font></div>
+        <div id="field" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">被关联表</div>
+        <div id="relationName"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">被关联表字段</div>
+        <div id="relationField"></div>
+    </div>
+</div>
+<script>
+var dbId = request('dbId');
+var selectedRow = top.layer_Form.selectedRow;
+var dbTable = top.layer_Form.dbTable;
+
+    console.log(dbId,selectedRow,dbTable)
+
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#field').lrselect({
+                value: 'f_column',
+                text: 'f_column',
+                title: 'f_remark',
+                allowSearch: true
+            });
+            $('#relationField').lrselect({
+                value: 'f_column',
+                text: 'f_column',
+                title: 'f_remark',
+                allowSearch: true
+            });
+            $('#name').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetList',
+                param: { dbCode: dbId },
+                value: 'name',
+                text: 'name',
+                title: 'tdescription',
+                allowSearch: true,
+                select: function (item) {
+                    if (!!item) {
+                        $('#field').lrselectRefresh({
+                            url: top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetFieldList',
+                            param: { dbCode: dbId, tableName: item.name }
+                        });
+                    }
+                }
+            });
+            $('#relationName').lrselect({
+                data: dbTable,
+                value: 'name',
+                text: 'name',
+                maxHeight: 160,
+                allowSearch: true,
+                select: function (item) {
+                    if (!!item) {
+                        $('#relationField').lrselectRefresh({
+                            url: top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetFieldList',
+                            param: { dbCode: dbId, tableName: item.name }
+                        });
+                    }
+                }
+            });
+        },
+        initData: function () {
+            if (!!selectedRow) {
+                $('#form').lrSetFormData(selectedRow);
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+
+        var data = $('#form').lrGetFormData();
+        if (data.name == data.relationName)
+        {
+            aycsoft.alert.error('关联表不能是自己本身！');
+            return false;
+        }
+        callBack && callBack(data);
+        return true;
+    };
+    page.init();
+}
+</script>
+

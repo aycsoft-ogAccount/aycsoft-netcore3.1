@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "即时通讯用户管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout" id="lr_layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+
+<script>var refreshGirdData;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initGird();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyword: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 新增
+                $('#lr_add').on('click', function () {
+                    aycsoft.layerForm({
+                        id: 'form',
+                        title: '新增',
+                        url: top.$.rootUrl + '/LR_IM/SysUser/Form',
+                        width: 500,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                });
+                // 编辑
+                $('#lr_edit').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/LR_IM/SysUser/Form?keyValue=' + keyValue,
+                            width: 500,
+                            height: 400,
+                            callBack: function (id) {
+                                return top[id].acceptClick(refreshGirdData);
+                            }
+                        });
+                    }
+                });
+                // 删除
+                $('#lr_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_Id');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_IM/SysUser/DeleteForm', { keyValue: keyValue }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+            initGird: function () {
+                $('#gridtable').lrAuthorizeJfGrid({//jfGrid
+                    url: top.$.rootUrl + '/LR_IM/SysUser/GetPageList',
+                    headData: [
+                        { label: '用户名称', name: 'F_Name', width: 160, align: "left" },
+                        { label: '用户编码', name: 'F_Code', width: 100, align: "left" },
+                        {
+                            label: '图标', name: 'F_Icon', width: 60, align: 'center',
+                            formatter: function (cellvalue) {
+                                return '<i class="' + cellvalue + '" ></i>';
+                            }
+                        },
+                        { label: '创建用户', name: 'F_CreateUserName', width: 100, align: 'left' },
+                        {
+                            label: '创建时间', name: 'F_CreateDate', width: 130, align: 'left',
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm');
+                            }
+                        },
+                        { label: '备注', name: 'F_Description', width: 200, align: "left" }
+                    ],
+                    mainId: 'F_Id',
+                    isPage: true
+                });
+                page.search();
+            },
+            search: function (param) {
+                $('#gridtable').jfGridSet('reload', param || {});
+            }
+        };
+        refreshGirdData = function () {
+            $('#gridtable').jfGridSet('reload');
+        };
+        page.init();
+    }</script>

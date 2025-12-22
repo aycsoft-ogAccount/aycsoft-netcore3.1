@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewData["Title"] = "添加表单";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">表单类型</div>
+        <div id="type"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item lr-form-btnitem custmer-form">
+        <div class="lr-form-item-title">表单选择</div>
+        <div id="formId"></div>
+        <a id="lr_preview" class="btn btn-default lr-form-item-btn"><span class="lrlg">预览表单</span></a>
+    </div>
+    <div class="col-xs-12 lr-form-item custmer-form">
+        <div class="lr-form-item-title">关联字段</div>
+        <div id="field"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">表单名称<font face="宋体">*</font></div>
+        <input id="name" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">表单地址<font face="宋体">*</font></div>
+        <input id="url" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item system-form" style="display:none;">
+        <div class="lr-form-item-title">移动表单地址</div>
+        <input id="appurl" type="text" class="form-control" placeholder="请输入名称" />
+    </div>
+</div>
+<script>
+var id = request('id');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+           
+
+            $('#field').lrselect({
+                placeholder: '请选择字段',
+                maxHeight: 80,
+                allowSearch: true
+            });
+            $('#formId').lrselect({
+                placeholder: '请选择表单',
+                text: 'F_Name',
+                value: 'F_Id',
+                url: top.$.rootUrl + '/LR_FormModule/Custmerform/GetSchemeInfoList',
+                maxHeight: 140,
+                allowSearch: true,
+                select: function (item) {
+                  
+                    if (!!item) {
+                        var formName = item.F_Name;
+                        var url = '/LR_FormModule/Custmerform/WorkflowInstanceForm?id=' + item.F_Id;
+                        $('#name').val(formName);
+                        $('#url').val(url);
+                        $('#name').trigger('propertychange');
+                        $('#url').trigger('propertychange');
+                        $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetFormData?keyValue=' + item.F_Id, function (data) {
+                            var scheme = JSON.parse(data.schemeEntity.F_Scheme);
+                            var fields = [];
+                            for (var i = 0, l = scheme.data.length; i < l; i++) {
+                                var componts = scheme.data[i].componts;
+                                for (var j = 0, jl = componts.length; j < jl; j++) {
+                                    var compont = componts[j];
+                                    if (!!compont.title && !!compont.field) {
+                                        var point = { text: compont.title, id: compont.id };
+                                        fields.push(point);
+                                    }
+                                }
+                            }
+                            $('#field').lrselectRefresh({ data: fields });
+                        });
+                    }
+                    else {
+                        $('#name').val("");
+                        $('#url').val("");
+                        $('#field').lrselectRefresh({ data: [] });
+                    }
+                }
+            });
+            $('#lr_preview').on('click', function () {
+                var formId = $('#formId').lrselectGet();
+                if (!!formId) {
+                    aycsoft.layerForm({
+                        id: 'custmerForm_PreviewForm',
+                        title: '预览当前表单',
+                        url: top.$.rootUrl + '/LR_FormModule/Custmerform/PreviewForm?schemeInfoId=' + formId,
+                        width: 800,
+                        height: 600,
+                        maxmin: true,
+                        btn: null
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('请选择表单！');
+                }
+            });
+
+
+            $('#type').lrselect({
+                data: [{ id: '1', text: '自定义表单' }, { id: '0', text: '系统表单' }],
+                placeholder: false,
+                maxHeight: 80,
+                select: function (item) {
+                    if (item.id != '1') {
+                        $('.system-form').show();
+                        $('.custmer-form').hide();
+                    }
+                    else {
+                        $('.system-form').hide();
+                        $('.custmer-form').show();
+                    }
+                }
+            }).lrselectSet('1');
+        },
+        initData: function () {
+            if (!!id) {
+                var workforms = top.layer_NodeForm.workforms;
+                for (var i = 0, l = workforms.length; i < l; i++) {
+                    if (workforms[i].id == id) {
+                        $('#form').lrSetFormData(workforms[i]);
+                        break;
+                    }
+                }
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formdata = $('#form').lrGetFormData();
+        formdata.id = id;
+        if (formdata.type != '1') {
+            formdata.formId = '';
+        }
+        else {
+            if (formdata.field == "" || formdata.field == undefined || formdata.field == null) {
+                aycsoft.alert.error('请选择【关联字段】');
+                return false;  
+            }
+        }
+        callBack(formdata);
+        return true;
+    };
+    page.init();
+}
+</script>
+

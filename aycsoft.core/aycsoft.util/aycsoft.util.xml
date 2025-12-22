@@ -1,0 +1,2049 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aycsoft.util</name>
+    </assembly>
+    <members>
+        <member name="T:aycsoft.util.CommonHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.23
+            描 述：常用公共类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.TimerStart">
+            <summary>
+            计时器开始
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.TimerEnd(System.Diagnostics.Stopwatch)">
+            <summary>
+            计时器结束
+            </summary>
+            <param name="watch">Stopwatch</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.RemoveDup(System.String[])">
+            <summary>
+            删除数组中的重复项
+            </summary>
+            <param name="values">重复值</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.CreateNo">
+            <summary>
+            自动生成编号  201008251145409865
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.RndNum(System.Int32)">
+            <summary>
+            生成0-9随机数
+            </summary>
+            <param name="codeNum">生成长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.DelLastComma(System.String)">
+            <summary>
+            删除最后结尾的一个逗号
+            </summary>
+            <param name="str">字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.DelLastChar(System.String,System.String)">
+            <summary>
+            删除最后结尾的指定字符后的字符
+            </summary>
+            <param name="str">字串</param>
+            <param name="strchar">指定的字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.CommonHelper.DelLastLength(System.String,System.Int32)">
+            <summary>
+            删除最后结尾的长度
+            </summary>
+            <param name="str">字串</param>
+            <param name="Length">删除长度</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.ConfigHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.02
+            描 述：对HtmlHelper类进行扩展
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ConfigHelper._setting">
+            <summary>
+            缓存数据（配置信息）
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ConfigHelper._cache">
+            <summary>
+            缓存数据
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.GetAppSettings``1(System.String)">
+            <summary>
+            获取配置信息
+            </summary>
+            <typeparam name="T">数据类型</typeparam>
+            <param name="key">键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.GetConfig">
+            <summary>
+            获取配置信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.SetValue(System.String,System.Object)">
+            <summary>
+            设置信息
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.GetValue``1(System.String)">
+            <summary>
+            获取数据值
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="key">键值</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.SetCache(System.String,System.String)">
+            <summary>
+            设置信息
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ConfigHelper.GetCache(System.String)">
+            <summary>
+            获取数据值
+            </summary>
+            <param name="key">键值</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.Const">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.18
+            描 述：常量
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.Const.ChinesePinYin">
+            <summary>
+            汉字及拼音首字母
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.Const.SimplifiedChinese">
+            <summary>
+            常用简体汉字
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.Const.Letters">
+            <summary>
+            英文字母
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.Const.Numbers">
+            <summary>
+            数字
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ContextHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：上下文上下文帮助类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ContextHelper.GetItem(System.String)">
+            <summary>
+            获取上下文值
+            </summary>
+            <param name="key">键</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ContextHelper.SetItem(System.String,System.String)">
+            <summary>
+            设置上下文值
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ContextHelper.RemoveItem(System.String)">
+            <summary>
+            移除上下文值
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:aycsoft.util.DESEncrypt">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.13
+            描 述：加密、解密帮助类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.DESEncrypt.Encrypt(System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="Text">需要加密的内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.DESEncrypt.Encrypt(System.String,System.String)">
+            <summary> 
+            加密数据 
+            </summary> 
+            <param name="Text">需要加密的内容</param> 
+            <param name="sKey">秘钥</param> 
+            <returns></returns> 
+        </member>
+        <member name="M:aycsoft.util.DESEncrypt.Decrypt(System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="Text">需要解密的内容</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.DESEncrypt.Decrypt(System.String,System.String)">
+            <summary> 
+            解密数据 
+            </summary> 
+            <param name="Text">需要解密的内容</param> 
+            <param name="sKey">秘钥</param> 
+            <returns></returns> 
+        </member>
+        <member name="T:aycsoft.util.DirFileHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.02
+            描 述：文件夹，文件操作类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.DirFileHelper.IsExistFile(System.String)">
+            <summary>
+            检测指定文件是否存在,如果存在则返回true。
+            </summary>
+            <param name="filePath">文件的绝对路径</param>        
+        </member>
+        <member name="T:aycsoft.util.EnumAttribute">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.26
+            描 述：获取实体类Attribute自定义属性
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.EnumAttribute.GetDescription(System.Enum)">
+            <summary>
+            返回枚举项的描述信息。
+            </summary>
+            <param name="value">要获取描述信息的枚举项。</param>
+            <returns>枚举想的描述信息。</returns>
+        </member>
+        <member name="T:aycsoft.util.ExcelConfig">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.24
+            描 述：Excel导入导出设置
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.FileName">
+            <summary>
+            文件名
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.ForeColor">
+            <summary>
+            前景色
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.Background">
+            <summary>
+            背景色
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.TitlePoint">
+            <summary>
+            标题字号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.HeadPoint">
+            <summary>
+            列头字号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.TitleHeight">
+            <summary>
+            标题高度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.HeadHeight">
+            <summary>
+            列标题高度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.TitleFont">
+            <summary>
+            标题字体
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.HeadFont">
+            <summary>
+            列头字体
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.IsAllSizeColumn">
+            <summary>
+            是否按内容长度来适应表格宽度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ExcelConfig.ColumnEntity">
+            <summary>
+            列设置
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ExcelHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.24
+            描 述：NPOI Excel DataTable操作类 application/ms-excel application/vnd-excel
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.ExcelExport(System.Data.DataTable,aycsoft.util.ExcelConfig)">
+            <summary>
+            DataTable导出到Excel文件 Export()
+            </summary>
+            <param name="dtSource">DataTable数据源</param>
+            <param name="excelConfig">导出设置包含文件名、标题、列设置</param>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.ExportMemoryStream(System.Data.DataTable,aycsoft.util.ExcelConfig)">
+            <summary>
+            DataTable导出到Excel的MemoryStream Export()
+            </summary>
+            <param name="dtSource">DataTable数据源</param>
+            <param name="excelConfig">导出设置包含文件名、标题、列设置</param>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.ExportListByTempale(System.Collections.Generic.List{aycsoft.util.TemplateDataModel},System.String)">
+            <summary>
+            List根据模板导出ExcelMemoryStream
+            </summary>
+            <param name="list"></param>
+            <param name="templdateName"></param>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.SetPurchaseOrder(NPOI.SS.UserModel.ISheet,System.Collections.Generic.List{aycsoft.util.TemplateDataModel})">
+            <summary>
+            赋值单元格
+            </summary>
+            <param name="sheet"></param>
+            <param name="list"></param>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.ExcelImport(System.String)">
+            <summary>
+            读取excel ,默认第一行为标头
+            </summary>
+            <param name="strFileName">excel文档路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.ExcelImport(System.IO.Stream,System.String)">
+            <summary>
+            读取excel ,默认第一行为标头 
+            </summary>
+            <param name="fileStream">文件数据流</param>
+            <param name="flieType">文件类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExcelHelper.getAlignment(System.String)">
+            <summary>
+            设置对齐方式
+            </summary>
+            <param name="style"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.JfGridModel">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.10.23
+            描 述：表格属性模型
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.name">
+            <summary>
+            绑定字段名
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.label">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.width">
+            <summary>
+            宽度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.align">
+            <summary>
+            对齐方式
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.height">
+            <summary>
+            高度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.hidden">
+            <summary>
+            是否隐藏
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.JfGridModel.children">
+            <summary>
+            子集
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ColumnModel">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.24
+            描 述：Excel导入导出列设置模型
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Column">
+            <summary>
+            列名
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.ExcelColumn">
+            <summary>
+            Excel列名
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Width">
+            <summary>
+            宽度
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.ForeColor">
+            <summary>
+            前景色
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Background">
+            <summary>
+            背景色
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Font">
+            <summary>
+            字体
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Point">
+            <summary>
+            字号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ColumnModel.Alignment">
+             <summary>
+            对齐方式
+            left 左
+            center 中间
+            right 右
+            fill 填充
+            justify 两端对齐
+            centerselection 跨行居中
+            distributed
+             </summary>
+        </member>
+        <member name="T:aycsoft.util.TemplateDataModel">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.24
+            描 述：模板数据模型
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TemplateDataModel.row">
+            <summary>
+            行号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TemplateDataModel.cell">
+            <summary>
+            列号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TemplateDataModel.value">
+            <summary>
+            数据值
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ExtensionsJson">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：扩展.json序列反序列化
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToJson(System.String)">
+            <summary>
+            转成json对象
+            </summary>
+            <param name="Json">json字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToJson(System.Object)">
+            <summary>
+            转成json字串
+            </summary>
+            <param name="obj">对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToJson(System.Object,System.String)">
+            <summary>
+            转成json字串
+            </summary>
+            <param name="obj">对象</param>
+            <param name="datetimeformats">时间格式化</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToObject``1(System.String)">
+            <summary>
+            字串反序列化成指定对象实体
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <param name="Json">字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToList``1(System.String)">
+            <summary>
+            字串反序列化成指定对象实体(列表)
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <param name="Json">字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToTable(System.String)">
+            <summary>
+            字串反序列化成DataTable
+            </summary>
+            <param name="Json">字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsJson.ToJObject(System.String)">
+            <summary>
+            字串反序列化成linq对象
+            </summary>
+            <param name="Json">字串</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.ExtensionsValid">
+            <summary>
+            检测扩展
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.CheckNull(System.Object,System.String)">
+            <summary>
+            检测空值,为null则抛出ArgumentNullException异常
+            </summary>
+            <param name="obj">对象</param>
+            <param name="parameterName">参数名</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.IsEmpty(System.String)">
+            <summary>
+            是否为空
+            </summary>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.IsEmpty(System.Nullable{System.Guid})">
+            <summary>
+            是否为空
+            </summary>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.IsEmpty(System.Guid)">
+            <summary>
+            是否为空
+            </summary>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.IsEmpty(System.Object)">
+            <summary>
+            是否为空
+            </summary>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.SafeValue``1(System.Nullable{``0})">
+            <summary>
+            安全返回值
+            </summary>
+            <param name="value">可空值</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.ContainsEx(System.String,System.String)">
+            <summary>
+            是否包含
+            </summary>
+            <param name="obj">字串</param>
+            <param name="value">包含字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.Like(System.String,System.String)">
+            <summary>
+            字串是否在指定字串中存在
+            </summary>
+            <param name="obj">字串</param>
+            <param name="value">被包含字串</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsValid.ToDbType(System.String)">
+            <summary>
+            数据字段类型转化
+            </summary>
+            <param name="str">字串</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.ExtensionsStr">
+            <summary>
+            字串扩展
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToDateTimeString(System.DateTime,System.Boolean)">
+            <summary>
+            获取格式化字符串，带时分秒，格式："yyyy-MM-dd HH:mm:ss"
+            </summary>
+            <param name="dateTime">日期</param>
+            <param name="isRemoveSecond">是否移除秒</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToDateTimeString(System.Nullable{System.DateTime},System.Boolean)">
+            <summary>
+            获取格式化字符串，带时分秒，格式："yyyy-MM-dd HH:mm:ss"
+            </summary>
+            <param name="dateTime">日期</param>
+            <param name="isRemoveSecond">是否移除秒</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToDateString(System.DateTime)">
+            <summary>
+            获取格式化字符串，不带时分秒，格式："yyyy-MM-dd"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToDateString(System.Nullable{System.DateTime})">
+            <summary>
+            获取格式化字符串，不带时分秒，格式："yyyy-MM-dd"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToTimeString(System.DateTime)">
+            <summary>
+            获取格式化字符串，不带年月日，格式："HH:mm:ss"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToTimeString(System.Nullable{System.DateTime})">
+            <summary>
+            获取格式化字符串，不带年月日，格式："HH:mm:ss"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToMillisecondString(System.DateTime)">
+            <summary>
+            获取格式化字符串，带毫秒，格式："yyyy-MM-dd HH:mm:ss.fff"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToMillisecondString(System.Nullable{System.DateTime})">
+            <summary>
+            获取格式化字符串，带毫秒，格式："yyyy-MM-dd HH:mm:ss.fff"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToChineseDateString(System.DateTime)">
+            <summary>
+            获取格式化字符串，不带时分秒，格式："yyyy年MM月dd日"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToChineseDateString(System.Nullable{System.DateTime})">
+            <summary>
+            获取格式化字符串，不带时分秒，格式："yyyy年MM月dd日"
+            </summary>
+            <param name="dateTime">日期</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToChineseDateTimeString(System.DateTime,System.Boolean)">
+            <summary>
+            获取格式化字符串，带时分秒，格式："yyyy年MM月dd日 HH时mm分"
+            </summary>
+            <param name="dateTime">日期</param>
+            <param name="isRemoveSecond">是否移除秒</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsStr.ToChineseDateTimeString(System.Nullable{System.DateTime},System.Boolean)">
+            <summary>
+            获取格式化字符串，带时分秒，格式："yyyy年MM月dd日 HH时mm分"
+            </summary>
+            <param name="dateTime">日期</param>
+            <param name="isRemoveSecond">是否移除秒</param>
+        </member>
+        <member name="T:aycsoft.util.ExtensionsConvert">
+            <summary>
+            转化扩展
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToInt(System.Object)">
+            <summary>
+            转换为整型
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToIntOrNull(System.Object)">
+            <summary>
+            转换为可空整型
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDouble(System.Object)">
+            <summary>
+            转换为双精度浮点数
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDouble(System.Object,System.Int32)">
+            <summary>
+            转换为双精度浮点数,并按指定的小数位4舍5入
+            </summary>
+            <param name="data">数据</param>
+            <param name="digits">小数位数</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDoubleOrNull(System.Object)">
+            <summary>
+            转换为可空双精度浮点数
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDecimal(System.Object)">
+            <summary>
+            转换为高精度浮点数
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDecimal(System.Object,System.Int32)">
+            <summary>
+            转换为高精度浮点数,并按指定的小数位4舍5入
+            </summary>
+            <param name="data">数据</param>
+            <param name="digits">小数位数</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDecimalOrNull(System.Object)">
+            <summary>
+            转换为可空高精度浮点数
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDecimalOrNull(System.Object,System.Int32)">
+            <summary>
+            转换为可空高精度浮点数,并按指定的小数位4舍5入
+            </summary>
+            <param name="data">数据</param>
+            <param name="digits">小数位数</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDate(System.Object)">
+            <summary>
+            转换为日期
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToDateOrNull(System.Object)">
+            <summary>
+            转换为可空日期
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToBool(System.Object)">
+            <summary>
+            转换为布尔值
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.GetBool(System.Object)">
+            <summary>
+            获取布尔值
+            </summary>
+            <param name="data">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToBoolOrNull(System.Object)">
+            <summary>
+            转换为可空布尔值
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="M:aycsoft.util.ExtensionsConvert.ToString(System.Object)">
+            <summary>
+            转换为字符串
+            </summary>
+            <param name="data">数据</param>
+        </member>
+        <member name="T:aycsoft.util.FileHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.18
+            描 述：文件帮助类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.ReadRoot(System.String)">
+            <summary>
+            读取根目录下面的文件
+            </summary>
+            <param name="filePath">文件路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.ReadCache(System.String)">
+            <summary>
+            读取缓存文件
+            </summary>
+            <param name="fileName">文件路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.WriteCache(System.String,System.Byte[])">
+            <summary>
+            读取缓存文件
+            </summary>
+            <param name="fileName">文件路径</param>
+            <param name="buffer">文件数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.RemoveCache(System.String)">
+            <summary>
+            读取缓存文件
+            </summary>
+            <param name="fileName">文件路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.Read(System.String)">
+            <summary>
+            读取文件
+            </summary>
+            <param name="filePath">文件绝对路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.FileHelper.getContentType(System.String)">
+            <summary>
+            获取文件的传输类型
+            </summary>
+            <param name="fileExt">文件扩展名</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.FilterMode">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：mvc过滤模式
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.FilterMode.Enforce">
+            <summary>执行</summary>
+        </member>
+        <member name="F:aycsoft.util.FilterMode.Ignore">
+            <summary>忽略</summary>
+        </member>
+        <member name="T:aycsoft.util.HttpMethods">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：http方法
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.HttpMethods.CreateHttpClient(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            创建HttpClient
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.HttpMethods.Post(System.String,System.String)">
+            <summary>
+            post 请求
+            </summary>
+            <param name="url">请求地址</param>
+            <param name="jsonData">请求参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.HttpMethods.Post(System.String)">
+            <summary>
+            post 请求
+            </summary>
+            <param name="url">请求地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.HttpMethods.Post(System.String,System.Byte[])">
+            <summary>
+            post 请求
+            </summary>
+            <param name="url">请求地址</param>
+            <param name="req">请求参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.HttpMethods.Get(System.String)">
+            <summary>
+            get 请求
+            </summary>
+            <param name="url">请求地址</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.JsCssHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.02
+            描 述：js,css压缩类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.ReadJSFile(System.String[])">
+            <summary>
+            读取js文件内容并压缩
+            </summary>
+            <param name="filePathlist"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.ReadCssFile(System.String[])">
+            <summary>
+            读取css 文件内容并压缩
+            </summary>
+            <param name="filePathlist"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.CompressJS(System.String)">
+            <summary>
+            压缩js
+            </summary>
+            <param name="strJs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.CompressCss(System.String)">
+            <summary>
+            压缩Css
+            </summary>
+            <param name="strCss"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.ReadJS(System.String)">
+            <summary>
+            读取js文件
+            </summary>
+            <param name="filePath">文件夹目录</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.JsCssHelper.ReadCss(System.String)">
+            <summary>
+            读取css文件
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.MailHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.11.05
+            描 述：发送邮件
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.MailHelper.MailServer">
+            <summary>
+            邮件服务器地址
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.MailHelper.MailUserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.MailHelper.MailPassword">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.MailHelper.MailName">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.MailHelper.Send(System.String,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            发送邮件
+            </summary>
+            <param name="to">收件人邮箱地址</param>
+            <param name="subject">主题</param>
+            <param name="body">内容</param>
+            <param name="encoding">编码</param>
+            <param name="isBodyHtml">是否Html</param>
+            <param name="enableSsl">是否SSL加密连接</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="T:aycsoft.util.Md5Helper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.13
+            描 述：md5加密
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Md5Helper.Encrypt(System.String,System.Int32)">
+            <summary>
+            MD5加密
+            </summary>
+            <param name="str">加密字符</param>
+            <param name="code">加密位数16/32</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Md5Helper.Hash(System.String)">
+            <summary>
+            32位MD5加密（小写）
+            </summary>
+            <param name="input">输入字段</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.Pagination">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：分页参数
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.rows">
+            <summary>
+            每页行数
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.page">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.sidx">
+            <summary>
+            排序列
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.sord">
+            <summary>
+            排序类型
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.records">
+            <summary>
+            总记录数
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Pagination.total">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ResParameter">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：接口响应数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ResParameter.code">
+            <summary>
+            接口响应码
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ResParameter.info">
+            <summary>
+            接口响应消息
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ResParameter.data">
+            <summary>
+            接口响应数据
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.ResponseCode">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.11
+            描 述：接口响应码
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ResponseCode.success">
+            <summary>
+            成功
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ResponseCode.fail">
+            <summary>
+            失败
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ResponseCode.exception">
+            <summary>
+            异常
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.ResponseCode.nologin">
+            <summary>
+            没有登录信息
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.SendHubs">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.11.05
+            描 述：发送消息给SignalR集结器
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.SendHubs.callMethod(System.String,System.Object[])">
+            <summary>
+            调用hub方法
+            </summary>
+            <param name="methodName"></param>
+            <param name="args">参数</param>
+        </member>
+        <member name="T:aycsoft.util.ServerOp">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.05
+            描 述：服务配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.SoftName">
+            <summary>
+            软件名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.Version">
+            <summary>
+            软件版本号
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.dbConn">
+            <summary>
+            数据库连接
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.dbType">
+            <summary>
+            数据库类型 SqlServer,Oracle,MySql
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.RedisPrev">
+            <summary>
+            缓存前缀
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.RedisExchangeHosts">
+            <summary>
+            缓存地址
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.VirtualPath">
+            <summary>
+            服务目录
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.UItheme">
+            <summary>
+            皮肤配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.IMUrl">
+            <summary>
+            IM地址
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.IMOpen">
+            <summary>
+            即时服务是否打开
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.MailHost">
+            <summary>
+            发出邮箱设置邮箱主机
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.MailName">
+            <summary>
+            发出邮箱的名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.MailUserName">
+            <summary>
+            发出邮箱的地址
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.MailPassword">
+            <summary>
+            发出邮箱的密码
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.CorpId">
+            <summary>
+            企业号ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.CorpSecret">
+            <summary>
+            企业号管理密钥
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.CorpAppId">
+            <summary>
+            企业应用的id，整型。可在应用的设置页面查看
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.UeditorImg">
+            <summary>
+            百度编辑器图片地址
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.JwtSecret">
+            <summary>
+            JWT认证密钥
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.JwtExp">
+            <summary>
+            JWT认证过期时间
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.ServerOp.AnnexesFile">
+            <summary>
+            附件存放地址（主要是考虑到api 和 web 两部分）
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.Str">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.18
+            描 述：字符串工具方法
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Str.Empty">
+            <summary>
+            空字符串
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Str.PinYin(System.String)">
+            <summary>
+            获取汉字的拼音简码，即首字母缩写,范例：中国,返回zg
+            </summary>
+            <param name="chineseText">汉字文本,范例： 中国</param>
+        </member>
+        <member name="M:aycsoft.util.Str.ResolvePinYin(System.Char)">
+            <summary>
+            解析单个汉字的拼音简码
+            </summary>
+            <param name="text">单个汉字</param>
+        </member>
+        <member name="M:aycsoft.util.Str.ResolvePinYinByCode(System.UInt16)">
+            <summary>
+            使用字符编码方式获取拼音简码
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Str.ResolvePinYinByFile(System.String)">
+            <summary>
+            从拼音简码文件获取
+            </summary>
+            <param name="text">单个汉字</param>
+        </member>
+        <member name="M:aycsoft.util.Str.ConvertPinYin(System.String)">
+            <summary>
+            把汉字转换成拼音(全拼)
+            </summary>
+            <param name="text">汉字字符串</param>
+            <returns>转换后的拼音(全拼)字符串</returns>
+        </member>
+        <member name="F:aycsoft.util.Str.ChinesePinYinValue">
+            <summary>
+            拼音码
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.Str.ChinesePinYinName">
+            <summary>
+             拼音码
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Str.Splice``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+            <summary>
+            拼接集合元素
+            </summary>
+            <typeparam name="T">集合元素类型</typeparam>
+            <param name="list">集合</param>
+            <param name="quotes">引号，默认不带引号，范例：单引号 "'"</param>
+            <param name="separator">分隔符，默认使用逗号分隔</param>
+        </member>
+        <member name="M:aycsoft.util.Str.FirstUpper(System.String)">
+            <summary>
+            将值的首字母大写
+            </summary>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.util.Str.FirstLower(System.String)">
+            <summary>
+            将值的首字母小写
+            </summary>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Str.ToCamel(System.String)">
+            <summary>
+            将字符串转成驼峰形式
+            </summary>
+            <param name="value">原始字符串</param>
+        </member>
+        <member name="M:aycsoft.util.Str.ContainsChinese(System.String)">
+            <summary>
+            是否包含中文
+            </summary>
+            <param name="text">文本</param>
+        </member>
+        <member name="M:aycsoft.util.Str.ContainsNumber(System.String)">
+            <summary>
+            是否包含数字
+            </summary>
+            <param name="text">文本</param>
+        </member>
+        <member name="M:aycsoft.util.Str.Distinct(System.String)">
+            <summary>
+            去除重复
+            </summary>
+            <param name="value">值，范例1："5555",返回"5",范例2："4545",返回"45"</param>
+        </member>
+        <member name="M:aycsoft.util.Str.Truncate(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            截断字符串
+            </summary>
+            <param name="text">文本</param>
+            <param name="length">返回长度</param>
+            <param name="endCharCount">添加结束符号的个数，默认0，不添加</param>
+            <param name="endChar">结束符号，默认为省略号</param>
+        </member>
+        <member name="M:aycsoft.util.Str.GetEndString(System.Int32,System.String)">
+            <summary>
+            获取结束字符串
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Str.Unique">
+            <summary>
+            获取全局唯一值
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Str.GetLastProperty(System.String)">
+            <summary>
+            获取最后一个属性
+            </summary>
+            <param name="propertyName">属性名，范例，A.B.C,返回"C"</param>
+        </member>
+        <member name="M:aycsoft.util.Str.SqlFilters(System.String)">
+            <summary>
+            过滤sql语句，但允许查询
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.Time">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.10.25
+            描 述：时间操作
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.Now">
+            <summary>
+            当前时间
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.ShortDate">
+            <summary>
+            短日期格式(yyyy/MM/dd)
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.LongDate">
+            <summary>
+            长日期格式(yyyy月MM日dd日)
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.ShortDateTime">
+            <summary>
+            日期时间(yyyy/MM/dd HH:mm)
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.LongDateTime">
+            <summary>
+            日期时间(yyyy年MM月dd日 HH时mm分)
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.LongTime">
+            <summary>
+            日期时间(yyyy年MM月dd日 HH时mm分)
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.Time.ShortTime">
+            <summary>
+            日期时间(yyyy年MM月dd日 HH时mm分)
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.Time.GetToday">
+            <summary>
+            当前日期
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetToday(System.String)">
+            <summary>
+            当前日期自定义格式
+            </summary>
+            <param name="format"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDate(System.Int32)">
+            <summary>
+            当前日期 加添加，减天数 -1、1
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDate(System.Int32,System.String)">
+            <summary>
+             当前日期 加添加，减天数 -1、1
+            </summary>
+            <param name="i"></param>
+            <param name="dateformat">返回的时间格式</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDaysOfYear(System.Int32)">
+            <summary>返回本年有多少天</summary>
+            <param name="iYear">年份</param>
+            <returns>本年的天数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDaysOfYear(System.DateTime)">
+            <summary>本年有多少天</summary>
+            <param name="dt">日期</param>
+            <returns>本天在当年的天数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDaysOfMonth(System.Int32,System.Int32)">
+            <summary>本月有多少天</summary>
+            <param name="iYear">年</param>
+            <param name="Month">月</param>
+            <returns>天数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetDaysOfMonth(System.DateTime)">
+            <summary>本月有多少天</summary>
+            <param name="dt">日期</param>
+            <returns>天数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetWeekNameOfDay(System.DateTime)">
+            <summary>返回当前日期的星期名称</summary>
+            <param name="dt">日期</param>
+            <returns>星期名称</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetWeekNumberOfDay(System.DateTime)">
+            <summary>返回当前日期的星期编号</summary>
+            <param name="dt">日期</param>
+            <returns>星期数字编号</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetWeekAmount(System.Int32)">
+            <summary>
+            获取某一年有多少周
+            </summary>
+            <param name="year">年份</param>
+            <returns>该年周数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetWeekOfYear(System.DateTime)">
+            <summary>
+            获取某一日期是该年中的第几周
+            </summary>
+            <param name="dt">日期</param>
+            <returns>该日期在该年中的周数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.WeekRange(System.Int32,System.Int32,System.DateTime@,System.DateTime@)">
+            <summary>
+            根据某年的第几周获取这周的起止日期
+            </summary>
+            <param name="year"></param>
+            <param name="weekOrder"></param>
+            <param name="firstDate"></param>
+            <param name="lastDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.DiffDays(System.DateTime,System.DateTime)">
+            <summary>
+            返回两个日期之间相差的天数
+            </summary>
+            <param name="dtfrm">两个日期参数</param>
+            <param name="dtto">两个日期参数</param>
+            <returns>天数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.DiffHours(System.DateTime,System.DateTime)">
+            <summary>
+            返回两个日期之间相差的小时数
+            </summary>
+            <param name="dtfrm">两个日期参数</param>
+            <param name="dtto">两个日期参数</param>
+            <returns>小时数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.DiffMinutes(System.DateTime,System.DateTime)">
+            <summary>
+            返回两个日期之间相差的分钟数
+            </summary>
+            <param name="dtfrm">两个日期参数</param>
+            <param name="dtto">两个日期参数</param>
+            <returns>分钟数</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.IsRuYear(System.Int32)">
+            <summary>判断当前年份是否是闰年，私有函数</summary>
+            <param name="iYear">年份</param>
+            <returns>是闰年：True ，不是闰年：False</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.ToDate(System.String)">
+            <summary>
+            将输入的字符串转化为日期。如果字符串的格式非法，则返回当前日期。
+            </summary>
+            <param name="strInput">输入字符串</param>
+            <returns>日期对象</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.ToString(System.DateTime,System.String)">
+            <summary>
+            将日期对象转化为格式字符串
+            </summary>
+            <param name="oDateTime">日期对象</param>
+            <param name="strFormat">
+            格式：
+            	"SHORTDATE"===短日期
+            	"LONGDATE"==长日期
+            	其它====自定义格式
+            </param>
+            <returns>日期字符串</returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetNumberWeekDay(System.DateTime)">
+            <summary>
+            获取当前日期是星期几
+            </summary>
+            <param name="dt">时间对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetChineseWeekDay(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取中式星期信息
+            </summary>
+            <param name="y">年</param>
+            <param name="m">月</param>
+            <param name="d">日</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.Time.GetChineseDateTime(System.DateTime)">
+            <summary>
+            获取中国时间
+            </summary>
+            <param name="dt">时间对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.TreeDataMake">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：树结构数据
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.TreeDataMake.ToTree(System.Collections.Generic.List{aycsoft.util.TreeModel},System.String)">
+            <summary>
+            树形数据转化
+            </summary>
+            <param name="list">数据</param>
+            <param name="parentId">父级id</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.TreeDataMake.ToTree``1(System.Collections.Generic.List{aycsoft.util.TreeModelEx{``0}})">
+            <summary>
+            树形数据转化
+            </summary>
+            <param name="list">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.TreeDataMake.ToMenuTree(System.Collections.Generic.List{aycsoft.util.TreeMenu},System.String)">
+            <summary>
+            树形数据转化
+            </summary>
+            <param name="list">数据</param>
+            <param name="parentId">父级id</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.TreeMenu">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：树菜单结构数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.id">
+            <summary>
+            节点id
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.text">
+            <summary>
+            节点显示数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.title">
+            <summary>
+            节点提示
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.value">
+            <summary>
+            节点数值
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.icon">
+            <summary>
+            显示图标
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.showcheck">
+            <summary>
+            是否显示勾选框
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.checkstate">
+            <summary>
+            是否被勾选0 for unchecked, 1 for partial checked, 2 for checked
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.hasChildren">
+            <summary>
+            是否有子节点
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.isexpand">
+            <summary>
+            是否展开
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.complete">
+            <summary>
+            子节点是否已经加载完成了
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.urlAddress">
+            <summary>
+            跳转路劲
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.pagetype">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.pagecode">
+            <summary>
+            数据配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.datetime">
+            <summary>
+            列表时间
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.ChildNodes">
+            <summary>
+            子节点列表数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeMenu.parentId">
+            <summary>
+            父级节点ID
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.TreeModel">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：树结构数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.id">
+            <summary>
+            节点id
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.text">
+            <summary>
+            节点显示数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.title">
+            <summary>
+            节点提示
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.value">
+            <summary>
+            节点数值
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.icon">
+            <summary>
+            显示图标
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.showcheck">
+            <summary>
+            是否显示勾选框
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.checkstate">
+            <summary>
+            是否被勾选0 for unchecked, 1 for partial checked, 2 for checked
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.hasChildren">
+            <summary>
+            是否有子节点
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.isexpand">
+            <summary>
+            是否展开
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.complete">
+            <summary>
+            子节点是否已经加载完成了
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.ChildNodes">
+            <summary>
+            子节点列表数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.parentId">
+            <summary>
+            父级节点ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.exid1">
+            <summary>
+            扩展字段1
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModel.exid2">
+            <summary>
+            扩展字段2
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.TreeModelEx`1">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：树结构数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModelEx`1.id">
+            <summary>
+            节点id
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModelEx`1.parentId">
+            <summary>
+            父级节点ID
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModelEx`1.data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.TreeModelEx`1.ChildNodes">
+            <summary>
+            子节点列表数据
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.UeditorConfig">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.23
+            描 述：百度编辑器UE配置文件操作文件操作
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorConfig.Items">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.UeditorConfig.GetValue``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.UeditorConfig.GetStringList(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.UeditorConfig.GetString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.util.UeditorConfig.GetInt(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.UeditorCrawler">
+            <summary>
+            版 本 Learun-ADMS V7.0.3 Aycsoft敏捷开发框架
+            Copyright (c) 2013-2018 上海Aycsoft信息技术有限公司
+            创建人：Aycsoft-框架开发组
+            日 期：2017.03.07
+            描 述：百度编辑器UE涂鸦
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorCrawler.SourceUrl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorCrawler.ServerUrl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorCrawler.State">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.UeditorCrawler.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="sourceUrl"></param>
+        </member>
+        <member name="M:aycsoft.util.UeditorCrawler.Fetch">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.UeditorPathFormatter">
+            <summary>
+            版 本 Learun-ADMS V7.0.3 Aycsoft敏捷开发框架
+            Copyright (c) 2013-2018 上海Aycsoft信息技术有限公司
+            创建人：Aycsoft-框架开发组
+            日 期：2017.03.07
+            描 述：百度编辑器UE上传文件路径格式化
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.UeditorPathFormatter.Format(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="originFileName"></param>
+            <param name="pathFormat"></param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.util.UeditorUploadConfig">
+            <summary>
+            版 本 Learun-ADMS V7.0.3 Aycsoft敏捷开发框架
+            Copyright (c) 2013-2018 上海Aycsoft信息技术有限公司
+            创建人：Aycsoft-框架开发组
+            日 期：2017.03.07
+            描 述：百度编辑器UE文件上传配置
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.PathFormat">
+            <summary>
+            文件命名规则
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.UploadFieldName">
+            <summary>
+            上传表单域名称
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.SizeLimit">
+            <summary>
+            上传大小限制
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.AllowExtensions">
+            <summary>
+            上传允许的文件格式
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.Base64">
+            <summary>
+            文件是否以 Base64 的形式上传
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadConfig.Base64Filename">
+            <summary>
+            Base64 字符串所表示的文件名
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.UeditorUploadResult">
+            <summary>
+            版 本 Learun-ADMS V7.0.3 Aycsoft敏捷开发框架
+            Copyright (c) 2013-2018 上海Aycsoft信息技术有限公司
+            创建人：Aycsoft-框架开发组
+            日 期：2017.03.07
+            描 述：百度编辑器UE上传返回结果
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadResult.State">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadResult.Url">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadResult.OriginFileName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:aycsoft.util.UeditorUploadResult.ErrorMessage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.UeditorUploadState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.Success">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.SizeLimitExceed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.TypeNotAllow">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.FileAccessError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.NetworkError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:aycsoft.util.UeditorUploadState.Unknown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:aycsoft.util.WebHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.02
+            描 述：web帮助类
+            </summary>
+        </member>
+        <member name="M:aycsoft.util.WebHelper.GetClinetIP">
+            <summary>
+            获取访问的客户客户端IP
+            </summary>
+        </member>
+    </members>
+</doc>

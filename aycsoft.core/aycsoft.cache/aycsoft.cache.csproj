@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>young</Authors>
+    <Company>广州轻创软件信息科技有限公司</Company>
+    <Product>Aycsoft敏捷框架Core版本</Product>
+    <Copyright>https://www.aycsoft.cn</Copyright>
+    <PackageId>lr.cache</PackageId>
+    <Description>缓存操作方法</Description>
+    <PackageProjectUrl>归属广州轻创软件信息科技有限公司</PackageProjectUrl>
+    <PackageIcon>applogo.png</PackageIcon>
+    <PackageReleaseNotes>使用需要购买Aycsoft框架https://www.aycsoft.cn</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\work\aycsoft-adms-core\aycsoft.framework.core\aycsoft.core\aycsoft.cache\aycsoft.cache.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.1.55" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\aycsoft.util\aycsoft.util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\applogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

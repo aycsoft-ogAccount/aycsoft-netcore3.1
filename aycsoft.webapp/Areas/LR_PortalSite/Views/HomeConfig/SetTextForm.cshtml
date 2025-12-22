@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "SetTextForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item" style="padding-left:30px;">
+        <input id="text" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+</div>
+<script>
+    var type = request('type');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var titleName = aycsoft.frameTab.currentIframe().titleName;
+
+    var page = {
+        init: function () {
+            page.initData();
+        },
+        initData: function () {
+            $('#text').val(titleName);
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var postData = $('#form').lrGetFormData();
+        postData["type"] = type;
+        $.lrSaveForm(top.$.rootUrl + '/LR_PortalSite/HomeConfig/SaveText', postData, function (res) {
+            callBack && callBack(postData.text);
+        });
+
+    };
+    page.init();
+}
+</script>
+

@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "自定义表单预览";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formcomponts.js"></script>
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formrender.js"></script>
+<script>
+    var keyValue = request('keyValue');
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var formData;
+        var page = {
+            init: function () {
+                if (!!keyValue) {
+                    formData = top[keyValue];
+                    $('body').lrCustmerFormRender(formData);
+                }
+            }
+        };
+        page.init();
+    }
+</script>
+
+
+

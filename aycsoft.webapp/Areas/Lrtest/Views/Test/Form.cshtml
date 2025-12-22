@@ -1,0 +1,291 @@
+@{
+    ViewData["Title"] = "代码生成器测试表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<div class="lr-form-tabs" id="lr_form_tabs">
+    <ul class="nav nav-tabs">
+        <li><a data-value="tab0">主表信息</a></li>
+        <li><a data-value="tab1">新建选项卡</a></li>
+    </ul>
+</div>
+<div class="tab-content lr-tab-content" id="lr_tab_content">
+    <div class="lr-form-wrap tab-pane" id="tab0">
+        <div class="col-xs-12 lr-form-item" style="padding-left: 30px;">
+            <div style="padding: 0px; line-height: 38px; text-align: center; font-size: 20px; font-weight: bold; color: rgb(51, 51, 51);">标 题</div>
+        </div>
+        <div class="col-xs-12 lr-form-item" >
+            <p>我是一个富文本</p>
+        </div>
+        <div  class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">单行文本 <font face="宋体">*</font></div>
+            <input id="F_text" type="text"   value="默认值" class="form-control" placeholder="请输入单行文本"  isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">多行文本 <font face="宋体">*</font></div>
+            <textarea id="F_textarea" type="text"  value="我是一个默认值" class="form-control" placeholder="请输入多行文本"  style="height:100px;" isvalid="yes" checkexpession="NotNull" /></textarea>
+        </div>
+        <div class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">编辑器 <font face="宋体">*</font></div>
+            <div id="F_edit"  style="height:200px;" ></div>
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">单选项 <font face="宋体">*</font></div>
+            <div id="F_radio"  isvalid="yes" checkexpession="NotNull"></div>
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">多选项 <font face="宋体">*</font></div>
+            <div id="F_checkbox"  isvalid="yes" checkexpession="NotNull" ></div>
+        </div>
+        <div class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">下拉框 <font face="宋体">*</font></div>
+            <div id="F_select"  isvalid="yes" checkexpession="NotNull" ></div>
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">日期框1 <font face="宋体">*</font></div>
+            <input id="F_date" type="text" class="form-control lr-input-wdatepicker" data-dateFmt="yyyy-MM-dd" onfocus="WdatePicker()" placeholder="请输入日期框1"  isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">日期框2 <font face="宋体">*</font></div>
+            <input id="F_date2" type="text" class="form-control lr-input-wdatepicker" data-dateFmt="yyyy-MM-dd" onfocus="WdatePicker()" placeholder="请输入日期框2"   />
+        </div>
+        <div class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">日期区间 <font face="宋体">*</font></div>
+            <input id="F_datev" type="text" class="form-control" placeholder="请输入日期区间"  isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div  class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">当前时间</div>
+            <input readonly id="F_cdate" type="text" class="form-control" />
+        </div>
+        <div class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">附件上传</div>
+            <div id="F_file" ></div>
+        </div>
+        <div  class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">编 码</div>
+            <input readonly id="F_code" type="text" class="form-control" />
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">人员选择 <font face="宋体">*</font></div>
+            <div id="F_user"  ></div>
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">部门选择 <font face="宋体">*</font></div>
+            <div id="F_department"  ></div>
+        </div>
+        <div class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">公司选择 <font face="宋体">*</font></div>
+            <div id="F_company"  ></div>
+        </div>
+        <div  class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">当前公司</div>
+            <input readonly id="F_ccompany" type="text" class="form-control" />
+        </div>
+        <div  class="col-xs-6 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">当前部门</div>
+            <input readonly id="F_cdepartment" type="text" class="form-control" />
+        </div>
+        <div  class="col-xs-12 lr-form-item" data-table="f_parent" >
+            <div class="lr-form-item-title">登录人</div>
+            <input readonly id="F_cuser" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="lr-form-wrap tab-pane" id="tab1">
+        <div class="col-xs-12 lr-form-item lr-form-item-grid" >
+            <div id="f_children" ></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 此表单要用到流程系统表单请确保主表主键为字串类型，默认流程是和表主键关联的
+var keyValue = request('keyValue') || '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    window.page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#lr_form_tabs').lrFormTab()
+            $('#lr_form_tabs ul li').eq(0).trigger('click')
+            $('#F_edit').lrUe()
+            $('#F_radio').lrRadioCheckbox({ code: 'test001', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid'  ,dfvalue:'15322f80-d492-4de9-a37a-6fb668948f5b' })
+            $('#F_checkbox').lrRadioCheckbox({ type: 'checkbox', code: 'ProStatus' ,dfvalue:'#CAFF70,#66CD00,#0000AA' })
+            $('#F_select').lrDataSourceSelect({ code: 'dataitemc', dataType: 'dataSource', text: 'f_itemname', value: 'f_itemid' })
+            $('#F_select').lrselectSet('1131f08f-4119-4caf-aa84-db0e1b7f0f47')
+            $('#F_datev').lrDatetimeRange('F_date','F_date2')
+            $('#F_cdate').lrCurrentDate('yyyy-MM-dd hh:mm:ss')
+            $('#F_file').lrUploader()
+            $('#F_code').lrEncode('10002')
+            $('#F_user').lrUserSelect('0')
+            $('#F_department').lrselect({
+                type: 'tree',
+                allowSearch: true,
+                url: top.$.rootUrl + '/LR_OrganizationModule/Department/GetTree',
+                param: {} 
+            });
+            $('#F_company').lrCompanySelect({});
+            $('#F_ccompany').lrUserInfo('companyId');
+            $('#F_cdepartment').lrUserInfo('departmentId');
+            $('#F_cuser').lrUserInfo('id');
+            $('#f_children').jfGrid({
+                headData: [
+                    {
+                        label:'总和1',name:'l890c831720a9a9af1f0e9bb154ec4c68',width:100,align:'left'
+                        ,children:[
+                            {
+                                label:'字段3',name:'F_radio',width:100,align:'left'
+                                ,edit:{
+                                    type: 'radio',
+                                    dfvalue: 'TestRpt',
+                                    datatype: 'dataItem',
+                                    code: 'ReportSort'
+                                }
+                            },
+                            {
+                                label:'字段2',name:'F_input',width:100,align:'left'
+                                ,edit:{
+                                    type: 'input'
+                                }
+                            },
+                            {
+                                label:'字段1',name:'F_text',width:100,align:'left'
+                            },
+                        ]
+                    },
+                    {
+                        label:'总和2',name:'l7a473901fab6ad008a35160c40426997',width:100,align:'left'
+                        ,children:[
+                            {
+                                label:'字段5',name:'F_Layer',width:100,align:'left'
+                                ,edit:{
+                                    type: 'layer',
+                                    init: function (row, $edit, rownum) {
+                                       //$edit.find('.fa-ellipsis-h')[0].op.edit.op 通过此参数可以改变参数
+                                    },
+                                    change: function (row, rownum, selectData) {
+                                        row.F_text = selectData.F_ItemName
+                                        row.F_Layer = selectData.F_ItemValue
+                                        $('#f_children').jfGridSet('updateRow', rownum)
+                                    },
+                                    op: {
+                                        width: 600,
+                                        height: 400,
+                                        colData: [
+                                            { label:'项目名', name:'F_ItemName', width:100, align: 'left' },
+                                            { label:'项目值', name:'F_ItemValue', width:100, align: 'left' },
+                                        ],
+                                        url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetDetailList',
+                                        param: { itemCode: 'ReportSort' }
+                                    }
+                                }
+                            },
+                            {
+                                label:'字段4',name:'F_checkbox',width:100,align:'left'
+                                ,edit:{
+                                    type: 'checkbox',
+                                    dfvalue: '#CAFF70',
+                                    datatype: 'dataItem',
+                                    code: 'ProStatus'
+                                }
+                            },
+                        ]
+                    },
+                    {
+                        label:'总和3',name:'l1e0800a2d91384040e25a61d2b1be548',width:100,align:'left'
+                        ,children:[
+                            {
+                                label:'字段7',name:'F_select',width:100,align:'left'
+                                ,edit:{
+                                    type: 'select',
+                                    dfvalue: 'gjj',
+                                    datatype: 'dataSource',
+                                    code: 'dataitem',
+                                    op: {
+                                        value: 'f_itemvalue',
+                                        text: 'f_itemname',
+                                        title: 'f_itemname'
+                                    }
+                                }
+                            },
+                            {
+                                label:'字段6',name:'F_date',width:100,align:'left'
+                                ,edit:{
+                                    type: 'datatime',
+                                    dateformat: '0'
+                                }
+                            },
+                        ]
+                    },
+                ],
+                isEdit: true,
+                height: 200
+            });
+
+        },
+        initData: function () {
+            if (keyValue) {
+                // 获取数据赋值
+                page.setFormData(keyValue)
+            }
+        },
+        setAuthorize: function (data, isLook) {// 工作流表单生效,权限设置;data,模板配置表单权限数据 isLook 表示当前是只读模式
+        },
+        setFormData: function (processId, wfFormParam, userId, callback) {
+            // processId 普通版表单相当于 keyvalue；流程表单中是流程实例主键（默认关联主表主键）
+            // wfFormParam 流程表单有用，表单自定义参数
+            // userId 流程表单有用，代发流程用户主键
+            // 上述三个参数只在作为流程系统表单时有用
+            $.lrSetForm(top.$.rootUrl + '/Lrtest/Test/GetForm?keyValue=' + processId, function (data) {
+                if(data){
+                    for (var id in data) {
+                        if (data[id].length) {
+                            if(data[id].length > 0){// 表格赋值
+                                $('#' + id ).jfGridSet('refreshdata', data[id]);
+                            }
+                        }
+                        else{
+                            if(id == 'f_parent'){
+                                keyValue = data[id].F_Id
+                            }
+
+                            $('[data-table="' + id + '"]').lrSetFormData(data[id]);
+                        }
+                    }
+
+                }
+                
+            });
+        },
+        validForm: function (code) { // code 只在流程状态下起作用,代表流程当前执行的动作
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            return true;
+        },
+        save: function (processId, callback) {
+            var postData = {}
+            var f_parentEntity = $('[data-table="f_parent"]').lrGetFormData()
+            f_parentEntity.F_Id = processId
+            postData.strF_parentEntity = JSON.stringify(f_parentEntity)
+            postData.strF_childrenList = JSON.stringify($('#f_children').jfGridGet('rowdatas'))
+
+            $.lrSaveForm(top.$.rootUrl + '/Lrtest/Test/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调
+                callback && callback(res);
+            });
+        }
+    };
+    // 保存数据
+    window.acceptClick = function (callback) {
+        if (page.validForm()) {
+            page.save(keyValue, function (res) {
+                callback && callback()
+            })
+        }
+    };
+    page.init();
+}
+</script>

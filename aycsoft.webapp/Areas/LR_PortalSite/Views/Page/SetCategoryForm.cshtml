@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "SetCategoryForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">分类名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">关联文章分类<font face="宋体">*</font></div>
+        <div id="F_Category" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">关联文章<font face="宋体">*</font></div>
+        <div id="F_Article" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+</div>
+<script>
+    var type = request('type');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var categoryData = aycsoft.frameTab.currentIframe().categoryData;
+
+    var page = {
+        init: function () {
+            $('#F_Category').lrDataItemSelect({ code: 'PortalSiteType' });
+            if (type == '3') {
+                $('#F_Article').lrselect({
+                    text: 'F_Title',
+                    value: 'F_Id',
+                    allowSearch: true
+                });
+                $('#F_Category').on('change', function () {
+                    var v = $(this).lrselectGet();
+                    if (v != '') {
+                        $('#F_Article').lrselectRefresh({
+                            data: [],
+                            url: top.$.rootUrl + '/LR_PortalSite/Article/GetList',
+                            param: { queryJson: JSON.stringify({ category: v }) }
+                        });
+                    }
+                    else {
+                        $('#F_Article').lrselectRefresh({
+                            data: [],
+                            url: false
+                        });
+                    }
+                });
+            }
+            else {
+                $('#F_Article').parent().remove();
+            }
+            page.initData();
+        },
+        initData: function () {
+            if (categoryData) {
+                $('#F_Name').val(categoryData.name);
+                // 分类信息设置
+                $('#F_Category').lrselectSet(categoryData.category);
+                if (type == '3') {
+                    $('#F_Article').lrselectSet(categoryData.articleId);
+                }
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var postData = $('#form').lrGetFormData();
+        callBack(postData);
+        aycsoft.layerClose(window.name);
+    };
+    page.init();
+}
+</script>
+
+

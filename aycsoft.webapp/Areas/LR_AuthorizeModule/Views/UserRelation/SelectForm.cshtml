@@ -1,0 +1,463 @@
+﻿@{
+    ViewBag.Title = "成员添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .form-warp {
+    position:relative;
+    width:100%;
+    height:100%;
+    padding-left:200px;
+}
+.form-warp-left {
+    position:absolute;
+    left:0;
+    top:0;
+    width:200px;
+    height:100%;
+    padding-top:28px;
+}
+.company-select {
+    position:absolute;
+    top:0;
+    left:0;
+    height:28px;
+    width:100%;
+    border:1px solid #ddd;
+    border-top:0px;
+    border-left:0px;
+}
+.aycsoft-select.aycsoft-select-focus {
+    border: 1px solid #ddd;
+    border-top:0px;
+    border-left:0px;
+}
+.aycsoft-select-placeholder {
+    padding-left:15px;
+}
+.aycsoft-select-option {
+    border:0px;
+    border-bottom:1px solid #ddd;
+}
+
+
+.department-tree {
+    position:relative;
+    height:100%;
+    width:100%;
+    border-right:1px solid #ddd;
+}
+.form-warp-main {
+    position:relative;
+    height:100%;
+    width:100%;
+    padding-top:28px;
+
+}
+.user-search {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:28px;
+    border-bottom:1px solid #ddd;
+}
+.user-list {
+    position:relative;
+    height:100%;
+    width:100%;
+}
+
+.card-box {
+    position:relative;
+    float: left;
+    width: 185px;
+    height: 60px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 0 0 10px;
+    padding-left:65px;
+    padding-top:4px;
+    overflow: hidden;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.card-box.active {
+    border: 2px solid #ff5d5b;
+    background: url(/img/selected_red.png) right top no-repeat;
+}
+.card-box-img {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 59px;
+    height: 58px;
+    line-height:58px;
+    padding-left:9px;
+    background-color: #ebebeb;
+    border-right: 1px solid #ccc;
+}
+.card-box-img img {
+    border-radius: 45px;
+}
+.card-box-content p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0;
+}
+.form-warp-right {
+    position:absolute;
+    top:0;
+    right:-180px;
+    height:100%;
+    width:180px;
+    border-left:1px solid #ddd;
+    padding-top:28px;
+    background-color:#fff;
+    z-index:10;
+}
+.form-warp-right-close {
+    position: absolute;
+    top: 7px;
+    right: 4px;
+    width: 12px;
+    height: 13px;
+    display: block;
+    background: url(/img/tab_close.png) no-repeat;
+    cursor:pointer;
+}
+.form-warp-right-close:hover {
+    background-position: 0 -12px;
+}
+
+.form-warp-right-title {
+    position:absolute;
+    top:0;
+    left:0;
+    height:28px;
+    line-height:27px;
+    padding-left:10px;
+    width:100%;
+    border-bottom:1px solid #ddd;
+    padding-right:80px;
+}
+.selected-user-list-warp {
+    position:relative;
+    height:100%;
+    width:100%;
+}
+
+.user-selected-box {
+     position:relative;
+     width:160px;
+     height:44px;
+     border:1px solid #ccc;
+     border-radius:4px;
+     margin:auto;
+     margin-top:10px;
+     padding:5px 0 0 10px;
+     
+}
+.user-selected-box p { 
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0;
+}
+
+.user-reomve {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 13px;
+    display: block;
+    background: url(/img/tab_close.png) no-repeat;
+    cursor:pointer;
+}
+.user-reomve:hover {
+    background-position: 0 -12px;
+}
+
+
+.user-selected-btn {
+    position:absolute;
+    top:0;
+    right:0;
+    height:100%;
+    width:80px;
+    line-height:27px;
+    text-align:center;
+    border-left:1px solid #ddd;
+    cursor:pointer;
+
+    background-color:#eee;
+    color:#666;
+}
+.user-selected-btn:hover {
+    color:#333;
+}
+
+.form-control {
+    border:0px;
+    height:100%;
+
+}
+.input-query {
+    position: absolute;
+    right: 86px;
+    top: 2px;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+}
+</style>
+<div class="form-warp">
+    <div class="form-warp-left">
+        <div id="company_select" class="company-select"></div>
+        <div id="department_tree" class="department-tree"></div>
+    </div>
+    <div class="form-warp-main">
+        <div class="user-search">
+            <input id="txt_keyword" type="text" class="form-control" placeholder="请输入要查询关键字">
+            <span class="input-query" title="Search"><i class="fa fa-search"></i></span>
+            <div class="user-selected-btn" id="user_selected_btn">已选人员</div>
+        </div>
+        <div class="user-list" id="user_list_warp"><div id="user_list"></div></div>
+    </div>
+    <div class="form-warp-right" id="form_warp_right">
+        <div class="form-warp-right-title">已选人员<span class="form-warp-right-close" id="user_selected_btn_close" title="关闭"></span></div>
+        <div class="selected-user-list-warp" id="selected_user_list_warp">
+            <div id="selected_user_list"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var objectId = request('objectId');
+    var category = request('category');
+
+    var companyId = request('companyId');
+    var departmentId = request('departmentId');
+
+    var acceptClick;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var userlist = {};
+        var userlistselected = [];
+        var userlistselectedobj = {};
+
+        // 渲染用户列表
+        function renderUserlist(list) {
+            var $warp = $('<div></div>');
+            for (var i = 0, l = list.length; i < l; i++) {
+                var item = list[i];
+                var active = "";
+                var imgName = "UserCard02.png";
+                if (item.F_Gender == 0) {
+                    imgName = "UserCard01.png";
+                }
+                if (userlistselected.indexOf(item.F_UserId) != -1) {
+                    active = "active";
+                }
+                var _cardbox = "";
+                _cardbox += '<div class="card-box ' + active + '" data-value="' + item.F_UserId + '" >';
+                _cardbox += '    <div class="card-box-img">';
+                _cardbox += '        <img src="' + top.$.rootUrl + '/img/' + imgName + '" />';
+                _cardbox += '    </div>';
+                _cardbox += '    <div class="card-box-content">';
+                _cardbox += '        <p>账户：' + item.F_Account + '</p>';
+                _cardbox += '        <p>姓名：' + item.F_RealName + '</p>';
+                _cardbox += '        <p>部门：<span data-id="' + item.F_DepartmentId + '"></span></p>';
+                _cardbox += '    </div>';
+                _cardbox += '</div>';
+                var $cardbox = $(_cardbox);
+                $cardbox[0].userinfo = item;
+                $warp.append($cardbox);
+                aycsoft.clientdata.getAsync('department', {
+                    key: item.F_DepartmentId,
+                    callback: function (_data, op) {
+                        $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                    }
+                });
+            }
+            $warp.find('.card-box').on('click', function () {
+                var $this = $(this);
+                var userid = $this.attr('data-value');
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                    removeUser(userid);
+                    userlistselected.splice(userlistselected.indexOf(userid), 1);
+
+                }
+                else {
+                    $this.addClass('active');
+                    userlistselectedobj[userid] = $this[0].userinfo;
+                    userlistselected.push(userid);
+                    addUser($this[0].userinfo);
+                }
+            });
+
+            $('#user_list').html($warp);
+        };
+
+        function addUser(useritem) {
+            var $warp = $('#selected_user_list');
+            var _html = '<div class="user-selected-box" data-value="' + useritem.F_UserId + '" >';
+            _html += '<p><span data-id="' + useritem.F_CompanyId + '"></span></p>';
+            _html += '<p><span data-id="' + useritem.F_DepartmentId + '"></span>【' + useritem.F_RealName + '】</p>';
+            _html += '<span class="user-reomve" title="移除选中人员"></span>';
+            _html += '</div>';
+            $warp.append(_html);
+            aycsoft.clientdata.getAsync('department', {
+                key: useritem.F_DepartmentId,
+                callback: function (_data, op) {
+                    $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                }
+            });
+            aycsoft.clientdata.getAsync('company', {
+                key: useritem.F_CompanyId,
+                callback: function (_data, op) {
+                    $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                }
+            });
+        };
+        function removeUser(userid) {
+            var $warp = $('#selected_user_list');
+            $warp.find('[data-value="' + userid + '"]').remove();
+        };
+
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                // 部门
+                $('#department_tree').lrtree({
+                    nodeClick: function (item) {
+                        departmentId = item.id;
+                        if (!!userlist[item.id]) {
+                            renderUserlist(userlist[item.id]);
+                        }
+                        else {
+                            aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_OrganizationModule/User/GetList', { companyId: companyId, departmentId: departmentId }, function (data) {
+                                userlist[item.id] = data || [];
+                                renderUserlist(userlist[item.id]);
+                            });
+                        }
+                    }
+                });
+                // 公司
+                $('#company_select').lrCompanySelect({ isLocal: true }).bind('change', function () {
+                    companyId = $(this).lrselectGet();
+                    $('#department_tree').lrtreeSet('refresh', {
+                        url: top.$.rootUrl + '/LR_OrganizationModule/Department/GetTree',
+                        // 访问数据接口参数
+                        param: { companyId: companyId },
+                    });
+                });
+                // 已选人员按钮
+                $('#user_selected_btn').on('click', function () {
+                    $('#form_warp_right').animate({ right: '0px' }, 300);
+                });
+                $('#user_selected_btn_close').on('click', function () {
+                    $('#form_warp_right').animate({ right: '-180px' }, 300);
+                });
+                // 搜索
+                $("#txt_keyword").keydown(function (event) {
+                    if (event.keyCode == 13) {
+                        var keyword = $(this).val();
+                        if (keyword != "") {
+                            aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_OrganizationModule/User/GetList', { companyId: companyId, keyword: keyword }, function (data) {
+                                renderUserlist(data || []);
+                            });
+                        }
+                        else {
+                            var data = userlist[departmentId] || [];
+                            renderUserlist(data);
+                        }
+                    }
+                });
+
+                // 选中人员按钮点击事件
+                $('#selected_user_list').on('click', function (e) {
+                    var et = e.target || e.srcElement;
+                    var $et = $(et);
+                    if ($et.hasClass('user-reomve')) {
+                        var userid = $et.parent().attr('data-value');
+                        removeUser(userid);
+                        userlistselected.splice(userlistselected.indexOf(userid), 1);
+                        $('#user_list').find('[data-value="' + userid + '"]').removeClass('active');
+                    }
+                });
+
+                // 滚动条
+                $('#user_list_warp').lrscroll();
+                $('#selected_user_list_warp').lrscroll();
+            },
+            initData: function () {
+                if (!!companyId) {
+                    $('#company_select').lrselectSet(companyId);
+                }
+                if (!!departmentId) {
+                    $('#department_tree').lrtreeSet('setValue', departmentId);
+                }
+
+                $.lrSetForm(top.$.rootUrl + '/LR_AuthorizeModule/UserRelation/GetUserIdList?objectId=' + objectId, function (data) {
+                    if (data.userIds == "") {
+                        return false;
+                    }
+                    var $warp = $('#selected_user_list');
+                    $.each(data.userInfoList, function (id, item) {
+                        if (item) {
+                            userlistselectedobj[item.F_UserId] = item;
+                        }
+                    });
+                    var userList = data.userIds.split(',');
+                    for (var i = 0, l = userList.length; i < l; i++) {
+                        var userId = userList[i];
+                        var item = userlistselectedobj[userId];
+                        if (!!item) {
+                            if (userlistselected.indexOf(userId) == -1) {
+                                userlistselected.push(userId);
+                            }
+
+                            var _html = '<div class="user-selected-box" data-value="' + item.F_UserId + '" >';
+                            _html += '<p><span data-id="' + item.F_CompanyId + '"></span></p>';
+                            _html += '<p><span data-id="' + item.F_DepartmentId + '"></span>【' + item.F_RealName + '】</p>';
+                            _html += '<span class="user-reomve" title="移除选中人员"></span>';
+                            _html += '</div>';
+                            $warp.append($(_html));
+                            aycsoft.clientdata.getAsync('department', {
+                                key: item.F_DepartmentId,
+                                callback: function (_data, op) {
+                                    $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                                }
+                            });
+                            aycsoft.clientdata.getAsync('company', {
+                                key: item.F_CompanyId,
+                                callback: function (_data, op) {
+                                    $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                                }
+                            });
+                            $('#user_list').find('[data-value="' + item.F_UserId + '"]').addClass('active');
+                        }
+                    }
+                });
+            }
+        };
+        // 保存数据
+        acceptClick = function () {
+            $.lrSaveForm(top.$.rootUrl + '/LR_AuthorizeModule/UserRelation/SaveForm', { objectId: objectId, category: category, userIds: String(userlistselected) }, function (res) { });
+            return true;
+        };
+        page.init();
+    }
+</script>

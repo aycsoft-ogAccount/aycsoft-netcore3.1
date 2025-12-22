@@ -1,0 +1,1986 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>aycsoft.database</name>
+    </assembly>
+    <members>
+        <member name="T:aycsoft.database.DbCaChe">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：扩展数据库信息缓存
+            </summary>
+        </member>
+        <member name="F:aycsoft.database.DbCaChe._dblist">
+            <summary>
+            扩展数据库缓存
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.DbCaChe.SetValue(System.String,aycsoft.database.DbModel)">
+            <summary>
+            设置
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:aycsoft.database.DbCaChe.GetValue(System.String)">
+            <summary>
+            获取
+            </summary>
+            <param name="key">键值</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.DbCaChe.RemoveValue(System.String)">
+            <summary>
+            移除
+            </summary>
+            <param name="key">键值</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.database.DBCommonHelper">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.05
+            描 述：db通用帮助类
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.DBCommonHelper.IDataReaderToDataTable(System.Data.IDataReader)">
+            <summary>
+            将IDataReader转换为DataTable  
+            </summary>
+            <returns>datatable</returns>
+            <param name="reader">IDataReader</param>
+        </member>
+        <member name="T:aycsoft.database.DbModel">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.19
+            描 述：数据库连接
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.DbModel.F_DBName">
+            <summary>
+            数据库编码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:aycsoft.database.DbModel.F_DbType">
+            <summary>
+            数据库类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:aycsoft.database.DbModel.F_DbConnection">
+            <summary>
+            连接地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.database.DbRegister">
+            <summary>
+            注册orm
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.DbRegister.Register(Autofac.ContainerBuilder)">
+            <summary>
+            注册数据库实现类
+            </summary>
+            <param name="builder">服务构建器</param>
+            <returns>服务构建器</returns>
+        </member>
+        <member name="T:aycsoft.database.IDataBase">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.05
+            描 述：数据库接口类
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Commit">
+            <summary>
+            提交
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Rollback">
+            <summary>
+            回滚
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Close">
+            <summary>
+            关闭
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <returns>list数据,total 总共条数</returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.IDataBase.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.database.IRepository">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：数据库接口类
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IRepository.BeginTrans">
+            <summary>
+            开始事务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.Commit">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IRepository.Rollback">
+            <summary>
+            回滚
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.IRepository.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <returns>list数据,total 总共条数</returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.IRepository.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.IRepository.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.database.mysql.MySqlAdapter">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：mysql sql 适配器
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlAdapter.AppendColumnName(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlAdapter.AppendColumnNameEqualsValue(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列等一个参数
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="T:aycsoft.database.mysql.MySqlDataBase">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：数据库操作方法实现
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.mysql.MySqlDataBase.dbConnection">
+            <summary>
+            当前使用的数据库链接对象
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.mysql.MySqlDataBase.dbTransaction">
+            <summary>
+            事务对象
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="connString">数据库连接地址</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+            <returns>The trans.</returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Commit">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Rollback">
+            <summary>
+            把当前操作回滚成未提交状态
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Close">
+            <summary>
+            关闭连接 内存回收
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.GetPageSql(System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取分页语句
+            </summary>
+            <returns></returns>
+            <param name="strSql">sql语句</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">是否是升序</param>
+            <param name="pageSize">每一页大小</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.mysql.MySqlDataBase.SqlFormat(System.String)">
+            <summary>
+            格式化sql语句
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>sql语句</returns>
+        </member>
+        <member name="T:aycsoft.database.oracle.OracleAdapter">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：oracle sql 适配器
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleAdapter.AppendColumnName(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleAdapter.AppendColumnNameEqualsValue(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列等一个参数
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="T:aycsoft.database.oracle.OracleDataBase">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：数据库操作方法实现
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.oracle.OracleDataBase.dbConnection">
+            <summary>
+            当前使用的数据库链接对象
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.oracle.OracleDataBase.dbTransaction">
+            <summary>
+            事务对象
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="connString">数据库连接地址</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+            <returns>The trans.</returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Commit">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Rollback">
+            <summary>
+            把当前操作回滚成未提交状态
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Close">
+            <summary>
+            关闭连接 内存回收
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.GetPageSql(System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取分页语句
+            </summary>
+            <returns></returns>
+            <param name="strSql">sql语句</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">是否是升序</param>
+            <param name="pageSize">每一页大小</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.oracle.OracleDataBase.SqlFormat(System.String)">
+            <summary>
+            格式化sql语句
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>sql语句</returns>
+        </member>
+        <member name="T:aycsoft.database.Repository">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：数据库接口类
+            </summary>
+        </member>
+        <member name="F:aycsoft.database.Repository.db">
+            <summary>
+            数据库操作接口
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.Repository.#ctor(aycsoft.database.IDataBase)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="idatabase"></param>
+        </member>
+        <member name="M:aycsoft.database.Repository.BeginTrans">
+            <summary>
+            开始事务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.Commit">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.Repository.Rollback">
+            <summary>
+            回滚
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.Repository.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <returns>list数据,total 总共条数</returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.Repository.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.Repository.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="T:aycsoft.database.RepositoryFactory">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.10
+            描 述：定义仓储模型工厂
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.RepositoryFactory.BaseRepository">
+            <summary>
+            定义仓储（基础库）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.RepositoryFactory.BaseRepository(System.String)">
+            <summary>
+            定义仓储（扩展库）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.RepositoryFactory.BaseRepository(System.String,System.String)">
+            <summary>
+            定义仓储
+            </summary>
+            <param name="conn">链接串</param>
+            <param name="dbType">数据库类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.RepositoryFactory.DBType(System.String)">
+            <summary>
+            数据库类型
+            </summary>
+            <param name="code"></param>
+            <returns>SqlServer,Oracle,MySql</returns>
+        </member>
+        <member name="T:aycsoft.database.sqlserver.SqlserverAdapter">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：oracle sql 适配器
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverAdapter.AppendColumnName(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverAdapter.AppendColumnNameEqualsValue(System.Text.StringBuilder,System.String)">
+            <summary>
+            添加列等一个参数
+            </summary>
+            <param name="sb">字串构造器</param>
+            <param name="columnName">列名</param>
+        </member>
+        <member name="T:aycsoft.database.sqlserver.SqlserverDataBase">
+            <summary>
+            版 本 Aycsoft-ADMS-Core Aycsoft敏捷开发框架
+            Copyright (c) 2021-present 广州轻创软件信息科技有限公司
+            创建人：young
+            日 期：2022.09.09
+            描 述：数据库操作方法实现
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.sqlserver.SqlserverDataBase.dbConnection">
+            <summary>
+            当前使用的数据库链接对象
+            </summary>
+        </member>
+        <member name="P:aycsoft.database.sqlserver.SqlserverDataBase.dbTransaction">
+            <summary>
+            事务对象
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="connString">数据库连接地址</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+            <returns>The trans.</returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Commit">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Rollback">
+            <summary>
+            把当前操作回滚成未提交状态
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Close">
+            <summary>
+            关闭连接 内存回收
+            </summary>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.ExecuteSql(System.String,System.Object)">
+            <summary>
+            执行sql语句(带参数)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.ExecuteProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.QueryFirstProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(查询实体数据)
+            </summary>
+            <returns></returns>
+            <param name="procName">存储过程名称.</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.QueryProc``1(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.QueryProc(System.String,System.Object)">
+            <summary>
+            执行存储过程(获取列表数据)
+            </summary>
+            <param name="procName">存储过程名称</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Insert``1(``0)">
+            <summary>
+            插入实体数据
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="entity">实体数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Update``1(``0,System.Boolean)">
+            <summary>
+            更新实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <param name="isOnlyHasValue">是否只更新有值的字段</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.Delete``1(``0)">
+            <summary>
+            删除实体数据
+            </summary>
+            <returns></returns>
+            <param name="entity">实体数据</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.DeleteAny``1(System.Object)">
+            <summary>
+            删除数据根据给定的字段值
+            </summary>
+            <returns></returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类型</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindEntityByKey``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="keyValue">主键</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindEntity``1(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindEntity``1(System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="param">参数</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindEntity(System.String,System.Object)">
+            <summary>
+            获取单个实体数据
+            </summary>
+            <returns>单个实体数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList``1(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList``1(System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="param">参数.</param>
+            <typeparam name="T">类型.</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList(System.String,System.Object)">
+            <summary>
+            获取数据列表
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句.</param>
+            <param name="param">参数.</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList``1(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList``1(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <typeparam name="T">类</typeparam>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <returns>列表数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindList(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            获取数据列表（分页）
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindAll``1">
+            <summary>
+            获取表的所有数据
+            </summary>
+            <returns>列表数据</returns>
+            <typeparam name="T">类</typeparam>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindTable(System.String,System.Object)">
+            <summary>
+            查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindTable(System.String,System.Object,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <returns>datatable数据</returns>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">排序类型</param>
+            <param name="pageSize">每页数据条数</param>
+            <param name="pageIndex">页码</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.FindTable(System.String,System.Object,aycsoft.util.Pagination)">
+            <summary>
+            分页查询方法，返回datatable
+            </summary>
+            <param name="sql">sql语句</param>
+            <param name="param">参数</param>
+            <param name="pagination">分页参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.GetDataBaseTable">
+            <summary>
+            获取数据库表信息
+            </summary>
+            <returns>数据库表信息</returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.GetDataBaseTableFields(System.String)">
+            <summary>
+            获取表的字段信息
+            </summary>
+            <returns>表的字段信息</returns>
+            <param name="tableName">表名</param>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.GetDataSource">
+            <summary>
+            获取数据库地址信息
+            </summary>
+            <returns>数据库地址信息</returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.TestConnection">
+            <summary>
+            测试数据库是否能链接成功
+            </summary>
+            <returns>The connection.</returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.GetSqlColName(System.String)">
+            <summary>
+            获取sql语句的字段
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns></returns>
+        </member>
+        <member name="M:aycsoft.database.sqlserver.SqlserverDataBase.GetPageSql(System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            获取分页语句
+            </summary>
+            <returns></returns>
+            <param name="strSql">sql语句</param>
+            <param name="orderField">排序字段</param>
+            <param name="isAsc">是否是升序</param>
+            <param name="pageSize">每一页大小</param>
+            <param name="pageIndex">页码</param>
+        </member>
+    </members>
+</doc>

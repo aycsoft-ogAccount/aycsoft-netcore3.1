@@ -1,0 +1,486 @@
+﻿@{
+    ViewBag.Title = "看板配置信息";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .info {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    font-size: 18px;
+    line-height: 34px;
+    color: #808080;
+    cursor: help;
+}
+
+.info-message {
+    position: absolute;
+    bottom: 202px;
+    right: 44px;
+    background-color: #333A4C;
+    padding: 6px;
+    color: #fff;
+    display: none;
+    z-index: 99;
+}
+
+.table-info-message {
+    bottom: 290px;
+}
+
+.info-message .ok {
+    color: #1bb99a;
+}
+
+.info-message .error {
+    color: #ff3015;
+}
+
+.step-gird-pane {
+    padding:5px;
+}
+.lr-form-layout {
+    padding-top: 190px;
+}
+
+    .lr-form-layout .lr-form-layout-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 190px;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .lr-form-layout .lr-form-item-title {
+        width: 58px;
+        padding-right: 0px;
+        text-align: left;
+    }
+
+    .lr-form-layout .lr-form-item {
+        padding-left: 58px;
+    }
+
+    .lr-form-layout .lr-form-layout-body {
+        padding-top: 30px;
+        border: 1px solid #ccc;
+        border-top: 0px;
+    }
+</style>
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span>基础信息<span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span>数据配置<span class="chevron"></span></li>
+        </ul>
+    </div>
+    <div class="step-content" id="wizard-steps">
+        <div class="step-pane lr-form-wrap active" id="step-1">
+            <div class="col-xs-12 lr-form-item kanbanitem">
+                <div class="lr-form-item-title">模块名称<font face="宋体">*</font></div>
+                <input id="F_ModeName" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-12 lr-form-item kanbanitem">
+                <div class="lr-form-item-title">模块上边距<font face="宋体">*</font></div>
+                <input id="F_TopValue" type="text" class="form-control" isvalid="yes" checkexpession="Num" />
+            </div>
+            <div class="col-xs-12 lr-form-item kanbanitem">
+                <div class="lr-form-item-title">模块左边距<font face="宋体">*</font></div>
+                <div id="F_LeftValue" isvalid="yes" checkexpession="NotNull">
+                    <ul>
+                        <li data-value="0">0</li>
+                        <li data-value="1/4">25%</li>
+                        <li data-value="1/3">33%</li>
+                        <li data-value="1/2">50%</li>
+                        <li data-value="2/3">66%</li>
+                        <li data-value="3/4">75%</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 lr-form-item kanbanitem">
+                <div class="lr-form-item-title">模块宽度<font face="宋体">*</font></div>
+                <div id="F_WidthValue" isvalid="yes" checkexpession="NotNull">
+                    <ul>
+                        <li data-value="1">100%</li>
+                        <li data-value="3/4">75%</li>
+                        <li data-value="2/3">66%</li>
+                        <li data-value="1/2">50%</li>
+                        <li data-value="1/3">33%</li>
+                        <li data-value="1/4">25%</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 lr-form-item kanbanitem">
+                <div class="lr-form-item-title">模块高度<font face="宋体">*</font></div>
+                <input id="F_HightValue" type="text" class="form-control" isvalid="yes" checkexpession="Num" />
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">刷新时间</div>
+                <input id="F_RefreshTime" type="text" class="form-control" isvalid="yes" checkexpession="NumOrNull" />
+                <span class="lr-form-item-btn">分钟</span>
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">跳转链接</div>
+                <input id="F_LinkInfo" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="step-pane step-gird-pane" id="step-2">
+            <div class="lr-form-layout">
+                <div class="lr-form-layout-header" id="tabconfigration">
+                    <div class="col-xs-12 lr-form-item">
+                        <div class="lr-form-item-title">选项</div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio" value="sql" type="radio" checked>
+                                SQL语句
+                            </label>
+                            <label>
+                                <input name="radio" value="api" type="radio">
+                                接口地址
+                            </label>
+                        </div>
+                    </div>
+                    <div id="db" class="col-xs-12 lr-form-item">
+                        <div class="lr-form-item-title">数据库</div>
+                        <div id="F_DataSourceId"></div>
+                    </div>
+                    <div id="sql" class="col-xs-12 lr-form-item">
+                        <div class="lr-form-item-title">SQL语句</div>
+                        <textarea id="F_Sql" class="form-control" style="height: 90px;"></textarea>
+                    </div>
+                    <div id="api" class="col-xs-12 lr-form-item">
+                        <div class="lr-form-item-title">接口地址</div>
+                        <input id="F_Interface" type="text" class="form-control" />
+                        <div id="lr-info" class="info">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="lr-form-layout-body">
+                    <div class="lr-form-layout-body-title">
+                        <span>字段配置</span>
+                    </div>
+                    <div id="btns_girdtable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lr-form-bottom-button" id="wizard-actions">
+        <a id="btn_prev" class="btn btn-default btn-prev" disabled>上一步</a>
+        <a id="btn_next" class="btn btn-default btn-next">下一步</a>
+        <a id="btn_finish" class="btn btn-success" disabled>完成</a>
+    </div>
+</div>
+<div id="lr-message" class="info-message table-info-message">
+    <p>请按如下规则填写接口</p>
+    <p class="ok">所用接口为GET请求,返回参数如下:</p>
+    <p class="ok">{</p>
+    <p class="ok">"code":200,</p>
+    <p class="ok">"info":"响应成功",</p>
+    <p class="ok">"data":[</p>
+    <p class="ok">{...},</p>
+    <p class="ok">{...},</p>
+    <p class="ok">.......</p>
+    <p class="ok">]</p>
+    <p class="ok">}</p>
+</div>
+<script>
+var acceptClick;
+var fields = [];
+
+var sqlFieldMap = {};
+var urlFieldMap = {};
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectedModel = top.layer_form.selectedModel;
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            ///显示比例
+            $('#F_WidthValue').lrselect();
+            $('#F_LeftValue').lrselect();
+            //数据库
+            $('#F_DataSourceId').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                type: 'tree',
+                placeholder: '请选择数据库',
+                allowSearch: true
+            });
+            // 接口提示
+            $('#lr-info').hover(function () { $('#lr-message').show(); }, function () { $('#lr-message').hide(); });         
+            //选中的sql或api的操作
+            sqlOrAPiIsShow();
+            $("input[type = 'radio']").click(function () {
+                sqlOrAPiIsShow();
+            });
+            function sqlOrAPiIsShow() {
+                if ($("input[type = 'radio']:checked").val() == "sql") {
+                    $("#db").show();
+                    $("#sql").show();
+                    $("#api").hide();
+                }
+                else {
+                    $("#db").hide();
+                    $("#sql").hide();
+                    $("#api").show();
+                }
+            }
+
+            // 加载导向
+            $('#wizard').wizard().on('change', function (e, data) {
+                var $finish = $("#btn_finish");
+                var $next = $("#btn_next");
+                if (data.direction == "next") {
+                    if (!$('#step-1').lrValidform()) {
+                        return false;
+                    }
+                    $next.attr('disabled', 'disabled');
+                    $finish.removeAttr('disabled');
+                }
+                else if (data.direction == "previous") {
+                    $finish.attr('disabled', 'disabled');
+                    $next.removeAttr('disabled');
+                }
+                else {
+                    $finish.attr('disabled', 'disabled');
+                    $next.removeAttr('disabled');
+                }
+            });
+
+            $("#F_Sql").on('blur', function () {
+                var datasourceId = $('#F_DataSourceId').lrselectGet();
+                var sql = $("#F_Sql").val();
+                if (datasourceId && sql) {
+                    page.sqldata(datasourceId, sql, function (data) {
+                        fields = data;
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('请检查数据库或sql语句是否输入');
+                }
+            });
+            $("#F_Interface").on('blur', function () {
+                var path = $("#F_Interface").val();
+                if (!!path) {
+                    page.interfaceData(path, function (data) {
+                        fields = data;
+                    });
+                } else {
+                    aycsoft.alert.warning('请检查填写接口地址');
+                }
+            });
+
+            $('#btns_girdtable').jfGrid({
+                headData: [
+                    {
+                        label: "", name: "btn1", width: 50, align: "center",
+                        formatter: function (value, row, op, $cell) {
+                            $cell.on('click', function () {
+                                var rowindex = parseInt($cell.attr('rowindex'));
+                                var res = $('#btns_girdtable').jfGridSet('moveUp', rowindex);
+                                return false;
+                            });
+                            return '<span class=\"label label-info\" style=\"cursor: pointer;\">上移</span>';
+                        }
+                    },
+                    {
+                        label: "", name: "btn2", width: 50, align: "center",
+                        formatter: function (value, row, op, $cell) {
+                            $cell.on('click', function () {
+                                var rowindex = parseInt($cell.attr('rowindex'));
+                                var res = $('#btns_girdtable').jfGridSet('moveDown', rowindex);
+                                return false;
+                            });
+                            return '<span class=\"label label-success\" style=\"cursor: pointer;\">下移</span>';
+                        }
+                    },
+                    {
+                        label: "字段项名称", name: "F_FullName", width: 150, align: "left",
+                        formatter: function (value, row, op, $cell) {
+                            return row.F_FullName || '';
+                        },
+                        edit: {
+                            type: 'select',
+                            init: function (row, $self) {// 选中单元格后执行
+                                $self.lrselectRefresh({
+                                    data: fields
+                                });
+                            },
+                            op: {
+                                value: 'F_FullName',
+                                text: 'F_FullName',
+                                allowSearch: true
+                            },
+                            change: function (rowData, rowIndex, item) {
+                                if (item != null) {
+                                    rowData.id = item.table + item.F_FullName;
+                                }
+                                else {
+                                    rowData.id = '';
+                                }
+                            }
+                        }
+                    },
+                    {
+                        label: "标题", name: "F_HeadTitle", width: 120, align: "left",
+                        edit: {
+                            type: 'input'
+                        }
+                    },
+                    {
+                        label: "宽度(百分比%)", name: "F_Width", width: 100, align: "left",
+                        edit: {
+                            type: 'input'
+                        }
+                    },
+                    {
+                        label: '对齐', name: 'F_Align', width: 100, align: 'left',
+                        edit: {
+                            type: 'select',
+                            op: {// 下拉框设置参数 和 lrselect一致
+                                data: [
+                                    { 'id': 'left', 'text': '左对齐' },
+                                    { 'id': 'center', 'text': '居中' },
+                                    { 'id': 'right', 'text': '右对齐' }
+                                ]
+                            }
+                        }
+                    },
+                ],
+                mainId: 'id',
+                isEdit: true,
+                isMultiselect: true
+            });
+            $("#btn_finish").on('click', function () {
+                acceptClick();
+            })
+        },
+        initData: function () {
+            if (selectedModel) {
+                $('#step-1').lrSetFormData(selectedModel);
+                if (selectedModel._configuration) {
+                    var configuration = selectedModel._configuration;
+                    $("#tabconfigration").lrSetFormData(configuration);
+                    if (configuration.F_DataSourceId && configuration.F_Sql) {
+                        page.sqldata(configuration.F_DataSourceId, configuration.F_Sql, function (data) {
+                            fields = data;
+                        });
+                    }
+                    else if (configuration.F_Interface) {
+                        $("input[name=radio][value=api]").trigger('click');
+                        page.interfaceData(configuration.F_Interface, function (data) {
+                            fields = data;
+                        });
+                    }
+                    $('#F_LinkInfo').val(configuration.F_LinkInfo);
+                    $('#btns_girdtable').jfGridSet('refreshdata', configuration.grid);
+                }
+            }
+        },
+
+        sqldata: function (databaseLinkId, strSql,callback) {// 根据sql语句获取字段列表
+            if (sqlFieldMap[strSql]) {
+                callback(sqlFieldMap[strSql]);
+            } else {
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_SystemModule/DatabaseTable/GetSqlColName', { dbCode: databaseLinkId, strSql: strSql }, function (data) {
+                    if (data) {
+                        sqlFieldMap[strSql] = [];
+                        $.each(data, function (_index, _item) {
+                            sqlFieldMap[strSql].push({ F_FullName: _item });
+                        });
+                    }
+                    callback(sqlFieldMap[strSql] || []);
+                });
+            }
+        },
+        interfaceData: function (path, callback) {
+            if (urlFieldMap[path]) {
+                callback(urlFieldMap[path]);
+            } else {
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_DisplayBoard/LR_KBConfigInfo/GetApiData', { path: path }, function (data) {
+                    if (data) {
+                        urlFieldMap[path] = [];
+                        $.each(data[0] || [], function (_index, _item) {
+                            urlFieldMap[path].push({ F_FullName: _index });
+                        });
+                    }
+                    callback(urlFieldMap[path] || []);
+                });
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#step-1').lrValidform()) {
+            return false;
+        }
+        var baseInfo = $('#step-1').lrGetFormData();
+
+        var tabconfigration = $("#tabconfigration").lrGetFormData();
+        if ($("input[type = 'radio']:checked").val() == "sql") {
+            if (tabconfigration.F_DataSourceId == "" || tabconfigration.F_Sql == "") {
+                aycsoft.alert.error('请检查数据库或sql语句是否输入');
+                return false;
+            }
+            tabconfigration.F_Interface = '';
+        } else {
+            if (tabconfigration.F_Interface == "") {
+                aycsoft.alert.error('请检查填写接口地址');
+                return false;
+            }
+            tabconfigration.F_DataSourceId = '';
+            tabconfigration.F_Sql = '';
+        }
+
+        var tabcorrespond = $('#btns_girdtable').jfGridGet('rowdatas');
+        if (tabcorrespond.length <= 0) {
+            aycsoft.alert.error('请新增显示字段');
+            return false;
+        }
+
+        var data = {
+            F_ModeName: baseInfo.F_ModeName,
+            F_TopValue: baseInfo.F_TopValue,
+            F_LeftValue: baseInfo.F_LeftValue,
+            F_WidthValue: baseInfo.F_WidthValue,
+            F_HightValue: baseInfo.F_HightValue,
+            F_RefreshTime: baseInfo.F_RefreshTime,
+            F_Type: 'table',
+            _configuration: {
+                F_LinkInfo: baseInfo.F_LinkInfo,
+                F_DataSourceId: tabconfigration.F_DataSourceId,
+                F_Sql: tabconfigration.F_Sql,
+                F_Interface: tabconfigration.F_Interface,
+                grid: tabcorrespond
+            }
+        };
+
+        if (selectedModel) {
+            selectedModel.F_ModeName = data.F_ModeName;
+            selectedModel.F_TopValue = data.F_TopValue;
+            selectedModel.F_LeftValue = data.F_LeftValue;
+            selectedModel.F_WidthValue = data.F_WidthValue;
+            selectedModel.F_HightValue = data.F_HightValue;
+            selectedModel.F_RefreshTime = data.F_RefreshTime;
+            selectedModel.F_Type = data.F_Type;
+            selectedModel._configuration = data._configuration;
+
+            top.layer_form.displayBoard.updateModel(selectedModel);
+        }
+        else {
+            top.layer_form.displayBoard.addModel(data);
+        }
+        aycsoft.layerClose(window.name);
+    };
+    page.init();
+}
+</script>
+
+

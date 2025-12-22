@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "附件下载";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-form-layout-body {
+    padding:5px;
+}
+.lr-form-file-queue-wrap {
+    position:relative;
+    width:100%;
+    height:100%;
+    border:1px solid #ddd;
+    border-radius:4px;
+    overflow-y:auto;
+}
+.lr-form-file-queue {
+    position:relative;
+}
+.lr-form-file-queue-item {
+    position:relative;
+    width:100%;
+    height:50px;
+    border-bottom:1px solid #ddd;
+    padding-left:60px;
+
+}
+.lr-file-image {
+    position:absolute;
+    top:5px;
+    left:5px;
+}
+.lr-file-image img {
+    width:40px;
+    height:40px;
+}
+.lr-file-name{
+    line-height:50px;
+
+}
+
+.lr-tool-bar {
+    position:absolute;
+    top:0;
+    right:5px;
+    font-size: 25px;
+    line-height:50px;
+    color:#666;
+    cursor:pointer;
+}
+.lr-tool-bar > i {
+    margin-left:8px;
+}
+
+.lr-tool-bar .fa-cloud-download {
+    color: #3498db;
+}
+.lr-tool-bar .fa-eye {
+    color: #1bb99a;
+}
+.lr-form-file-queue-bg {
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:140px;
+    height:30px;
+    line-height:30px;
+    
+    margin:-15px 0 0 -70px;
+}
+.lr-form-file-queue-bg h1 {
+    color: #666;
+    font-size: 20px;
+    font-family: Microsoft Yahei;
+    padding-bottom: 2px;
+    margin: 0;
+}
+</style>
+<div class="lr-form-layout">
+    <div class="lr-form-layout-body">
+        <div class="lr-form-file-queue-wrap" id="lr_form_file_queue">
+            <div class="lr-form-file-queue" id="lr_form_file_queue_list">
+
+            </div>
+            <div class="lr-form-file-queue-bg">
+                <h1>还没有文件上传</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var keyVaule = request('keyVaule');
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    $.lrSetForm(top.$.rootUrl + '/LR_SystemModule/Annexes/GetAnnexesFileList?folderId=' + keyVaule, function (data) {
+        for (var i = 0, l = data.length; i < l; i++) {
+            $('#lr_form_file_queue .lr-form-file-queue-bg').hide();
+            var item = data[i];
+            var $item = $('<div class="lr-form-file-queue-item" id="lr_filequeue_' + item.F_Id + '" ></div>');
+            $item.append('<div class="lr-file-image"><img src="' + top.$.rootUrl + '/img/filetype/' + item.F_FileType + '.png"></div>');
+            $item.append('<span class="lr-file-name">' + item.F_FileName + '(' + aycsoft.countFileSize(item.F_FileSize) + ')</span>');
+            $item.append('<div class="lr-tool-bar"><i class="fa fa-eye" title="预览"  data-value="' + item.F_Id + '" ></i><i class="fa fa-cloud-download" title="下载"  data-value="' + item.F_Id + '" ></i></div>');
+            $item.find('.lr-tool-bar .fa-cloud-download').on('click', function () {
+                var fileId = $(this).attr('data-value');
+                DownFile(fileId);
+            });
+            $item.find('.lr-tool-bar .fa-eye').on('click', function () {
+                var fileId = $(this).attr('data-value');
+                openViewForm(fileId);
+            });
+            $('#lr_form_file_queue_list').append($item);
+        }
+    });
+    // 下载文件
+    var DownFile = function (fileId) {
+        aycsoft.download({ url: top.$.rootUrl + '/LR_SystemModule/Annexes/DownAnnexesFile', param: { fileId: fileId }, method: 'POST' });
+    }
+    var openViewForm = function (fileId) {
+        aycsoft.layerForm({
+            id: 'PreviewForm',
+            title: '文件预览',
+            url: top.$.rootUrl + '/LR_SystemModule/Annexes/PreviewFile?fileId=' + fileId,
+            width: 1080,
+            height: 850,
+            btn: null
+        });
+    }
+}
+</script>
+

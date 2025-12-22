@@ -1,0 +1,287 @@
+﻿
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .lr-tableshow {
+        position:relative;
+        width:100%;
+        height:90px;
+        border:1px solid #eee;
+        padding:10px;
+    }
+</style>
+<div class="lr-form-wrap" id="form">
+    <input id="F_SchemeId" type="hidden" />
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">功能名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">功能图标<font face="宋体">*</font></div>
+        <input id="F_Icon" type="text" class="form-control" placeholder="请选择图标" isvalid="yes" checkexpession="NotNull" />
+        <span id="selectIcon" class="lr-input-button" title="选取图标">...</span>
+    </div>
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">功能分类<font face="宋体">*</font></div>
+        <div id="F_Type" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">排序<font face="宋体">*</font></div>
+        <input id="F_SortCode" type="text" class="form-control" placeholder="请输入排序号" isvalid="yes" checkexpession="Num" />
+    </div>
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">类型</div>
+        <div class="radio">
+            <label>
+                <input name="F_IsSystem" type="radio" value="2" checked="checked">
+                自定义表单
+            </label>
+            <label>
+                <input name="F_IsSystem" type="radio" value="1">
+                代码开发
+            </label>
+        </div>
+    </div>
+    <div class="col-xs-12 lr-form-item system " style="display:none;">
+        <div class="lr-form-item-title">功能地址</div>
+        <input id="F_Url" type="text" class="form-control" placeholder="请输入功能地址" />
+    </div>
+
+    <div class="col-xs-12 lr-form-item lr-form-btnitem nosystem">
+        <div class="lr-form-item-title">表单选择</div>
+        <div id="F_FormId"></div>
+        <a id="lr_preview" class="btn btn-default lr-form-item-btn">预览表单</a>
+    </div>
+    <div class="col-xs-12 lr-form-item nosystem">
+        <div class="lr-form-item-title">列表展示</div>
+        <div class="lr-tableshow">
+            <div class="col-xs-12" style="padding-bottom:10px;">
+                <div id="listTitle"></div>
+            </div>
+            <div class="col-xs-4" style="padding-right:6px;">
+                <div id="listContent1"></div>
+            </div>
+            <div class="col-xs-4" style="padding:0 3px;">
+                <div id="listContent2"></div>
+            </div>
+            <div class="col-xs-4" style="padding-left:6px;">
+                <div id="listContent3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var keyValue = request('keyValue');
+var type = request('type');
+
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var lrcomponts = [];
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        /*绑定事件和初始化控件*/
+        bind: function () {
+            // 列表显示
+            $('#listTitle').lrselect({
+                type: 'multiple'
+            });
+            $('#listContent1').lrselect({ maxHeight: 160 });
+            $('#listContent2').lrselect({ maxHeight: 160 });
+            $('#listContent3').lrselect({ maxHeight: 160 });
+
+
+            // 选择图标
+            $('#selectIcon').on('click', function () {
+                aycsoft.layerForm({
+                    id: 'iconForm',
+                    title: '选择图标',
+                    url: top.$.rootUrl + '/Utility/AppIcon',
+                    height: 700,
+                    width: 1000,
+                    btn: null,
+                    maxmin: true,
+                    end: function () {
+                        if (top._aycsoftSelectIcon != '') {
+                            $('#F_Icon').val(top._aycsoftSelectIcon);
+                        }
+                    }
+                });
+            });
+            // 分类
+            $('#F_Type').lrDataItemSelect({ code: 'function' });
+            $('#F_Type').lrselectSet(type);
+            // 选在表单
+            $('#F_FormId').lrselect({
+                text: 'F_Name',
+                value: 'F_Id',
+                url: top.$.rootUrl + '/LR_FormModule/Custmerform/GetSchemeInfoList',
+                maxHeight: 180,
+                allowSearch: true,
+                select: function (item) {
+                    if (item) {
+                        lrcomponts = [];
+                        $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetFormData?keyValue=' + item.F_Id, function (data) {
+                            var scheme = JSON.parse(data.schemeEntity.F_Scheme);
+                            for (var i = 0, l = scheme.data.length; i < l; i++) {
+                                var componts = scheme.data[i].componts;
+                                for (var j = 0, jl = componts.length; j < jl; j++) {
+                                    var compont = componts[j];
+                                    if (compont.type == 'gridtable') {
+                                    }
+                                    else {
+                                        var point = { text: compont.title, id: compont.id };
+                                        lrcomponts.push(point);
+                                    }
+                                }
+                            }
+
+                            $('#listTitle').lrselectRefresh({
+                                data: lrcomponts
+                            });
+                            $('#listContent1').lrselectRefresh({
+                                data: lrcomponts
+                            });
+                            $('#listContent2').lrselectRefresh({
+                                data: lrcomponts
+                            });
+                            $('#listContent3').lrselectRefresh({
+                                data: lrcomponts
+                            });
+                        });
+                    } else {
+                        lrcomponts = [];
+                        $('#listTitle').lrselectRefresh({
+                            data: lrcomponts
+                        });
+                        $('#listContent1').lrselectRefresh({
+                            data: lrcomponts
+                        });
+                        $('#listContent2').lrselectRefresh({
+                            data: lrcomponts
+                        });
+                        $('#listContent3').lrselectRefresh({
+                            data: lrcomponts
+                        });
+                    }
+                }
+            });
+            $('#lr_preview').on('click', function () {
+                var formId = $('#F_FormId').lrselectGet();
+                if (!!formId) {
+                    aycsoft.layerForm({
+                        id: 'custmerForm_PreviewForm',
+                        title: '预览当前表单',
+                        url: top.$.rootUrl + '/LR_FormModule/Custmerform/PreviewForm?schemeInfoId=' + formId,
+                        width: 800,
+                        height: 600,
+                        maxmin: true,
+                        btn: null
+                    });
+                }
+                else {
+                    aycsoft.alert.warning('请选择表单！');
+                }
+            });
+
+            // 功能类型
+            $('[name="F_IsSystem"]').on('click', function () {
+                var value = $(this).val();
+                if (value == 1) {
+                    $('.system').show();
+                    $('.nosystem').hide();
+                } else {
+                    $('.system').hide();
+                    $('.nosystem').show();
+                }
+            });
+
+
+        },
+        /*初始化数据*/
+        initData: function () {
+            if (!!keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_AppManager/FunctionManager/GetForm?keyValue=' + keyValue, function (data) {//
+                    $('#form').lrSetFormData(data.entity);
+                    if (data.entity.F_IsSystem != 1 && data.schemeEntity) {
+                        var scheme = JSON.parse(data.schemeEntity.F_Scheme);
+                        $('#listTitle').lrselectSet(scheme.title);
+                        $('#listContent1').lrselectSet(scheme.content[0]);
+                        $('#listContent2').lrselectSet(scheme.content[1]);
+                        $('#listContent3').lrselectSet(scheme.content[2]);
+                    }
+                });
+            }
+        }
+    };
+
+
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData(keyValue);
+        formData.F_IsSystem = $('[name="F_IsSystem"]:checked').val();
+        var entity = {
+            F_Name: formData.F_Name,
+            F_Icon: formData.F_Icon,
+            F_Type: formData.F_Type,
+            F_SortCode: formData.F_SortCode,
+            F_FormId: formData.F_FormId,
+            F_SchemeId: formData.F_SchemeId,
+            F_Url: formData.F_Url,
+            F_IsSystem: formData.F_IsSystem,
+        };
+        if (formData.F_IsSystem == 1) {
+            if ($.trim(formData.F_Url || '') == '') {
+                aycsoft.alert.error('请填写功能地址!');
+                return false;
+            }
+        }
+        else {
+            if ($.trim(formData.listTitle || '') == '') {
+                aycsoft.alert.error('请设置列表展示!');
+                return false;
+            }
+        }
+
+        var scheme = {
+            title: formData.listTitle,
+            content:['','','']
+        };
+        scheme.content[0] = formData.listContent1;
+        scheme.content[1] = formData.listContent2;
+        scheme.content[2] = formData.listContent3;
+
+        var schemeEntity = {
+            F_Scheme: JSON.stringify(scheme)
+        }
+
+
+        // 提交数据
+        var postData = {
+            strEntity: JSON.stringify(entity),
+            strSchemeEntity: JSON.stringify(schemeEntity),
+        };
+
+
+        $.lrSaveForm(top.$.rootUrl + '/LR_AppManager/FunctionManager/SaveForm?keyValue=' + keyValue, postData, function (res) {
+            // 保存成功后才回调
+            if (!!callBack) {
+                callBack();
+            }
+        });
+    };
+
+
+    page.init();
+}
+</script>

@@ -1,0 +1,260 @@
+﻿@{
+    ViewBag.Title = "文章信息表单";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+body {
+    background-color: rgba(0,0,0,.0001);
+}
+.lr-layout {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+}
+
+.lr-layout-wrap {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid rgb(204, 204, 204);
+    box-shadow: rgb(189, 189, 189) 0px 0px 10px;
+}
+.top-btn-tool {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0px 0px 6px 6px;
+    padding: 8px;
+}
+.content {
+    position:absolute;
+    top:30px;
+    left:0;
+    width:100%;
+    height:76px;
+    padding-right:30px;
+}
+
+
+.file {
+    height: 55px;
+    font-size: 300px;
+    position: absolute;
+    left: 1px;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    width: 100px;
+}
+
+.mask {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 999998;
+}
+
+    .mask img {
+        width: 500px;
+        height: 300px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -150px;
+        margin-left: -250px;
+    }
+
+.closebutton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    margin-top: -165px;
+    margin-left: 235px;
+    z-index: 210;
+    width: 30px;
+    height: 30px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 30px;
+    background-color: aliceblue;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    color: red;
+    z-index: 999999;
+    cursor:pointer;
+}
+
+.imgname {
+    line-height: 28px;
+    color: #1464e1;
+    cursor: pointer;
+}
+</style>
+<div class="lr-layout">
+    <div class="lr-layout-wrap lr-form-wrap" style="padding-top:106px;" id="form1">
+        <input id="F_ImgName" type="hidden" />
+        <input id="F_Img" type="hidden" />
+        <div class="content">
+            <div class="col-xs-6 lr-form-item">
+                <div class="lr-form-item-title">标题<font face="宋体">*</font></div>
+                <input id="F_Title" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-6 lr-form-item">
+                <div class="lr-form-item-title">文章分类<font face="宋体">*</font></div>
+                <div id="F_Category" isvalid="yes" checkexpession="NotNull"></div>
+            </div>
+            <div class="col-xs-6 lr-form-item">
+                <div class="lr-form-item-title">发布时间<font face="宋体">*</font></div>
+                <input id="F_PushDate" type="text" class="form-control lr-input-wdatepicker" onfocus="WdatePicker({onpicked: function () { $('#F_PushDate').trigger('change'); } })" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-6 lr-form-item lr-form-btnitem">
+                <div class="lr-form-item-title">缩略图</div>
+                <div id="F_ImgName1" class="form-control imgname"></div>
+                <div class="btn btn-default lr-form-item-btn">
+                    图片上传
+                    <input type="file" class="btn btn-default lr-form-item-btn file" name="uploadFile" id="uploadFile">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-12 lr-form-item" style="position:relative;width:100%;height:100%;padding-bottom:130px;">
+            <div class="lr-form-item-title">详细内容<font face="宋体">*</font></div>
+            <div id="F_Content" type="text/plain" class="lr-rblock"></div>
+        </div>
+
+
+        <div>
+            <span id="closebutton" class="closebutton">×</span>
+            <div id="showimg" class="mask">
+            </div>
+        </div>
+    </div>
+    <div class="top-btn-tool">
+        <a id="savaAndAdd" class="btn btn-success">保存</a>
+        <a id="save" class="btn btn-default">取消</a>
+    </div>
+</div>
+<script>
+var acceptClick;
+var keyValue = request('keyValue');
+var categoryId = request('categoryId');
+
+var bootstrap = function ($, aycsoft) {
+    var src = "";
+    "use strict";
+    //内容编辑器
+    var ue = UE.getEditor('F_Content', { initialFrameWidth: null, autoHeightEnabled: false });
+
+    $('#F_Content')[0].ue = ue;
+
+    function uploadImg() {
+        var f = document.getElementById('uploadFile').files[0]
+        src = window.URL.createObjectURL(f);
+        $("#F_ImgName1").html(f.name);
+    };
+    var acceptClick = function (callBack) {
+        if (!$('#form1').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form1').lrGetFormData();
+        var postData = {
+            F_ImgName: formData.F_ImgName,
+            F_Img: formData.F_Img,
+            F_Title: formData.F_Title,
+            F_Category: formData.F_Category,
+            F_PushDate: formData.F_PushDate,
+            F_Content: formData.F_Content,
+        }
+
+
+        aycsoft.loading(true, '正在保存...');
+        $.ajaxFileUpload({
+            data: postData,
+            url: top.$.rootUrl + "/LR_PortalSite/Article/UploadFile?keyValue=" + keyValue,
+            secureuri: false,
+            fileElementId: 'uploadFile',
+            dataType: 'json',
+            success: function (res) {
+                aycsoft.loading(false);
+                if (res.code == 200) {
+                    // 保存成功后才回调
+                    aycsoft.frameTab.parentIframe().refreshGirdData();//index页列表刷新
+                    aycsoft.frameTab.close('PL_ArticleInfo_List_add');//关闭新增界面
+                }
+                else {
+                    aycsoft.alert.error(res.info);
+                }
+            }
+        });
+    };
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            // 文章分类
+            $('#F_Category').lrDataItemSelect({ code: 'PortalSiteType' });
+            $('#F_Category').lrselectSet(categoryId);
+
+            // 保存数据
+            $('#savaAndAdd').on('click', function () {
+                acceptClick();
+            });
+            ///取消按钮关闭采购订单界面
+            $('#save').on('click', function () {
+                aycsoft.frameTab.close('PL_ArticleInfo_List_add');//关闭新增界面
+            });
+
+
+
+            // 图片上传
+            $('#uploadFile').on('change', uploadImg);
+
+            $("#closebutton").on('click', function () {
+                $('#showimg').html('');
+
+
+                document.getElementById("showimg").style.display = "none";
+                document.getElementById("closebutton").style.display = "none";
+            });
+            $("#F_ImgName1").on("click", function () {
+
+                if (src != "") {
+                    var _item = '<img src=' + src + '>';
+                    $('#showimg').html(_item);
+                    document.getElementById("showimg").style.display = "block";//显示
+                    document.getElementById("closebutton").style.display = "block";//显示
+                } else if (keyValue) {
+                    if ($("#F_Img").val()) {
+                        $('#showimg').html('<img src="' + top.$.rootUrl + '/LR_PortalSite/Article/GetImg?keyValue=' + keyValue + '" >');
+                        document.getElementById("showimg").style.display = "block";//显示
+                        document.getElementById("closebutton").style.display = "block";//显示
+                    }
+                } 
+            })
+
+        },
+        initData: function () {
+            if (!!keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_PortalSite/Article/GetFormData?keyValue=' + keyValue, function (data) {
+                    $('#form1').lrSetFormData(data);
+                    $("#F_ImgName1").html(data.F_ImgName);
+                });
+            }
+        }
+    };
+    page.init();
+}
+</script>

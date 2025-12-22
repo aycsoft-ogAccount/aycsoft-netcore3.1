@@ -1,0 +1,327 @@
+﻿
+@{
+    ViewBag.Title = "配置模块4";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+}
+
+.bodycontent {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding-top: 77px;
+}
+
+.form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #ccc;
+    height: 77px;
+    width: 100%;
+    padding: 0 15px 0 0;
+}
+
+    .form .lr-form-item-title {
+        width: 50px;
+    }
+
+    .form .lr-form-item {
+        padding-left: 50px;
+    }
+
+.gird {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.top, .bottom {
+    position: relative;
+    height: 40%;
+    width: 100%;
+    padding-top: 30px;
+}
+
+.bottom {
+    height: 60%;
+    padding-top: 70px;
+    border-top: 1px solid #ccc;
+}
+
+.title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 29px;
+    background-color: #F5F5F5;
+    text-align: left;
+    padding-left: 10px;
+    font-weight: bold;
+    color: #676a6c;
+    border-bottom: 1px solid #ccc;
+}
+
+.content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.search-bar {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+.lr-layout-tool-item {
+    position: relative;
+    float: left;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.search-bar .btn {
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    margin-bottom: 1px;
+    line-height: 14px;
+}
+
+</style>
+<div class="body">
+    <div class="bodycontent">
+        <div class="form lr-form-wrap" id="form1">
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+                <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">更多</div>
+                <div id="F_Url"></div>
+            </div>
+        </div>
+        <div class="gird">
+            <div class="top">
+                <div class="title">
+                    已选择文章
+                </div>
+                <div class="content" id="selected_grid">
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="title">
+                    选择文章
+                </div>
+                <div class="search-bar">
+                    <div class="lr-layout-tool-item" style="width: 200px;">
+                        <div id="F_Category" style="border-radius: 4px;"></div>
+                    </div>
+                    <div class="lr-layout-tool-item" style="width: 200px;">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="content" id="select_grid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var sort = request('sort');
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var keyValue = '';
+    var categoryId = '';
+    var currentList = [];
+    var currentMap = {};
+
+    var currentModule = aycsoft.frameTab.currentIframe().currentModule;
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+            page.search();
+        },
+        bind: function () {
+            // 页面选择
+            $('#F_Url').lrselect({
+                text: 'F_Title',
+                value: 'F_Id',
+                url: top.$.rootUrl + '/LR_PortalSite/Page/GetList',
+                allowSearch: true
+            });
+
+            $('#F_Category').lrDataItemSelect({ code: 'PortalSiteType' });
+            $('#F_Category').on('change', function () {
+                var v = $(this).lrselectGet();
+                categoryId = v;
+                page.search();
+            });
+            $('#select_grid').jfGrid({
+                url: top.$.rootUrl + '/LR_PortalSite/Article/GetPageList',
+                headData: [
+                    { label: '标题', name: 'F_Title', width: 330, align: "left" },
+                    {
+                        label: "分类", name: "F_Category", width: 150, align: "center",
+                        formatterAsync: function (callback, value, row) {
+                            aycsoft.clientdata.getAsync('dataItem', {
+                                key: value,
+                                code: 'PortalSiteType',
+                                callback: function (_data) {
+                                    callback(_data.F_ItemName);
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '发布时间', name: 'F_PushDate', width: 100, align: "center",
+                        formatter: function (cellvalue) {
+                            return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd');
+                        }
+                    }
+                ],
+                mainId: 'F_Id',
+                isPage: true,
+                isMultiselect: true,
+                multiselectfield: 'isCheck',
+                sidx: 'F_PushDate desc',
+                onRenderBefore: function (datas) {
+                    $.each(datas, function (_index, _item) {
+                        if (currentMap[_item.F_Id]) {
+                            _item.isCheck = 1;
+                        }
+                    });
+                },
+                onSelectRow: function (row, isCheck) {
+                    if (isCheck) {
+                        var _row = { F_Id: row.F_Id, F_Title: row.F_Title, F_Category: row.F_Category, F_PushDate: row.F_PushDate };
+                        $('#selected_grid').jfGridSet('addRow', _row);
+                        currentMap[row.F_Id] = true;
+
+                    } else {
+                        $('#selected_grid').jfGridSet('removeRow', row.F_Id);
+                        currentMap[row.F_Id] = false;
+                    }
+                }
+            });
+
+            $('#selected_grid').jfGrid({
+                headData: [
+                    {
+                        label: "", name: "btn", width: 60, align: "center",
+                        formatter: function (value, row, op, $cell) {
+                            $cell.on('click', function () {
+                                $('#selected_grid').jfGridSet('removeRow', row.F_Id);
+                                $('#select_grid').jfGridSet('nocheck', row.F_Id);
+                                currentMap[row.F_Id] = false;
+                                return false;
+                            });
+                            return '<span class=\"label label-danger \" style=\"cursor: pointer;\">移除</span>';
+                        }
+                    },
+                    { label: '标题', name: 'F_Title', width: 300, align: "left" },
+                    {
+                        label: "分类", name: "F_Category", width: 150, align: "center",
+                        formatterAsync: function (callback, value, row) {
+                            aycsoft.clientdata.getAsync('dataItem', {
+                                key: value,
+                                code: 'PortalSiteType',
+                                callback: function (_data) {
+                                    callback(_data.F_ItemName);
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '发布时间', name: 'F_PushDate', width: 100, align: "center",
+                        formatter: function (cellvalue) {
+                            return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd');
+                        }
+                    }
+                ],
+                mainId: 'F_Id'
+            });
+
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var queryJson = {};
+                var keyword = $('#txt_Keyword').val();
+                queryJson.F_Category = categoryId;
+                queryJson.F_Title = keyword;
+                $('#select_grid').jfGridSet('reload', { queryJson: JSON.stringify(queryJson) });
+            });
+        },
+        search: function (param) {
+            param = param || {};
+            param.F_Category = categoryId;
+            $('#select_grid').jfGridSet('reload', { queryJson: JSON.stringify(param) });
+        },
+        initData: function () {
+            if (currentModule) {
+                $('#form1').lrSetFormData(currentModule);
+
+                currentList = JSON.parse(currentModule.F_Scheme).list;
+
+                $.each(currentList, function (_index, _item) {
+                    currentMap[_item.F_Id] = true;
+                });
+                $('#selected_grid').jfGridSet('refreshdata', currentList);
+
+                keyValue = currentModule.F_Id;
+            }
+            else {
+                $('#selected_grid').jfGridSet('refreshdata', currentList);
+            }
+        }
+    };
+
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form1').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form1').lrGetFormData(keyValue);
+
+        if (currentList.length > 4 ) {
+            aycsoft.alert.warning('最多选择4篇文章！');
+            return false;
+        }
+
+
+        var postData = {
+            F_Name: formData.F_Name,
+            F_Type: 9,
+            F_UrlType: 1,
+            F_Url: formData.F_Url,
+            F_Scheme: JSON.stringify({ list: currentList || [], type: "4" }),
+            F_Sort: sort
+        }
+
+        $.lrSaveForm(top.$.rootUrl + '/LR_PortalSite/HomeConfig/SaveForm?keyValue=' + keyValue, postData, function (res) {
+            postData.F_Id = res.data;
+            callBack && callBack(postData);
+        });
+    };
+    page.init();
+}
+</script>
+

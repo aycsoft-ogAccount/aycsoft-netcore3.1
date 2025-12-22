@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "LookNodeForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-rblock" style="padding:5px;">
+    <div class="lr-rblock" style="border:1px solid #ccc;padding-top:40px;">
+        <div style="position:absolute;top:0;left:0; width:100%;height:40px;line-height:39px;border-bottom:1px solid #ccc;padding-left:10px;">
+            当前审核人：<span id="currentUser"></span>。
+        </div>
+        <div style="position:relative;width:100%;height:100%;">
+            <div id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/layer/layer.js"></script>
+<script>
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var lookNode = top.wflookNode;
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                $('#gridtable').jfGrid({
+                    headData: [
+                        {
+                            label: "执行人", name: "F_CreateUserId", width: 100, align: "left", frozen: true,
+                            formatterAsync: function (callback, cellvalue, row) {
+                                if (!row.F_CreateUserName) {
+                                    callback('系统处理');
+                                }
+                                else {
+                                    aycsoft.clientdata.getAsync('user', {
+                                        key: cellvalue,
+                                        callback: function (user) {
+                                            if (user.F_DepartmentId) {
+                                                aycsoft.clientdata.getAsync('department', {
+                                                    key: user.F_DepartmentId,
+                                                    callback: function (department) {
+                                                        callback('【' + department.F_FullName + '】' + user.F_RealName);
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                callback(user.F_RealName);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            label: "执行动作", name: "F_TaskType", width: 140, align: "left", frozen: true,
+                            formatter: function (cellvalue, row) {
+                                switch (cellvalue)//0创建1审批2传阅3加签审核4子流程5重新创建6.超时流转
+                                {
+                                    case 0:
+                                        return '<span class=\"label label-success \" >' + row.F_OperationName + '</span>';
+                                        break;
+                                    case 1:
+                                        return '<span class=\"label label-primary \" >审批-' + row.F_OperationName + '</span>';
+                                        break;
+                                    case 2:
+                                        return '<span class=\"label label-primary \" >已阅</span>';
+                                        break;
+                                    case 3:
+                                        return '<span class=\"label label-primary \" >' + row.F_OperationName + '</span>';
+                                        break;
+                                    case 4:
+                                        return '<span class=\"label label-info \" >发起子流程</span>';
+                                        break;
+                                    case 5:
+                                        return '<span class=\"label label-warning \" >重新发起</span>';
+                                        break;
+                                    case 6:
+                                        return '<span class=\"label label-danger \" >超时流转</span>';
+                                        break;
+                                    case 7:
+                                        return '<span class=\"label label-info \" >' + row.F_OperationName + '</span>';
+                                        break;
+                                    case 8:
+                                    case 9:
+                                        return '<span class=\"label label-info \" >' + row.F_OperationName + '</span>';
+                                        break;
+                                    default:
+                                        return '<span class=\"label label-info \" >' + row.F_OperationName + '</span>';
+
+                                }
+                            }
+                        },
+                        {
+                            label: "执行时间", name: "F_CreateDate", width: 130, align: "center", frozen: true,
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        { label: "内容", name: "F_Des", width: 400, align: "left" }
+                    ]
+                });
+            },
+            initData: function () {
+                if (lookNode) {
+                    var list = [];
+                    if (!lookNode.history[0].namelist) {
+                        $('#currentUser').text("已经完成").attr('title', "已经完成");
+                    }
+                    else {
+                        $('#currentUser').hover(function () {
+                            var text = $(this).text();
+                            layer.tips(text, $(this), {
+                              tips: 3
+                            });
+                        }, function () {
+                            layer.closeAll('tips');
+                        });
+                    }
+                    $.each(lookNode.history, function (_index, _item) {
+                        if (_item.namelist) {
+                            if (_item.namelist.length > 0) {
+                                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_OrganizationModule/User/GetEntityListByUserIds', { userIds: String(_item.namelist) }, function (data) {
+                                    if (data) {
+                                        var $currentUser = $('#currentUser');
+                                        $.each(data, function (_index, _user) {
+                                            var _html = '';
+                                            if (_index > 0) {
+                                                _html += ',';
+                                            }
+                                            if (_user.F_DepartmentId) {
+                                                _html += '【<span dpId="' + _user.F_DepartmentId + '" ></span>】';
+                                                
+                                            }
+                                            _html += _user.F_RealName;
+                                            $currentUser.append(_html);
+                                            if (_user.F_DepartmentId) {
+                                                aycsoft.clientdata.getAsync('department', {
+                                                        key: _user.F_DepartmentId,
+                                                        callback: function (department) {
+                                                            $('[dpId="' + _user.F_DepartmentId + '"]').text(department.F_FullName);
+                                                        }
+                                                });
+                                            }
+                                        })
+                                    }
+
+                                    console.log(data);
+                                });
+
+                            }
+                        }
+                        else if (_item.namelist == undefined || _item.namelist == null) {
+                            list.push(_item);
+                        }
+                    });
+
+                    $('#gridtable').jfGridSet('refreshdata', list);
+                }
+            }
+        };
+        page.init();
+    }
+</script>

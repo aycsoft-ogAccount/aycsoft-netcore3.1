@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <link rel="icon" href="~/favicon.ico">
+
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/pace/pace-theme-loading-bar.css" rel="stylesheet" />
+    <link href="~/font/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
+
+
+    @Html.AppendCssFile(
+        "/lib/aycsoft/style/lr-common.css",
+        "/lib/aycsoft/plugin/scroll/scroll.css",
+        "/lib/aycsoft/style/lr-admin.css",
+        "/lib/aycsoft/style/lr-layer.css",
+        "/lib/aycsoft/plugin/tree/lr-tree.css",
+        "/lib/aycsoft/plugin/select/lr-select.css",
+        "/lib/aycsoft/style/lr-im.css"
+        )
+    <script src="~/lib/pace/pace.min.js"></script>
+    <script src="~/js/jquery-1.10.2.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/jquery.md5.min.js"></script>
+    <script src="~/js/base64.min.js"></script>
+    <script src="~/lib/signalr/signalr.js"></script>
+    <!--[if lt IE 9]>
+      <script src="~/lib/bootstrap/html5shiv.min.js"></script>
+      <script src="~/lib/bootstrap/respond.min.js"></script>
+    <![endif]-->
+    <script>function request(d) { for (var c = location.search.slice(1).split("&"), a = 0; a < c.length; a++) { var b = c[a].split("="); if (b[0] == d) if ("undefined" == unescape(b[1])) break; else return unescape(b[1]) } return "" };</script>
+</head>
+<body>
+    <div class="lr-loadbg" id="lr_loadbg"></div>
+    @RenderBody()
+    <div class="lr-frame-menu"><div class="lr-frame-menu-wrap" id="lr_frame_menu"></div></div>
+    <div class="lr-frame-tabs">
+        <div class="lr-frame-tabs-wrap">
+            <ul id="lr_frame_tabs_ul"></ul>
+        </div>
+    </div>
+    <div class="lr-frame-main" id="lr_frame_main">
+        <img src="~/img/iframebg.png" />
+    </div>
+
+
+    <!--IM-->
+    <div class="lr-im-body">
+        <div class="lr-im-title">
+            <div class="title-item active" data-value="lr_im_msglist">
+                消息
+            </div>
+            <div class="title-item title-item-two" data-value="lr_im_userlist">
+                联系人
+            </div>
+        </div>
+        <div id="lr_im_msglist" class="lr-im-content lr-im-msglist active">
+            <div class="lr-im-msg-list" id="lr_immsg_userlist">
+            </div>
+        </div>
+        <div id="lr_im_userlist" class="lr-im-content lr-im-userlist">
+            <div class="lr-im-search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="搜索（Enter回车）">
+            </div>
+            <div class="lr-im-content-userlist" id="lr_im_content_userlist">
+
+            </div>
+            <div class="lr-im-content-userlist"  style="display:none;" id="lr_im_content_userlist2">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="lr-im-black-overlay">
+        <div class="lr-im-dialog">
+            <div class="lr-im-header">
+                <span class="im-title"></span>
+                <div class="im-close">
+                    <i class="fa fa-close"></i>
+                </div>
+            </div>
+
+            <div class="lr-im-msgcontent">
+            </div>
+            <div class="lr-im-msgcontent-tool"><span id="lr_im_look_msg_btn">查看消息记录</span></div>
+            <div class="lr-im-input">
+                <textarea id="lr_im_input" type="text" class="inp"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="~/lib/layer/layer.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+
+    <script>
+        window.imconfig = {
+            isOpen: '@ConfigHelper.GetConfig().IMOpen'.toLowerCase() == 'true',
+            url:'@ConfigHelper.GetConfig().IMUrl'
+        }
+        function request(d) { for (var c = location.search.slice(1).split("&"), a = 0; a < c.length; a++) { var b = c[a].split("="); if (b[0] == d) if ("undefined" == unescape(b[1])) break; else return decodeURI(unescape(b[1])) } return "" };
+        $.rootUrl = '@Html.GetVirtualPath()';
+        var token = request("s")
+        if (token) {
+            var ds = token.split('.');
+            if (ds.length < 3) {
+                window.location.href = $.rootUrl + "/Login/Index";
+            }
+            var payload = JSON.parse(Base64.decode(ds[1]));
+
+            $.lcoreUser = {
+                account: payload.Account,
+                userName: payload.UserName,
+                userId: payload.UserId,
+                token: token
+            };
+            if (!$.lcoreUser.account || !$.lcoreUser.token) {
+                window.location.href = $.rootUrl + "/Login/Index";
+            }
+        }
+        else {
+            window.location.href = $.rootUrl + "/Login/Index";
+        }
+
+    </script>
+    @Html.AppendJsFile(
+        "/lib/aycsoft/plugin/resize/resize.js",
+        "/lib/aycsoft/plugin/mousewheel/mousewheel.js",
+
+        "/lib/aycsoft/script/lr-base.js",
+        "/lib/aycsoft/plugin/scroll/scroll.js",
+
+        "/lib/aycsoft/script/lr-tabs.js",
+        "/lib/aycsoft/script/lr-date.js",
+        "/lib/aycsoft/script/lr-validator-helper.js",
+        "/lib/aycsoft/script/lr-layer.js",
+        "/lib/aycsoft/script/lr-ajax.js",
+        "/lib/aycsoft/script/lr-clientdata.js",
+        "/lib/aycsoft/script/lr-language.js",
+
+        "/lib/aycsoft/plugin/tree/lr-tree.js",
+        "/lib/aycsoft/plugin/select/lr-select.js",
+
+
+        "/lib/aycsoft/script/lr-im.js",
+
+        "/lib/aycsoft/script/lr-admin.js"
+        )
+</body>
+</html>
+
+
+
+

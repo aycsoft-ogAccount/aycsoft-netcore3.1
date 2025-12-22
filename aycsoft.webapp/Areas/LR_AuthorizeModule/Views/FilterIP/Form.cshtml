@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "IP添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="alert alert-danger" style="margin: 5px;">
+    <i class="fa fa-question-circle" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+    声明：IP地址格式：192.168.0.1；192.168.0.*
+</div>
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">起始IP<font face="宋体">*</font></div>
+        <input id="F_StartIP" type="text" class="form-control" isvalid="yes" checkexpession="IsIP" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">结束IP<font face="宋体">*</font></div>
+        <input id="F_EndIP" type="text" class="form-control" isvalid="yes" checkexpession="IsIP" />
+    </div>
+</div>
+<script>
+    var objectId = request('objectId');
+var objectType = request('objectType');
+var visitType = request('visitType');
+var keyValue = request('keyValue');
+
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    //验证IP地址
+    function compareIP(ipBegin, ipEnd) {
+        var temp1 = ipBegin.split(".");
+        var temp2 = ipEnd.split(".");
+        if ((temp1[0] + temp1[1] + temp1[2]) == (temp2[0] + temp2[1] + temp2[2])) {
+            if (temp2[3] >= temp1[3]) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return -1;//不在同一个网段内
+        }
+    }
+
+    var page = {
+        init: function () {
+            page.initData();
+        },
+        initData: function () {
+            if (!!keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_AuthorizeModule/FilterIP/GetFormData?keyValue=' + keyValue, function (data) {
+                    $('#form').lrSetFormData(data || {});
+                    $("#F_StartIP").val(data.F_IPLimit.split(',')[0]);
+                    $("#F_EndIP").val(data.F_IPLimit.split(',')[1]);
+                });
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var data = $('#form').lrGetFormData(keyValue);
+        
+        if (compareIP(data.F_StartIP, data.F_EndIP) == -1) {
+            aycsoft.alert.error('IP不在同一个网段内');
+            return false;
+        }
+        if (compareIP(data.F_StartIP, data.F_EndIP) == 0) {
+            aycsoft.alert.error('结束IP不能大于开始IP');
+            return false;
+        }
+        var postData = {
+            'F_IPLimit': data.F_StartIP + "," + data.F_EndIP,
+            'F_VisitType': visitType,
+            'F_ObjectId': objectId,
+            'F_ObjectType': objectType
+        };
+        $.lrSaveForm(top.$.rootUrl + '/LR_AuthorizeModule/FilterIP/SaveForm?keyValue=' + keyValue, postData, function (res) {
+            // 保存成功后才回调
+            if (!!callBack) {
+                callBack();
+            }
+        });
+    };
+    page.init();
+}
+</script>

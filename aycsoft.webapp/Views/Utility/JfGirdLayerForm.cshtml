@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "JfGirdLayerForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-form-layout {
+    padding: 44px 0 0 0;
+}
+.lr-form-layout-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #ddd;
+    height: 44px;
+    width: 100%;
+    padding-left: 3px;
+    z-index: 4;
+}
+.lr-item {
+    position: relative;
+    float: left;
+    padding-top: 8px;
+    padding-left: 5px;
+    line-height: 28px;
+}
+.lr-item .btn {
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    margin-bottom: 1px;
+    line-height: 14px;
+}
+.lr-item .lr-select {
+    width: 170px;
+}
+.lr-item .lr-field-error-info {
+    top: 9px;
+    height: 26px;
+}
+
+</style>
+<div class="lr-form-layout">
+    <div class="lr-form-layout-top">
+        <div class="lr-item">
+            <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width:240px;" />
+        </div>
+        <div class="lr-item">
+            <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+        </div>
+    </div>
+    <div id="gridtable"></div>
+</div>
+<script>
+var acceptClick;
+var op = top.lrGirdLayerEdit;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectItem;
+    var griddata = null;
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('#btn_Search').on('click', function () {
+                if (griddata != null) {
+                    var data = [];
+                    var keyword = $('#txt_Keyword').val();
+                    if (!!keyword) {
+                        for (var i = 0, l = griddata.length; i < l; i++) {
+                            var item = griddata[i];
+                            for (var j = 0, jl = op.edit.op.colData.length; j < jl; j++) {
+                                var text = item[op.edit.op.colData[j].name] + "";
+                                if (text != 'undefined' && text != 'null' && text.indexOf(keyword) != -1) {
+                                    data.push(item);
+                                    break;
+                                }
+                            }
+                        }
+                        $('#gridtable').jfGridSet('refreshdata', data);
+                    }
+                    else {
+                        $('#gridtable').jfGridSet('refreshdata', griddata);
+                    }
+
+                }
+            });
+            $('#gridtable').jfGrid({
+                headData: op.edit.op.colData,
+                url: op.edit.op.url,
+                param: op.edit.op.param,
+                onRenderComplete: function (data) {
+                    griddata = data;
+                },
+                dblclick: function (row) {
+                    top.lrGirdLayerEditCallBack(row);
+                    aycsoft.layerClose(window.name);
+                },
+                onSelectRow: function (row) {
+                    selectItem = row;
+                }
+            });
+
+            $('#gridtable').jfGridSet('reload');
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        callBack(selectItem);
+        return true;
+    };
+    page.init();
+}
+</script>

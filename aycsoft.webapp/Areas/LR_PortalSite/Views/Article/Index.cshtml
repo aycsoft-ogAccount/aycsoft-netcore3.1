@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "文章信息";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout lr-layout-left-center" id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">文章分类</div>
+            <div id="F_Category" class="lr-layout-body"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">文章信息</div>
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入标题" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;新增</a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                    </div>
+                    <div class="btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_category" class="btn btn-default"><i class="fa fa-tags lrlg"></i>&nbsp;分类管理</a>
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var refreshGirdData;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var dateBegin = '';
+    var dateEnd = '';
+    var categoryId = '';
+
+    var page = {
+        init: function () {
+            page.initGird();
+            page.bind();
+        },
+        bind: function () {
+            $('#datesearch').lrdate({
+                dfdata: [
+                    { name: '今天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00') }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                    { name: '近7天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'd', -6) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                    { name: '近1个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -1) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                    { name: '近3个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -3) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } }
+                ],
+                // 月
+                mShow: false,
+                premShow: false,
+                // 季度
+                jShow: false,
+                prejShow: false,
+                // 年
+                ysShow: false,
+                yxShow: false,
+                preyShow: false,
+                yShow: false,
+                selectfn: function (begin, end) {
+                    dateBegin = begin;
+                    dateEnd = end;
+                    page.search();
+                }
+            });
+            // 查询
+            $('#btn_Search').on('click', function () {
+                var queryJson = {};
+                var keyword = $('#txt_Keyword').val();
+                queryJson.dateBegin = dateBegin;
+                queryJson.dateEnd = dateEnd;
+                queryJson.F_Category = categoryId;
+                queryJson.F_Title = keyword;
+                $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(queryJson) });
+            });
+            $('#F_Category').lrtree({
+                url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetDetailTree',
+                param: { itemCode: 'PortalSiteType' },
+                nodeClick: page.treeNodeClick
+            });
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+            // 新增
+            $('#lr_add').on('click', function () {
+                aycsoft.frameTab.open({ F_ModuleId: 'PL_ArticleInfo_List_add', F_Icon: 'fa fa-file-text-o', F_FullName: '新增文章信息', F_UrlAddress: '/LR_PortalSite/Article/Form?categoryId=' + categoryId });
+            });
+            // 编辑
+            $('#lr_edit').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    if (keyValue.split(',').length > 1) {
+                        aycsoft.alert.warning("编辑只能选择一项");
+                    }
+                    else {
+                        aycsoft.frameTab.open({ F_ModuleId: 'PL_ArticleInfo_List_add', F_Icon: 'fa fa-file-text-o', F_FullName: '编辑文章信息', F_UrlAddress: '/LR_PortalSite/Article/Form?keyValue=' + keyValue });
+                    }
+                }
+            });
+            // 删除
+            $('#lr_delete').on('click', function () {
+                var keyValue = $('#gridtable').jfGridValue('F_Id');
+                if (aycsoft.checkrow(keyValue)) {
+                    aycsoft.layerConfirm('是否确认删除所有选择项！', function (res) {
+                        if (res) {
+                            aycsoft.deleteForm(top.$.rootUrl + '/LR_PortalSite/Article/DeleteForm', { keyValue: keyValue }, function () {
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                }
+            });
+
+            /*分类管理*/
+            $('#lr_category').on('click', function () {
+                aycsoft.layerForm({
+                    id: 'ClassifyIndex',
+                    title: '分类管理',
+                    url: top.$.rootUrl + '/LR_SystemModule/DataItem/DetailIndex?itemCode=PortalSiteType',
+                    width: 800,
+                    height: 500,
+                    maxmin: true,
+                    btn: null,
+                    end: function () {
+                        aycsoft.clientdata.update('dataItem');
+                        location.reload();
+                    }
+                });
+            });
+        },
+        treeNodeClick: function (item) {
+            categoryId = item.value;
+            page.search();
+        },
+        initGird: function () {
+            $('#gridtable').lrAuthorizeJfGrid({
+                url: top.$.rootUrl + '/LR_PortalSite/Article/GetPageList',
+                headData: [
+                    { label: '标题', name: 'F_Title', width: 200, align: "left" },
+                    {
+                        label: "分类", name: "F_Category", width: 150, align: "center",
+                        formatterAsync: function (callback, value, row) {
+                            aycsoft.clientdata.getAsync('dataItem', {
+                                key: value,
+                                code: 'PortalSiteType',
+                                callback: function (_data) {
+                                    callback(_data.F_ItemName);
+                                }
+                            });
+                        }
+                    },
+                    {
+                        label: '发布时间', name: 'F_PushDate', width: 100, align: "center",
+                        formatter: function (cellvalue) {
+                            return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd');
+                        }
+                    },
+                    { label: "创建人", name: "F_CreateUserName", width: 100, align: "left" },
+
+                ],
+                mainId: 'F_Id',
+                isPage: true,
+                isMultiselect: true,
+                sidx: 'F_PushDate desc'
+            });
+            page.search();
+        },
+        search: function (param) {
+            param = param || {};
+            param.dateBegin = dateBegin;
+            param.dateEnd = dateEnd;
+            param.F_Category = categoryId;
+            $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(param) });
+        }
+    };
+    refreshGirdData = function () {
+        page.search();
+    };
+    page.init();
+}
+</script>

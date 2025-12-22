@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "数据权限";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .lr-form-btns .btn {
+    padding: 1px 4px;
+    margin-bottom:8px;
+}
+</style>
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-6 lr-form-item">
+        <div class="lr-form-item-title">编码<font face="宋体">*</font></div>
+        <input id="F_Code" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item" style="padding-bottom:0;" >
+        <div class="lr-form-btns" id="value-btns" >
+            <a class="btn btn-success" data-value="userId" >登录者ID</a>
+            <a class="btn btn-success" data-value="account">登录者账号</a>
+            <a class="btn btn-success" data-value="companyId">登录者公司</a>
+            <a class="btn btn-success" data-value="departmentId">登录者部门</a>
+            <a class="btn btn-success" data-value="postIds">登录者岗位</a>
+            <a class="btn btn-success" data-value="roleIds">登录者角色</a>
+            <a class="btn btn-success" data-value="companyIds">登录者公司及下属公司</a>
+            <a class="btn btn-success" data-value="departmentIds">登录者部门及下属部门</a>
+        </div>
+    </div>
+    <div class="col-xs-12 lr-form-item" style="padding-top:0;" >
+        <div class="lr-form-item-title">查询条件<font face="宋体">*</font></div>
+        <textarea id="F_Formula" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" style="height:200px;"></textarea>
+    </div>
+</div>
+<script>
+var objectId = request('objectId');
+var objectType = request('objectType');
+var keyValue = request('keyValue');
+var type = request('type');
+var formId = request('formId');
+
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#value-btns .btn').on('click',function () {
+                var value = $(this).attr('data-value');
+                var formula = $('#F_Formula').val();
+                formula += " \u0040" + value;
+                $('#F_Formula').val(formula);
+            });
+        },
+        initData: function () {
+            if (keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/GetEntity?keyValue=' + keyValue, function (data) {
+                    $('#form').lrSetFormData(data);
+                });
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData(keyValue);
+        formData.F_Type = type;
+        formData.F_ObjectId = objectId;
+        formData.F_ObjectType = objectType;
+
+        $.lrSaveForm(top.$.rootUrl + '/LR_AuthorizeModule/DataAuthorize/SaveForm?keyValue=' + keyValue, formData, function (res) {
+            // 保存成功后才回调
+            callBack && callBack();
+        });
+    };
+    page.init();
+}
+
+</script>
+

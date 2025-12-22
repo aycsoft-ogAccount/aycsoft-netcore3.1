@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewData["Title"] = "自定义表单窗口页实例";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+}
+.lr-form-tab {
+    margin: 0 10px;
+    margin-top: 10px;
+}
+.jfgrid-data-cell {
+    border-bottom: 1px solid #ddd;
+    border-right:1px solid #ddd;
+}
+.lr-form-wrap {
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-shadow: #bdbdbd 0 0 10px;
+    padding-top:30px; 
+}
+.top-btn-tool {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0px 0px 6px 6px;
+    padding: 8px;
+    z-index:1;
+}
+.lr-form-bg {
+    display:none;
+}
+</style>
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formcomponts.js"></script>
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formrender.js"></script>
+<div class="top-btn-tool">
+    <a id="savaAndAdd" class="btn btn-success">保存并新增</a>
+    <a id="save" class="btn btn-default">保存单据</a>
+</div>
+<script>
+var id = request('id');
+var keyValue = request('keyValue');
+var acceptClick;
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var formModule;
+    var girdCompontMap;
+
+    var page = {
+        init: function () {
+            if (!!id) {
+                $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetFormData?keyValue=' + id, function (data) {//
+                    formModule = JSON.parse(data.schemeEntity.F_Scheme);
+                    girdCompontMap = $('body').lrCustmerFormRender(formModule.data);
+                    page.bind();
+                });
+            }
+            page.initData();
+
+        },
+        initData: function () {
+            if (!!keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetInstanceForm?schemeInfoId=' + id + '&keyValue=' + keyValue, function (data) {//
+                    page.setFormData(data);
+                });
+            }
+        },
+        setFormData: function (data) {
+            if (!!formModule) {
+                $.each(data, function (id, item) {
+                    if (!!girdCompontMap[id]) {
+                        var fieldMap = {};
+                        $.each(girdCompontMap[id].fieldsData, function (id, girdFiled) {
+                            if (!!girdFiled.field) {
+                                fieldMap[girdFiled.field.toLowerCase()] = girdFiled.field;
+                            }
+                        });
+                        var rowDatas = [];
+                        for (var i = 0, l = item.length; i < l; i++) {
+                            var _point = {};
+                            for (var _field in item[i]) {
+                                _point[fieldMap[_field]] = item[i][_field];
+                            }
+                            rowDatas.push(_point);
+                        }
+                        $('#' + girdCompontMap[id].id).jfGridSet('refreshdata', rowDatas);
+                    }
+                    else {
+                        $('body').lrSetCustmerformData(item[0],id);
+                    }
+                });
+            }
+            else {
+                setTimeout(function () {
+                    page.setFormData(data);
+                }, 100);
+            }
+        },
+        bind: function () {
+            // 保存数据
+            $('#savaAndAdd').on('click', function () {
+                acceptClick(0);
+            });
+            $('#save').on('click', function () {
+                acceptClick(1);
+            });
+        }
+    };
+    page.init();
+
+    // 保存数据
+    acceptClick = function (type) {// 0保存并新增 1保存
+        if (!$.lrValidCustmerform()) {
+            return false;
+        }
+        var formData = $('body').lrGetCustmerformData(keyValue);
+        var postData =
+        {
+            formData: JSON.stringify(formData)
+        };
+        $.lrSaveForm(top.$.rootUrl + '/LR_FormModule/Custmerform/SaveInstanceForm?keyValue=' + keyValue + "&schemeInfoId=" + id, postData, function (res) {
+            if (res.code == 200) {
+                aycsoft.frameTab.parentIframe().refreshGirdData();
+                if (type == 0) {
+                    window.location.href = top.$.rootUrl + '/LR_FormModule/Custmerform/TabInstanceForm?id=' + id;
+                }
+                else {
+                    aycsoft.frameTab.close(aycsoft.frameTab.iframeId);
+                }
+            }
+        });
+    };
+}
+</script>
+

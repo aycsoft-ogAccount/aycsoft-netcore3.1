@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "分类管理";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">上级</div>
+        <div id="F_ParentId"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+        <input id="F_ItemName" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">编号<font face="宋体">*</font></div>
+        <input id="F_ItemCode" type="text" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">排序<font face="宋体">*</font></div>
+        <input id="F_SortCode" type="text" class="form-control" placeholder="请输入排序号" isvalid="yes" checkexpession="Num" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="checkbox">
+            <label>
+                <input id="F_IsTree" type="checkbox" />
+                树型
+            </label>
+            <label>
+                <input id="F_EnabledMark" type="checkbox" checked="checked" />
+                有效
+            </label>
+        </div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">备注</div>
+        <textarea id="F_Description" class="form-control" style="height: 90px;"></textarea>
+    </div>
+</div>
+<script>
+var parentId = request('parentId');
+var selectedRow = top.layer_ClassifyIndex.selectedRow;
+
+var keyValue = '';
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            // 上级
+            $('#F_ParentId').lrselect({
+                url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetClassifyTree',
+                type: 'tree',
+                allowSearch: true,
+                maxHeight:225
+            }).lrselectSet(parentId);
+            /*检测重复项*/
+            $('#F_ItemName').on('blur', function () {
+                $.lrExistField(keyValue, 'F_ItemName', 'lr_base_dataitem','F_ItemId');
+            });
+            $('#F_ItemCode').on('blur', function () {
+                $.lrExistField(keyValue, 'F_ItemCode', 'lr_base_dataitem', 'F_ItemId');
+            });
+        },
+        initData: function () {
+            if (!!selectedRow) {
+                keyValue = selectedRow.F_ItemId || '';
+                $('#form').lrSetFormData(selectedRow);
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var postData = $('#form').lrGetFormData(keyValue);
+        if (postData["F_ParentId"] == '' || postData["F_ParentId"] == '&nbsp;') {
+            postData["F_ParentId"] = '0';
+        }
+        else if (postData["F_ParentId"] == keyValue) {
+            aycsoft.alert.error('上级不能是自己本身');
+            return false;
+        }
+        $.lrSaveForm(top.$.rootUrl + '/LR_SystemModule/DataItem/SaveClassifyForm?keyValue=' + keyValue, postData, function (res) {
+            // 保存成功后才回调
+            if (!!callBack) {
+                callBack();
+            }
+        });
+    };
+
+    page.init();
+}
+</script>

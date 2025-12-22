@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "导出Excel数据";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div style="margin: 5px;">
+    <div class="alert alert-danger" style="margin-bottom: 5px;">
+        <i class="fa fa-question-circle" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+        注：请勾选需要导出的字段
+    </div>
+</div>
+<div style="margin: 5px; overflow:auto ;height:100%">
+    <ul class="sys_spec_text"></ul>
+</div>
+<script>
+    var gridId = request('gridId');
+    var filename = decodeURI(request('filename'));
+    var acceptClick;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var page = {
+            init: function () {
+                var columnModel = aycsoft.frameTab.currentIframe().$('#' + gridId).jfGridGet('settingInfo').headData;
+                var $ul = $('.sys_spec_text');
+                $.each(columnModel, function (i, item) {
+                    var label = item.label;
+                    var name = item.name;
+                    if (!!label) {
+                        $(".sys_spec_text").append("<li data-value='" + name + "' title='" + label + "'><a>" + label + "</a><i></i></li>");
+                    }
+                });
+                $(".sys_spec_text li").addClass("active");
+                $(".sys_spec_text li").click(function () {
+                    if (!!$(this).hasClass("active")) {
+                        $(this).removeClass("active");
+                    } else {
+                        $(this).addClass("active").siblings("li");
+                    }
+                });
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            var exportField = [];
+            $('.sys_spec_text').find('li.active').each(function () {
+                var value = $(this).attr('data-value');
+                exportField.push(value);
+            });
+            var columnJson = JSON.stringify(aycsoft.frameTab.currentIframe().$('#' + gridId).jfGridGet('settingInfo').headData);
+            var table = aycsoft.frameTab.currentIframe().$('#' + gridId).jfGridGet('showData');
+            if (table.length == 0) {
+                aycsoft.alert.error('导出内容为空');
+                return;
+            }
+            var rowJson = JSON.stringify(table);
+            aycsoft.download({
+                method: "POST",
+                url:top.$.rootUrl + '/Utility/ExportExcel',
+                param: {
+                    fileName: filename,
+                    columnJson: columnJson,
+                    dataJson: rowJson,
+                    exportField: String(exportField)
+                }
+            });
+        };
+        page.init();
+    }
+</script>

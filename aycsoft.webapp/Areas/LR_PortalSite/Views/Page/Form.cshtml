@@ -1,0 +1,658 @@
+﻿@{
+    ViewBag.Title = "子页面配置";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<style>
+    .body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+}
+    body {
+    background-color: rgba(0,0,0,.0001);
+}
+.container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background-color: #fcfcfc;
+    padding-top:50px;
+}
+.container-top {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:50px;
+    border-bottom:1px solid #ccc;
+    padding:5px 30px 0 0;
+    
+}
+    .container-top .lr-form-item {
+        padding-left: 60px;
+    }
+    .container-top .lr-form-item-title {
+        width: 60px;
+    }
+
+.container-banner {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:350px;
+    padding:10px;
+}
+.file {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+    .file input {
+        position: absolute;
+        font-size: 350px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer !important;
+    }
+
+    .file img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+.top-btn-tool {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0px 0px 6px 6px;
+    padding: 8px;
+}
+
+.lr-site-body-container2 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 350px;
+}
+
+.lr-site-body-container {
+    position: relative;
+    width: 100%;
+    max-width: 990px;
+    height: auto;
+    margin: auto;
+    padding-left: 250px;
+}
+
+.lr-site-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    line-height: 49px;
+    width: 100%;
+
+    border:1px solid #fff;
+
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 16px;
+    color: #333;
+    padding-left: 18px;
+    cursor:pointer;
+
+    
+}
+
+    .lr-site-title:before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 30px;
+        background: #2E81EA;
+        left: 0;
+        top: 10px;
+    }
+.lr-site-body-left .lr-site-title:hover {
+    border: 1px dashed #333;
+}
+
+.lr-site-body-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 240px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(226,226,226,0.44);
+    padding-top: 50px;
+}
+
+    .lr-site-body-left .lr-site-body-cotent {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        padding-bottom: 10px;
+    }
+
+.lr-site-title-item {
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
+    line-height: 38px;
+    border: 1px solid #E5E5E5;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+}
+
+    .lr-site-title-item.active {
+        background: #D6E7FB;
+        border: 1px solid #2E81EA;
+        color: #2E81EA;
+    }
+    .lr-site-title-item.active2 {
+        background: #1bb99a;
+        border: 1px solid #1bb99a;
+        color: #fff;
+    }
+
+.lr-site-body-right {
+    position: relative;
+    width: 100%;
+    padding-top: 50px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(226,226,226,0.44);
+}
+
+    .lr-site-body-right .lr-site-body-cotent {
+        position: relative;
+        width: 100%;
+        min-height: 500px;
+        border: 1px dashed #fff;
+        cursor:pointer;
+        overflow-x:hidden;
+    }
+
+
+
+        .lr-site-body-page {
+            text-align: center;
+            position: relative;
+            width: 100%;
+        }
+
+.laypage_main a, .laypage_main input, .laypage_main span {
+    line-height: 24px !important;
+}
+
+.laypage_main button {
+    line-height: 26px !important;
+}
+
+
+
+.lr-site-body-right .lr-site-body-cotent {
+    padding-top: 10px;
+}
+
+
+.lr-site-body-list {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+.lr-site-body-list-item {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #fff;
+    padding: 0 90px 0 20px;
+    font-size: 16px;
+    color: #333333;
+    cursor: pointer;
+}
+
+    .lr-site-body-list-item:nth-child(odd) {
+        background-color: #FAFAFA;
+    }
+
+    .lr-site-body-list-item .text {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .lr-site-body-list-item .date {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 90px;
+        height: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+.edit-btn {
+    position:absolute;
+    top:0;
+    right:0;
+    height:30px;
+    line-height:30px;
+    width:60px;
+    text-align:center;
+    background-color:#333;
+    color:#fff;
+    font-size:12px;
+    display:none;
+}
+
+.lr-site-title:hover .edit-btn {
+    display: block;
+}
+
+
+.btn-list {
+    position:absolute;
+    top:0;
+    right:0;
+    height:25px;
+    line-height:25px;
+    background-color:#333;
+    color:#fff;
+    padding-right:5px;
+    display:none;
+}
+    .btn-list > span {
+        margin-left:5px;
+    }
+
+.value-item:hover {
+    border:1px dashed #333;
+}
+    .value-item:hover .btn-list {
+        display: block;
+    }
+
+#lr_body_cotent {
+    min-height:640px;
+}
+
+
+
+/*图片列表*/
+.lr-site-img-item {
+    position: relative;
+    padding: 10px;
+}
+
+.lr-site-img-content2 {
+    padding-bottom: 80px;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    border: 1px solid #E5E5E5;
+}
+
+    .lr-site-img-content2 .img {
+        width: 100%;
+        height: 160px;
+    }
+
+.lr-site-img-item .text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 16px;
+    color: #333333;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.row {
+    padding: 10px;
+}
+</style>
+<div class="body">
+    <div class="container">
+        <div class="container-top">
+            <input id="F_Img" type="hidden" />
+            <div class="col-xs-12 lr-form-item">
+                <div class="lr-form-item-title">标题<font face="宋体">*</font></div>
+                <input id="F_Title" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </div>
+        </div>
+        <div class="lr-site-body-container2">
+            <div class="container-banner">
+                <div class="file">
+                    <input type="file" name="uploadFile" id="uploadFile">
+                </div>
+            </div>
+            <div class="lr-site-body-container">
+                <div class="lr-site-body-left">
+                    <div class="lr-site-title left-title ">
+                        <span>请点击修改名称</span>
+                        <div class="edit-btn">
+                            设置
+                        </div>
+                    </div>
+                    <div class="lr-site-body-cotent">
+                        <div class="lr-site-title-item active2" id="add_item"  style="text-align:center;" >添加</div>
+                    </div>
+                </div>
+                <div class="lr-site-body-right ">
+                    <div class="lr-site-title right-title">
+                        <span>未选择分类项</span>
+                    </div>
+                    <div class="lr-site-body-cotent" id="lr_body_cotent_setting">
+                        <div id="lr_body_cotent">
+                        </div>
+                        <div class="lr-site-body-page" id="lr_page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="top-btn-tool">
+    <a id="save" class="btn btn-success">保存页面</a>
+</div>
+<script src="~/lib/laypage/laypage.min.js"></script>
+<script>
+var acceptClick;
+var keyValue = request('keyValue');
+var type = request('type');
+
+var titleName = '';
+var categoryData = null;
+var activeItem = null;
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    function uploadImg() {
+        var f = document.getElementById('uploadFile').files[0]
+        var src = window.URL.createObjectURL(f);
+        document.getElementById('uploadPreview').src = src;
+    };
+
+    function loadPage(pageIndex) {
+        var pagination = {
+            rows: 10,                // 每页行数      
+            page: pageIndex,         // 当前页
+            sidx: 'F_PushDate',      // 排序列
+            sord: 'DESC',            // 排序类型
+            records: 0,              // 总记录数
+            total: 0                 // 总页数
+        };
+        var param = {
+            pagination: JSON.stringify(pagination),
+            queryJson: JSON.stringify({ F_Category: activeItem.category })
+        };
+        aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_PortalSite/Article/GetPageList', param, function (data) {
+            var $list = $('#lr_body_cotent');
+            $list.html('');
+            if (type == '1') {
+                $.each(data.rows, function (_index, _item) {
+                    var $item = $('<div class="lr-site-body-list-item">\
+                                        <div class="text">' + _item.F_Title + '</div>\
+                                        <div class="date">' + aycsoft.formatDate(_item.F_PushDate, 'yyyy-MM-dd') + '</div>\
+                                    </div>');
+                    $list.append($item);
+                });
+            }
+            else {
+                $.each(data.rows, function (_index, _item) {
+                    var $item = $('<div class="col-md-4 col-sm-6 lr-site-img-item">\
+                                    <div class="lr-site-img-content2">\
+                                        <img class="img" src="' + top.$.rootUrl + '/LR_PortalSite/Article/GetImg?keyValue=' + _item.F_Id + '" />\
+                                        <div class="text" title="' + _item.F_Title + '" >' + _item.F_Title + '</div>\
+                                    </div>\
+                                </div>');
+                    $list.append($item);
+                });
+            }
+
+            resetPage(data);
+        });
+    }
+
+    //重置分页(跳转分页)
+    function resetPage(data) {
+        laypage({
+            cont: "lr_page", //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<div id="page1"></div>
+            pages: data.total, //通过后台拿到的总页数
+            curr: data.page, //当前页
+            groups: 5, //连续显示分页数
+            skip: true, //是否开启跳页
+            first: '首页', //若不显示，设置false即可
+            last: '尾页', //若不显示，设置false即可
+            jump: function (obj, first) { //触发分页后的回调
+                if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
+                    loadPage(obj.curr);
+                }
+            }
+        });
+    }
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            // 图片上传
+            $('#uploadFile').on('change', uploadImg);
+            $('.file').prepend('<img id="uploadPreview"  src="' + top.$.rootUrl + '/LR_PortalSite/Page/GetImg?keyValue=' + keyValue + '" >');
+
+            // 设置左右侧标题
+            $('.lr-site-body-left .lr-site-title').on('click', function () {
+                var $this = $(this);
+                titleName = $this.find('span').text();
+                aycsoft.layerForm({
+                    id: 'settingTitle',
+                    title: '设置名称',
+                    url: top.$.rootUrl + '/LR_PortalSite/Page/SetNameForm',
+                    width: 350,
+                    height: 140,
+                    callBack: function (id) {
+                        return top[id].acceptClick(function (name) {
+                            $('.left-title').find('span').text(name);
+                        });
+                    }
+                });
+            });
+
+            // 添加分类项
+            $('#add_item').on('click', function () {
+                categoryData = null;
+                aycsoft.layerForm({
+                    id: 'SetCategoryForm',
+                    title: '添加分类项',
+                    url: top.$.rootUrl + '/LR_PortalSite/Page/SetCategoryForm?type=' + type,
+                    width: 400,
+                    height: 300,
+                    callBack: function (id) {
+                        return top[id].acceptClick(function (_data) {
+                            var $item = $('<div class="lr-site-title-item value-item"><div class="btn-list" ><span>上移</span><span>下移</span><span>编辑</span><span>删除</span></div><span class="itemname" >' + _data.F_Name + '</span></div>');
+                            $item[0].data = {
+                                name: _data.F_Name,
+                                category: _data.F_Category,
+                                article: _data.F_Article
+                            }
+                            $('#add_item').before($item);
+                            $item.trigger('click');
+                        });
+                    }
+                });
+            });
+            // 编辑分类项
+            $('.lr-site-body-left').on('click', '.btn-list>span', function () {
+                var $this = $(this);
+                var $item = $this.parents('.lr-site-title-item');
+                var text = $this.text();
+                switch (text) {
+                    case '上移':
+                        $item.prev().before($item);
+                        break;
+                    case '下移':
+                        if (!$item.next().hasClass('active2')) {
+                            $item.next().after($item);
+                        }
+                        break;
+                    case '编辑':
+                        categoryData = $item[0].data;
+                        aycsoft.layerForm({
+                            id: 'SetCategoryForm',
+                            title: '编辑分类项',
+                            url: top.$.rootUrl + '/LR_PortalSite/Page/SetCategoryForm?type=' + type,
+                            width: 400,
+                            height: 300,
+                            callBack: function (id) {
+                                return top[id].acceptClick(function (_data) {
+                                    $item.find('.itemname').text(_data.F_Name);
+                                    $item[0].data.name = _data.F_Name;
+                                    $item[0].data.category = _data.F_Category;
+                                    $item[0].data.article = _data.F_Article;
+                                });
+
+                                $item.trigger('click');
+                            }
+                        });
+                        break;
+                    case '删除':
+                        $item.remove();
+                        break;
+                }
+
+                return false;
+            });
+
+            $('.lr-site-body-left').on('click', '.value-item', function () {
+                var $this = $(this);
+                if (!$this.hasClass('active')) {
+                    $this.parent().find('.active').removeClass('active');
+                    $this.addClass('active');
+                    var data = $this[0].data;
+
+                    $('.right-title>span').text(data.name);
+
+                    activeItem = data;
+
+                    if (type == '3') {
+                        aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_PortalSite/Article/GetFormData', { keyValue: activeItem.article }, function (data) {
+                            var $list = $('#lr_body_cotent');
+                            $list.html(data.F_Content);
+                        });
+                    }
+                    else {
+                        loadPage(1);
+                    }
+                }
+
+            });
+
+            switch (type) {
+                case '1':// 列表
+                    $('#lr_body_cotent').addClass('lr-site-body-list');
+                    break;
+                case '2':// 图片列表
+                    $('#lr_body_cotent').addClass('row');
+                    break;
+                case '3':// 详情页
+                    $('#lr_body_cotent').addClass('lr-site-body-list');
+                    break;
+            }
+
+            $('#save').on('click', function () {
+                if (!$('.container-top').lrValidform()) {
+                    return false;
+                }
+                var formData = $('.container-top').lrGetFormData();
+
+                // 获取左侧分类数据
+                var scheme = {
+                    title:$('.left-title>span').text(),
+                    list:[]
+                };
+
+                $('.lr-site-body-left .value-item').each(function(){
+                    var item = $(this)[0].data;
+                    scheme.list.push(item);
+                });
+
+                var postData = {
+                    F_Img: formData.F_Img,
+                    F_Title: formData.F_Title,
+                    F_Type: type,
+                    F_Scheme: JSON.stringify(scheme).replace(/[<>&"]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]; })
+                }
+                aycsoft.loading(true, '正在保存...');
+                $.ajaxFileUpload({
+                    data: postData,
+                    url: top.$.rootUrl + "/LR_PortalSite/Page/UploadFile?keyValue=" + keyValue,
+                    secureuri: false,
+                    fileElementId: 'uploadFile',
+                    dataType: 'json',
+                    success: function (res) {
+                        aycsoft.loading(false);
+                        if (res.code == 200) {
+                            // 保存成功后才回调
+                            aycsoft.frameTab.parentIframe().refreshGirdData();//index页列表刷新
+                            aycsoft.frameTab.close(aycsoft.frameTab.iframeId);//关闭新增界面
+                        }
+                        else {
+                            aycsoft.alert.error(res.info);
+                        }
+                    }
+                });
+
+            });
+        },
+        initData: function () {
+            if (keyValue) {
+                $.lrSetForm(top.$.rootUrl + '/LR_PortalSite/Page/GetFormData?keyValue=' + keyValue, function (data) {
+                    $('.container-top').lrSetFormData(data);
+                    var _scheme = JSON.parse(data.F_Scheme);
+
+                    $('.left-title>span').text(_scheme.title);
+
+                    var $add = $('#add_item');
+                    $.each(_scheme.list, function (_index, _item) {
+                        var $item = $('<div class="lr-site-title-item value-item"><div class="btn-list" ><span>上移</span><span>下移</span><span>编辑</span><span>删除</span></div><span class="itemname" >' + _item.name + '</span></div>');
+                        $item[0].data = _item;
+                        $add.before($item);
+
+                        if (_index == 0) {
+                            $item.trigger('click');
+                        }
+                    });
+                });
+            }
+        }
+    };
+    page.init();
+}
+</script>

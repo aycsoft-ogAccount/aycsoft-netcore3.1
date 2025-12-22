@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "人员添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">部门选择<font face="宋体">*</font></div>
+        <div id="department" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">人员选择<font face="宋体">*</font></div>
+        <div id="userId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+</div>
+<script>
+var acceptClick;
+var dfopid = request('dfopid');
+var userName = '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('#userId').lrselect({
+                value: 'F_UserId',
+                text: 'F_RealName',
+                title: 'F_RealName',
+                // 展开最大高度
+                maxHeight: 110,
+                // 是否允许搜索
+                allowSearch: true,
+                select: function (item) {
+                    if (!!item) {
+                        userName = item.F_RealName;
+                    }
+                    else {
+                        userName = '';
+                    }
+                }
+            });
+            $('#department').lrDepartmentSelect({
+                maxHeight: 150
+            }).on('change', function () {
+                var value = $(this).lrselectGet();
+                $('#userId').lrselectRefresh({
+                    url: top.$.rootUrl + '/LR_OrganizationModule/User/GetList',
+                    param: { departmentId: value }
+                });
+            });
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+        var postitem = { value: formData.userId, text: userName };
+        callBack(postitem, dfopid);
+        return true;
+    };
+    page.init();
+}
+</script>
+
+
+

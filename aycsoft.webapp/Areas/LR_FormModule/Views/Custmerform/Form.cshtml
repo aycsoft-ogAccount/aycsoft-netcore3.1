@@ -1,0 +1,365 @@
+﻿@{
+    ViewBag.Title = "自定义表单设计";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .step-pane-base {
+        padding: 10px;
+        padding-top: 69px;
+    }
+
+    .lr-alert {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        height: 59px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+        .lr-alert .alert {
+            margin-bottom: 0;
+        }
+
+            .lr-alert .alert > i {
+                position: relative;
+                top: 1px;
+                font-size: 15px;
+                padding-right: 5px;
+            }
+
+    .lr-panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin-bottom: 0;
+        padding-top: 38px;
+    }
+
+        .lr-panel .panel-heading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 38px;
+        }
+
+        .lr-panel .panel-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 91px 0 15px 0;
+        }
+
+    .lr-form-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 38px;
+        width: 100%;
+        padding-right: 20px;
+    }
+
+    .wizard {
+        z-index: 3;
+    }
+
+    .btn-tool-bar {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        text-align: right;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .step-gird-pane {
+        padding-top: 41px;
+    }
+
+    .btn-tool-bar-left {
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        width: 300px;
+        height: 28px;
+        z-index: 4;
+        text-align: left;
+    }
+</style>
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span><span class="lrlg">基本配置</span><span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span><span class="lrlg">数据表设置</span><span class="chevron"></span></li>
+            <li data-target="#step-3"><span class="step">3</span><span class="lrlg">表单设计</span><span class="chevron"></span></li>
+        </ul>
+    </div>
+    <div class="step-content" id="wizard-steps">
+        <div class="step-pane active step-pane-base" id="step-1">
+            <div class="lr-alert">
+                <div class="alert alert-danger">
+                    <i class="fa fa-warning alert-dismissible"></i>
+                    <span class="lrlg">请你填写表单信息，用于创建或修改表单！</span>
+                </div>
+            </div>
+            <div class="panel panel-default lr-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="lrlg">表单基本信息配置</span></h3>
+                </div>
+                <div class="panel-body">
+                    <input id="F_SchemeId" type="hidden" />
+                    <div class="col-xs-12 lr-form-item" style="top:15px;">
+                        <div class="lr-form-item-title">表单名称<font face="宋体">*</font></div>
+                        <input id="F_Name" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+                    </div>
+                    <div class="col-xs-12 lr-form-item" style="top:53px;">
+                        <div class="lr-form-item-title">表单分类<font face="宋体">*</font></div>
+                        <div id="F_Category" isvalid="yes" checkexpession="NotNull"></div>
+                    </div>
+                    <div class="col-xs-12 lr-form-item" style="position:relative;width:100%;height:100%;">
+                        <div class="lr-form-item-title">备注</div>
+                        <textarea id="F_Description" class="form-control" style="height: 100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-pane step-gird-pane" id="step-2">
+            <div class="btn-tool-bar">
+                <div class="btn-tool-bar-left"><div id="F_DbId" isvalid="yes" checkexpession="NotNull"></div></div>
+
+                <div class="btn-group btn-group-sm">
+                    <a id="lr_db_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                    <a id="lr_db_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                    <a id="lr_db_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                </div>
+            </div>
+            <div id="gridtable"></div>
+        </div>
+        <div class="step-pane" id="step-3">
+        </div>
+    </div>
+
+    <div class="lr-form-bottom-button" id="wizard-actions">
+        <a id="btn_prev" class="btn btn-default btn-prev" disabled><span class="lrlg">上一步</span></a>
+        <a id="btn_next" class="btn btn-default btn-next"><span class="lrlg">下一步</span></a>
+        <a id="btn_draft" class="btn btn-warning"><span class="lrlg">保存草稿</span></a>
+        <a id="btn_finish" class="btn btn-success" disabled><span class="lrlg">保存</span></a>
+    </div>
+</div>
+<script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<link href="~/lib/aycsoft/plugin/custmerform/lr-formdesigner.css" rel="stylesheet" />
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formcomponts.js"></script>
+<script src="~/lib/aycsoft/plugin/custmerform/lr-formdesigner.js"></script>
+<script>
+    var keyValue = request('keyValue');
+    var categoryId = request('categoryId');
+    var dbTable = [];
+    var dbId = '';
+
+    var selectedRow = null;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            /*绑定事件和初始化控件*/
+            bind: function () {
+                // 加载导向
+                $('#wizard').wizard().on('change', function (e, data) {
+                    var $finish = $("#btn_finish");
+                    var $next = $("#btn_next");
+                    if (data.direction == "next") {
+                        if (data.step == 1) {
+                            if (!$('#step-1').lrValidform()) {
+                                return false;
+                            }
+                        } else if (data.step == 2) {
+                            dbTable = $('#gridtable').jfGridGet('rowdatas');
+                            if (dbId == '' || dbTable.length == 0) {
+                                aycsoft.alert.error('至少选择一张数据表');
+                                return false;
+                            }
+                            $('#step-3').lrCustmerFormDesigner('updatedb', { dbId: dbId, dbTable: dbTable });
+
+                            $finish.removeAttr('disabled');
+                            $next.attr('disabled', 'disabled');
+                        }
+                        else {
+                            $finish.attr('disabled', 'disabled');
+                        }
+                    } else {
+                        $finish.attr('disabled', 'disabled');
+                        $next.removeAttr('disabled');
+                    }
+                });
+
+                // 数据库表选择
+                $('#F_DbId').lrselect({
+                    url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetTreeList',
+                    type: 'tree',
+                    placeholder: '请选择数据库',
+                    allowSearch: true,
+                    select: function (item) {
+                        if (item.hasChildren) {
+                            dbId = '';
+                            dbTable = [];
+                            $('#gridtable').jfGridSet('refreshdata', []);
+                        }
+                        else if (dbId != item.id) {
+                            dbId = item.value;
+                            dbTable = [];
+                            $('#gridtable').jfGridSet('refreshdata', []);
+                        }
+                    }
+                });
+                $('#F_Category').lrDataItemSelect({ code: 'FormSort' });
+                $('#F_Category').lrselectSet(categoryId);
+                // 新增
+                $('#lr_db_add').on('click', function () {
+                    dbTable = $('#gridtable').jfGridGet('rowdatas');
+                    selectedRow = null;
+                    aycsoft.layerForm({
+                        id: 'DataTableForm',
+                        title: '添加数据表',
+                        url: top.$.rootUrl + '/LR_FormModule/Custmerform/DataTableForm?dbId=' + dbId,
+                        width: 600,
+                        height: 400,
+                        callBack: function (id) {
+                            return top[id].acceptClick(function (data) {
+                                $('#gridtable').jfGridSet('addRow', data);
+                            });
+                        }
+                    });
+                });
+                // 编辑
+                $('#lr_db_edit').on('click', function () {
+                    dbTable = $('#gridtable').jfGridGet('rowdatas');
+                    selectedRow = $('#gridtable').jfGridGet('rowdata');
+                    var keyValue = $('#gridtable').jfGridValue('name');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'DataTableForm',
+                            title: '编辑数据表',
+                            url: top.$.rootUrl + '/LR_FormModule/Custmerform/DataTableForm?dbId=' + dbId,
+                            width: 600,
+                            height: 400,
+                            callBack: function (id) {
+                                return top[id].acceptClick(function (data) {
+                                    $.extend(selectedRow, data);
+                                    $('#gridtable').jfGridSet('updateRow');
+                                });
+                            }
+                        });
+                    }
+                });
+                // 删除
+                $('#lr_db_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('name');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res, index) {
+                            if (res) {
+                                $('#gridtable').jfGridSet('removeRow', keyValue);
+                                top.layer.close(index); //再执行关闭
+                            }
+                        });
+                    }
+                });
+                $('#gridtable').jfGrid({
+                    headData: [
+                        { label: "数据表名", name: "name", width: 200, align: "left" },
+                        { label: "数据表字段", name: "field", width: 200, align: "left" },
+                        { label: "被关联表", name: "relationName", width: 200, align: "left" },
+                        { label: "被关联表字段", name: "relationField", width: 200, align: "left" }
+                    ],
+                    mainId: 'name',
+                    reloadSelected: true
+                });
+
+
+
+                // 设计页面初始化
+                $('#step-3').lrCustmerFormDesigner('init');
+                // 保存数据按钮
+                $("#btn_finish").on('click', page.save);
+                $("#btn_draft").on('click', page.draftsave);
+            },
+
+            /*初始化数据*/
+            initData: function () {
+                if (!!keyValue) {
+                    $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetFormData?keyValue=' + keyValue, function (data) {//
+                        $('#step-1').lrSetFormData(data.schemeInfoEntity);
+                        var scheme = JSON.parse(data.schemeEntity.F_Scheme);
+                        //scheme.dbId = "lrsystemdb";
+                        /*console.log(scheme);
+                       
+                        $.each(scheme.dbTable, function (id, item) {
+                            item.name = item.name.toLowerCase();
+                            item.relationName = item.relationName.toLowerCase();
+                        })
+                        $.each(scheme.data, function (id, item) {
+                            $.each(item.componts, function (id, jitem) {
+                                if (jitem.table) {
+                                     jitem.table = jitem.table.toLowerCase();
+                                }
+                            })
+                        })*/
+
+                        $('#F_DbId').lrselectSet(scheme.dbId);
+                        $('#gridtable').jfGridSet('refreshdata', scheme.dbTable);
+                        $('#step-3').lrCustmerFormDesigner('set', scheme);
+                    });
+                }
+            },
+            /*保存数据*/
+            save: function () {
+                var schemeInfo = $('#step-1').lrGetFormData(keyValue);
+                if (!$('#step-3').lrCustmerFormDesigner('valid')) {
+                    return false;
+                }
+                var scheme = $('#step-3').lrCustmerFormDesigner('get');
+                schemeInfo.F_Type = 0;
+                schemeInfo.F_EnabledMark = 1;
+                var postData = {
+                    keyValue: keyValue,
+                    schemeInfo: JSON.stringify(schemeInfo),
+                    scheme: JSON.stringify(scheme),
+                    type: 1
+                };
+
+                $.lrSaveForm(top.$.rootUrl + '/LR_FormModule/Custmerform/SaveForm', postData, function (res) {
+                    // 保存成功后才回调
+                    aycsoft.frameTab.currentIframe().refreshGirdData();
+                });
+            },
+            /*保存草稿数据*/
+            draftsave: function () {
+                var schemeInfo = $('#step-1').lrGetFormData(keyValue);
+                var scheme = $('#step-3').lrCustmerFormDesigner('get');
+
+                dbTable = $('#gridtable').jfGridGet('rowdatas');
+                scheme.dbId = dbId;
+                scheme.dbTable = dbTable;
+                schemeInfo.F_EnabledMark = 0;
+                schemeInfo.F_Type = 0;
+                var postData = {
+                    keyValue: keyValue,
+                    schemeInfo: JSON.stringify(schemeInfo),
+                    scheme: JSON.stringify(scheme),
+                    type: 2
+                };
+
+                $.lrSaveForm(top.$.rootUrl + '/LR_FormModule/Custmerform/SaveForm', postData, function (res) {
+                    // 保存成功后才回调
+                    aycsoft.frameTab.currentIframe().refreshGirdData();
+                });
+            }
+        };
+
+        page.init();
+    }
+</script>
+

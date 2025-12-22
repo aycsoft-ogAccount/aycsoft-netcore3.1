@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<link href="~/lib/ce/layout/layout.css" rel="stylesheet" />
+<script src="~/lib/ce/layout/layout.js"></script>
+<div class="lr-rblock"  style="padding:8px; ">
+    <div id="layout2" class="lr-rblock" style="background-color:#fff;">
+        <div data-type="left">
+
+        </div>
+        <div data-type="top">
+
+        </div>
+        <div data-type="center">
+            <div id="layout3">
+                <div data-type="left">
+                </div>
+                <div data-type="top"></div>
+                <div data-type="center"></div>
+                <div data-type="right"></div>
+                <div data-type="bottom"></div>
+            </div>
+        </div>
+        <div data-type="right"></div>
+        <div data-type="bottom"></div>
+    </div>
+   
+</div>
+<script>
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        $('#layout2').celayout({
+            left: {
+                width: "20%",
+                resizable: true,
+                title: '左'
+            },
+            right: {
+                width: 200,
+                resizable: true,
+                title: '右'
+            },
+            top: {
+                height: 100,
+                resizable: true,
+                title: '上'
+            },
+            bottom: {
+                height: 200,
+                resizable: true,
+                title: '下'
+            }
+        })
+
+        $('#layout3').celayout()
+    }
+</script>

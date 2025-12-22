@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "成员查看";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .form-warp {
+    position:relative;
+    width:100%;
+    height:100%;
+}
+.user-list {
+    position:relative;
+    height:100%;
+    width:100%;
+}
+
+.card-box {
+    position:relative;
+    float: left;
+    width: 185px;
+    height: 60px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 0 0 10px;
+    padding-left:65px;
+    padding-top:4px;
+    overflow: hidden;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.card-box.active {
+    border: 2px solid #ff5d5b;
+    background: url(/img/selected_red.png) right top no-repeat;
+}
+.card-box-img {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 59px;
+    height: 58px;
+    line-height:58px;
+    padding-left:9px;
+    background-color: #ebebeb;
+    border-right: 1px solid #ccc;
+}
+.card-box-img img {
+    border-radius: 45px;
+}
+.card-box-content p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0;
+}
+</style>
+<div class="form-warp">
+    <div class="user-list" id="user_list_warp"><div id="user_list"></div></div>
+</div>
+<script>
+    var objectId = request('objectId');
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                // 滚动条
+                $('#user_list_warp').lrscroll();
+            },
+            initData: function () {
+                $.lrSetForm(top.$.rootUrl + '/LR_AuthorizeModule/UserRelation/GetUserIdList?objectId=' + objectId, function (data) {
+                    if (data.userIds == "") {
+                        return false;
+                    }
+                    var $warp = $('#user_list');
+                    var userlistselectedobj = {};
+                    $.each(data.userInfoList, function (id, item) {
+                        if (item) {
+                            userlistselectedobj[item.F_UserId] = item;
+                        }
+                    });
+                    var userList = data.userIds.split(',');
+                    for (var i = 0, l = userList.length; i < l; i++) {
+                        var userId = userList[i];
+                        var item = userlistselectedobj[userId];
+                        if (!!item) {
+                            var imgName = "UserCard02.png";
+                            if (item.F_Gender == 0) {
+                                imgName = "UserCard01.png";
+                            }
+                            var _cardbox = "";
+                            _cardbox += '<div class="card-box active " data-value="' + item.F_UserId + '" >';
+                            _cardbox += '    <div class="card-box-img">';
+                            _cardbox += '        <img src="' + top.$.rootUrl + '/img/' + imgName + '" />';
+                            _cardbox += '    </div>';
+                            _cardbox += '    <div class="card-box-content">';
+                            _cardbox += '        <p>账户：' + item.F_Account + '</p>';
+                            _cardbox += '        <p>姓名：' + item.F_RealName + '</p>';
+                            _cardbox += '        <p>部门：<span data-id="' + item.F_DepartmentId + '"></span></p>';
+                            _cardbox += '    </div>';
+                            _cardbox += '</div>';
+                            $warp.append(_cardbox);
+                            aycsoft.clientdata.getAsync('department', {
+                                key: item.F_DepartmentId,
+                                callback: function (_data, op) {
+                                    $warp.find('[data-id="' + op.key + '"]').text(_data.F_FullName);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+        page.init();
+    }
+</script>

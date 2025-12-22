@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "甘特图2";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-right">
+                    <div class="btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable"></div>
+        </div>
+    </div>
+</div>
+<script>
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var data = [];
+
+    var page = {
+        init: function () {
+            // 初始化数据
+            for (var i = 0; i < 10; i++) {
+                var day = new Date();
+                day = day.DateAdd('d', i * 2);
+                var ponit = {
+                    id: aycsoft.newGuid(),
+                    text: '计划任务' + (i + 1),
+                    isexpand: false,
+                    complete: true,
+                    timeList: [{
+                        beginTime: aycsoft.formatDate(day, 'yyyy-MM-dd'),
+                        endTime: aycsoft.formatDate(day.DateAdd('d', 8), 'yyyy-MM-dd'),
+                        color: '#3286ed',
+                        overtime: true,
+                        text: '执行时间9天'
+                    }],
+                    hasChildren: true,
+                    children: [{
+                        id: aycsoft.newGuid(),
+                        text: '计划任务' + (i + 1) + '.1',
+                        isexpand: false,
+                        complete: true,
+                        timeList: [{
+                            beginTime: aycsoft.formatDate(day, 'yyyy-MM-dd'),
+                            endTime: aycsoft.formatDate(day.DateAdd('d', 3), 'yyyy-MM-dd'),
+                            color: '#1bb99a',
+                            overtime: true,
+                            text: '执行时间4天'
+                        }]
+                    },
+                    {
+                        id: aycsoft.newGuid(),
+                        text: '计划任务' + (i + 1) + '.2',
+                        isexpand: false,
+                        complete: true,
+                        timeList: [{
+                            beginTime: aycsoft.formatDate(day.DateAdd('d', 4), 'yyyy-MM-dd'),
+                            endTime: aycsoft.formatDate(day.DateAdd('d', 8), 'yyyy-MM-dd'),
+                            color: '#E4474D',
+                            overtime: true,
+                            text: '执行时间5天'
+                        }]
+                    }]
+                }
+                data.push(ponit);
+            }
+
+            page.initGantt();
+            page.bind();
+        },
+        bind: function () {
+            // 刷新
+            $('#lr_refresh').on('click', function () {
+                location.reload();
+            });
+        },
+        initGantt: function () {
+            $('#gridtable').lrGantt({
+                data: data,
+                timebtns: ['month', 'week', 'day'],//'month', 'week', 'day', 'hour'
+            });
+        },
+        search: function (param) {
+        }
+    };
+    page.init();
+}
+</script>

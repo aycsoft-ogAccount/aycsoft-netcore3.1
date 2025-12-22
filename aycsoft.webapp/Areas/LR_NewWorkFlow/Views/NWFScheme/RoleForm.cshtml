@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "添加角色";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">角色选择</div>
+        <div id="auditorId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">附加条件</div>
+        <div id="condition"></div>
+    </div>
+</div>
+<script>
+var flag = request('flag');
+var acceptClick;
+var auditorName = '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var page = {
+        init: function () {
+            page.bind();
+        },
+        bind: function () {
+            $('#auditorId').lrselect({
+                url: top.$.rootUrl + '/LR_OrganizationModule/Role/GetList',
+                text: 'F_FullName',
+                value: 'F_RoleId',
+                select: function (item) {
+                    auditorName = item.F_FullName;
+                },
+                maxHeight: 150,
+                allowSearch:true
+            });
+            $('#condition').lrselect({// 限制条件1.同一个部门2.同一个公司
+                data: [{ id: '1', text: '同一个部门' }, { id: '2', text: '同一个公司' }, { id: '3', text: '发起人上级' }, { id: '4', text: '发起人下级' }]//
+            });
+            if (flag == 1) {
+                $('#condition').parent().remove();
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var formData = $('#form').lrGetFormData();
+        formData.auditorName = auditorName;
+        formData.type = '2';//审核者类型1.岗位2.角色3.用户
+        callBack(formData);
+        return true;
+    };
+    page.init();
+}
+</script>
+

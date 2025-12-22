@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>506ca2fc-7f1f-45e6-a1d4-c23845ac4d5d</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Configuration" Version="5.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\aycsoft.app\aycsoft.iappdev\aycsoft.iappdev.csproj" />
+    <ProjectReference Include="..\aycsoft.core\aycsoft.application\aycsoft.application.csproj" />
+    <ProjectReference Include="..\aycsoft.core\aycsoft.cache\aycsoft.cache.csproj" />
+    <ProjectReference Include="..\aycsoft.core\aycsoft.database\aycsoft.database.csproj" />
+    <ProjectReference Include="..\aycsoft.core\aycsoft.iapplication\aycsoft.iapplication.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "导入添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="lr-form-wrap" id="form">
+    <input id="F_ModuleId" type="hidden" />
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">绑定按钮<font face="宋体">*</font></div>
+        <div id="F_ModuleBtnId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">导出名称<font face="宋体">*</font></div>
+        <input id="F_Name" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">表格ID<font face="宋体">*</font></div>
+        <input id="F_GridId" type="text" class="form-control" value="gridtable" isvalid="yes" checkexpession="NotNull" />
+    </div>
+</div>
+<script>var keyValue = '';
+    var acceptClick;
+    var moduleId = request('moduleId');
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+        var btnName = '';
+        var page = {
+            init: function () {
+                page.bind();
+                page.initData();
+            },
+            bind: function () {
+                $('#F_ModuleBtnId').lrselect({
+                    url: top.$.rootUrl + '/LR_SystemModule/Module/GetButtonListNoAuthorize',
+                    param: {
+                        moduleId: moduleId
+                    },
+                    value: 'F_EnCode',
+                    text: 'F_FullName',
+                    isAsync: false,
+                    select: function (item) {
+                        if (!!item) {
+                            btnName = item.F_FullName
+                        }
+                        else {
+                            btnName = '';
+                        }
+
+                    },
+                    maxHeight: 170
+                });
+            },
+            initData: function () {
+                $('#F_ModuleId').val(moduleId);
+                if (!!selectedRow) {
+                    $('#F_ModuleBtnId').lrselectRefresh({
+                        param: {
+                            moduleId: selectedRow.F_ModuleId
+                        }
+                    });
+                    keyValue = selectedRow.F_Id;
+                    $('#form').lrSetFormData(selectedRow);
+                }
+            }
+        };
+        // 保存数据
+        acceptClick = function (callBack) {
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            var postData = $('#form').lrGetFormData(keyValue);
+            postData.F_BtnName = btnName;
+            $.lrSaveForm(top.$.rootUrl + '/LR_SystemModule/ExcelExport/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调
+                if (!!callBack) {
+                    callBack();
+                }
+            });
+        };
+        page.init();
+    }</script>

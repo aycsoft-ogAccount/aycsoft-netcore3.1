@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "移动端设置";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-wrap {
+    width: 400px;
+    position: relative;
+    margin-bottom:10px;
+}
+
+    .lr-wrap .text {
+        margin-top: 30px;
+        line-height: 14px;
+        color: #75777A;
+        text-align: center;
+    }
+
+        .lr-wrap .text div {
+            margin-top: 10px;
+        }
+
+    .lr-wrap .file {
+        width: 400px;
+        height: 60px;
+        margin: auto;
+        position: relative;
+        overflow: hidden;
+        padding:16.5px 40px;
+    }
+
+#file1 {
+    background-color:#1d1d1d;
+}
+
+#file2 {
+    background-color: #24A1E7;
+}
+
+#file3 {
+    background-color: #3286ed;
+}
+
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer !important;
+}
+
+.lr-wrap img {
+    width: 320px;
+    height: 27px;
+    cursor: pointer;
+}
+
+
+
+</style>
+<div class="lr-rblock" style="padding:10px;">
+    <div class="lr-rblock" style="background-color:#fff;border:1px solid #ccc;padding:20px;">
+        <div class="lr-wrap">
+            <div class="file" id="file">
+                <input type="file" name="uploadFile" id="uploadFile">
+            </div>
+            <div class="text">
+                建议上传图片尺寸为320x27，大小不超过2M。
+                <div><a class="btn btn-primary" id="lr_save_btn"><i class="fa fa-save"></i>&nbsp;保&nbsp;存(经典)</a></div>
+            </div>
+        </div>
+
+        <div class="lr-wrap">
+            <div class="file" id="file1" >
+                <input type="file" name="uploadFile1" id="uploadFile1">
+            </div>
+            <div class="text">
+                建议上传图片尺寸为320x27，大小不超过2M。
+                <div><a class="btn btn-primary" id="lr_save_btn1"><i class="fa fa-save"></i>&nbsp;保&nbsp;存(风尚)</a></div>
+            </div>
+        </div>
+
+        <div class="lr-wrap">
+            <div class="file" id="file2">
+                <input type="file" name="uploadFile2" id="uploadFile2">
+            </div>
+            <div class="text">
+                建议上传图片尺寸为320x27，大小不超过2M。
+                <div><a class="btn btn-primary" id="lr_save_btn2"><i class="fa fa-save"></i>&nbsp;保&nbsp;存(炫动)</a></div>
+            </div>
+        </div>
+
+        <div class="lr-wrap">
+            <div class="file" id="file3">
+                <input type="file" name="uploadFile3" id="uploadFile3">
+            </div>
+            <div class="text">
+                建议上传图片尺寸为320x27，大小不超过2M。
+                <div><a class="btn btn-primary" id="lr_save_btn3"><i class="fa fa-save"></i>&nbsp;保&nbsp;存(飞扬)</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var loaddfimg;
+    var baseinfo;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initData();
+                page.bind();
+            },
+            bind: function () {
+                function uploadImg(id, previewId) {//uploadFile//uploadPreview
+                    var f = document.getElementById(id).files[0]
+                    var src = window.URL.createObjectURL(f);
+                    document.getElementById(previewId).src = src;
+                };
+
+                $('#uploadFile').on('change', function () {
+                    uploadImg('uploadFile', 'uploadPreview');
+                });
+                $('#uploadFile1').on('change', function () {
+                    uploadImg('uploadFile1', 'uploadPreview1');
+                });
+                $('#uploadFile2').on('change', function () {
+                    uploadImg('uploadFile2', 'uploadPreview2');
+                });
+                $('#uploadFile3').on('change', function () {
+                    uploadImg('uploadFile3', 'uploadPreview3');
+                });
+
+                $('#lr_save_btn').on('click', function () {
+                    var f = document.getElementById('uploadFile').files[0];
+                    if (!!f) {
+                        aycsoft.loading(true, '正在保存...');
+                        $.ajaxFileUpload({
+                            url: top.$.rootUrl + "/LR_SystemModule/Img/UploadFile?code=logo_default",
+                            secureuri: false,
+                            fileElementId: 'uploadFile',
+                            dataType: 'json',
+                            success: function (data) {
+                                aycsoft.loading(false);
+                                $('#uploadFile').on('change', function () {
+                                    uploadImg('uploadFile', 'uploadPreview');
+                                });
+                                if (data.code == 200) {
+                                    aycsoft.alert.success('保存成功');
+                                }
+                            }
+                        });
+                    }
+                });
+                $('#lr_save_btn1').on('click', function () {
+                    var f = document.getElementById('uploadFile1').files[0];
+                    if (!!f) {
+                        aycsoft.loading(true, '正在保存...');
+                        $.ajaxFileUpload({
+                            url: top.$.rootUrl + "/LR_SystemModule/Img/UploadFile?code=logo_accordion",
+                            secureuri: false,
+                            fileElementId: 'uploadFile1',
+                            dataType: 'json',
+                            success: function (data) {
+                                aycsoft.loading(false);
+                                $('#uploadFile1').on('change', function () {
+                                    uploadImg('uploadFile1', 'uploadPreview1');
+                                });
+                                if (data.code == 200) {
+                                    aycsoft.alert.success('保存成功');
+                                }
+                            }
+                        });
+                    }
+                });
+                $('#lr_save_btn2').on('click', function () {
+                    var f = document.getElementById('uploadFile2').files[0];
+                    if (!!f) {
+                        aycsoft.loading(true, '正在保存...');
+                        $.ajaxFileUpload({
+                            url: top.$.rootUrl + "/LR_SystemModule/Img/UploadFile?code=logo_windows",
+                            secureuri: false,
+                            fileElementId: 'uploadFile2',
+                            dataType: 'json',
+                            success: function (data) {
+                                aycsoft.loading(false);
+                                $('#uploadFile2').on('change', function () {
+                                    uploadImg('uploadFile2', 'uploadPreview2');
+                                });
+                                if (data.code == 200) {
+                                    aycsoft.alert.success('保存成功');
+                                }
+                            }
+                        });
+                    }
+                });
+                $('#lr_save_btn3').on('click', function () {
+                    var f = document.getElementById('uploadFile3').files[0];
+                    if (!!f) {
+                        aycsoft.loading(true, '正在保存...');
+                        $.ajaxFileUpload({
+                            url: top.$.rootUrl + "/LR_SystemModule/Img/UploadFile?code=logo_top",
+                            secureuri: false,
+                            fileElementId: 'uploadFile3',
+                            dataType: 'json',
+                            success: function (data) {
+                                aycsoft.loading(false);
+                                $('#uploadFile3').on('change', function () {
+                                    uploadImg('uploadFile3', 'uploadPreview3');
+                                });
+                                if (data.code == 200) {
+                                    aycsoft.alert.success('保存成功');
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            initData: function () {
+                $('#file').prepend('<img id="uploadPreview"  src="' + top.$.rootUrl + '/LR_SystemModule/Img/Down?id=logo_default" >');
+                $('#file1').prepend('<img id="uploadPreview1"  src="' + top.$.rootUrl + '/LR_SystemModule/Img/Down?id=logo_accordion" >');
+                $('#file2').prepend('<img id="uploadPreview2"  src="' + top.$.rootUrl + '/LR_SystemModule/Img/Down?id=logo_windows" >');
+                $('#file3').prepend('<img id="uploadPreview3"  src="' + top.$.rootUrl + '/LR_SystemModule/Img/Down?id=logo_top" >');
+
+            }
+        };
+        page.init();
+    }
+</script>

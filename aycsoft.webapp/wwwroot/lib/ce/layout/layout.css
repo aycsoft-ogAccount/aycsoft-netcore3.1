@@ -1,0 +1,177 @@
+.ce-layout-box{
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ce-layout, .ce-layout-mid {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.ce-layout-center{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    
+}
+.ce-layout-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 180px;
+    border: 1px solid #d9d9d9;
+}
+.ce-layout-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 180px;
+    border: 1px solid #d9d9d9;
+}
+.ce-layout-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    border: 1px solid #d9d9d9;
+}
+.ce-layout-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    border: 1px solid #d9d9d9;
+}
+.ce-layout-hasTop>.ce-layout-mid>.ce-layout-left,
+.ce-layout-hasTop>.ce-layout-mid>.ce-layout-right,
+.ce-layout-hasTop>.ce-layout-mid>.ce-layout-center{
+    border-top:none;
+}
+.ce-layout-hasBottom>.ce-layout-mid>.ce-layout-left,
+.ce-layout-hasBottom>.ce-layout-mid>.ce-layout-right,
+.ce-layout-hasBottom>.ce-layout-mid>.ce-layout-center{
+    border-bottom:none;
+}
+
+.ce-layout-hasLeft>.ce-layout-mid>.ce-layout-center{
+    border-left:none;
+}
+.ce-layout-hasRight>.ce-layout-mid>.ce-layout-center{
+    border-right:none;
+}
+
+
+.ce-layout-resizable-top>.ce-layout-mid>.ce-layout-left,
+.ce-layout-resizable-top>.ce-layout-mid>.ce-layout-center,
+.ce-layout-resizable-top>.ce-layout-mid>.ce-layout-right{
+    border-top:1px solid #d9d9d9;
+}
+.ce-layout-resizable-bottom>.ce-layout-mid>.ce-layout-left,
+.ce-layout-resizable-bottom>.ce-layout-mid>.ce-layout-center,
+.ce-layout-resizable-bottom>.ce-layout-mid>.ce-layout-right
+{
+    border-bottom:1px solid #d9d9d9;
+}
+.ce-layout-resizable-left>.ce-layout-mid>.ce-layout-center{
+    border-left:1px solid #d9d9d9;
+}
+.ce-layout-resizable-right>.ce-layout-mid>.ce-layout-center{
+    border-right:1px solid #d9d9d9;
+}
+
+.ce-layout-top>.ce-layout>.ce-layout-top,
+.ce-layout-top>.ce-layout>.ce-layout-bottom,
+.ce-layout-top>.ce-layout>.ce-layout-mid>.ce-layout-left,
+.ce-layout-top>.ce-layout>.ce-layout-mid>.ce-layout-right,
+.ce-layout-top>.ce-layout>.ce-layout-mid>.ce-layout-center{
+    
+}
+
+
+.ce-layout-top>.ce-layout>.ce-layout-top,
+.ce-layout-bottom>.ce-layout>.ce-layout-top,
+.ce-layout-left>.ce-layout>.ce-layout-top,
+.ce-layout-right>.ce-layout>.ce-layout-top,
+.ce-layout-center>.ce-layout>.ce-layout-top{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+.ce-layout-top>.ce-layout>.ce-layout-bottom,
+.ce-layout-bottom>.ce-layout>.ce-layout-bottom,
+.ce-layout-left>.ce-layout>.ce-layout-bottom,
+.ce-layout-right>.ce-layout>.ce-layout-bottom,
+.ce-layout-center>.ce-layout>.ce-layout-bottom{
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+.ce-layout-top>.ce-layout>.ce-layout-mid>.ce-layout-left,
+.ce-layout-bottom>.ce-layout>.ce-layout-mid>.ce-layout-left,
+.ce-layout-left>.ce-layout>.ce-layout-mid>.ce-layout-left,
+.ce-layout-right>.ce-layout>.ce-layout-mid>.ce-layout-left,
+.ce-layout-center>.ce-layout>.ce-layout-mid>.ce-layout-left{
+    border-left: none;
+}
+.ce-layout-top>.ce-layout>.ce-layout-mid>.ce-layout-right,
+.ce-layout-bottom>.ce-layout>.ce-layout-mid>.ce-layout-right,
+.ce-layout-left>.ce-layout>.ce-layout-mid>.ce-layout-right,
+.ce-layout-right>.ce-layout>.ce-layout-mid>.ce-layout-right,
+.ce-layout-center>.ce-layout>.ce-layout-mid>.ce-layout-right{
+    border-right: none;
+}
+
+
+
+.ce-layout-move {
+    position: absolute;
+    z-index: 1;
+    cursor: col-resize;
+}
+.ce-layout-move-top{
+    left:0;
+    bottom: -5px;
+    height: 4px;
+    width: 100%;
+    cursor: row-resize;
+}
+.ce-layout-move-bottom{
+    left:0;
+    top: -5px;
+    height: 4px;
+    width: 100%;
+    cursor: row-resize;
+}
+.ce-layout-move-left{
+    top:0;
+    right: -5px;
+    height: 100%;
+    width: 4px;
+    cursor: col-resize;
+}
+.ce-layout-move-right{
+    top:0;
+    left: -5px;
+    height: 100%;
+    width: 4px;
+    cursor: col-resize;
+}
+
+.ce-layout-title{
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", Tahoma, Arial, sans-serif;
+    height: 24px;
+    border-bottom:1px solid #d9d9d9;
+    padding-left: 8px;
+    font-size: 12px;
+    line-height: 23px;
+    color: #666;
+    overflow: hidden;
+    font-weight: 600;
+}

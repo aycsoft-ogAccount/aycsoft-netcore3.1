@@ -1,0 +1,286 @@
+﻿
+@{
+    ViewData["Title"] = "工作委托";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+body {
+    padding:5px;
+}
+.form-warp {
+    position:relative;
+    width:100%;
+    height:100%;
+    padding-top:128px;
+    border:1px solid #ddd;
+}
+.form-warp-top {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:128px;
+    padding: 10px;
+}
+.form-warp-main {
+    position:relative;
+    height:100%;
+    width:100%;
+    padding-bottom:28px;
+    padding-top:30px;
+}
+.form-warp-main-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 29px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    color: #676a6c;
+}
+.input-search {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:28px;
+    border-top:1px solid #ddd;
+}
+.input-search .form-control {
+    border:0px;
+    height:100%;
+}
+.input-query {
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+}
+.main-list {
+    position:relative;
+    height:100%;
+    width:100%;
+    overflow-y:auto;
+}
+.card-box {
+    position:relative;
+    float: left;
+    width: 195px;
+    height: 60px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 0 0 10px;
+    padding-left:65px;
+    padding-top:4px;
+    overflow: hidden;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.card-box.active {
+    border: 1px solid #ff5d5b;
+    background: url(/img/selected_red.png) right top no-repeat;
+}
+.card-box-img {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 60px;
+    height: 58px;
+    border-right: 1px solid #ccc;
+}
+.card-box-img img {
+    width: 59px;
+    height: 58px;
+}
+.card-box-content p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0;
+}
+.lr-form-item {
+    padding-left: 58px;
+}
+.lr-form-item-title {
+    width: 58px;
+    padding-right: 0;
+    text-align: left;
+}
+</style>
+<div class="form-warp">
+    <div class="form-warp-top">
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">被委托人<font face="宋体">*</font></div>
+            <div id="F_ToUserId" class="lr-select-underline" isvalid="yes" checkexpession="NotNull"></div>
+        </div>
+        <div class="col-xs-6 lr-form-item">
+            <div class="lr-form-item-title">开始时间<font face="宋体">*</font></div>
+            <input id="F_BeginDate" type="text" class="form-control lr-input-wdatepicker lr-input-underline" onfocus="WdatePicker()" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-6 lr-form-item">
+            <div class="lr-form-item-title">结束时间<font face="宋体">*</font></div>
+            <input id="F_EndDate" type="text" class="form-control lr-input-wdatepicker lr-input-underline" onfocus="WdatePicker()" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">委托说明</div>
+            <input id="F_Description" type="text" class="form-control lr-input-underline" placeholder="添加说明" />
+        </div>
+    </div>
+    <div class="form-warp-main">
+        <div class="form-warp-main-title">流程模板选择</div>
+        <div class="input-search">
+            <input id="txt_keyword" type="text" class="form-control" placeholder="请输入要查询关键字">
+            <span class="input-query" title="Search"><i class="fa fa-search"></i></span>
+        </div>
+        <div class="main-list" id="main_list_warp"><div id="main_list"></div></div>
+    </div>
+</div>
+<script>
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+
+    var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+
+    var keyValue = '';
+    var keyword = '';
+    var schemeList = [];
+    var schemeListSelected = {};
+
+    var render = function () {
+        var $warp = $('<div></div>');
+        for (var i = 0, l = schemeList.length; i < l; i++) {
+            var item = schemeList[i];
+            var ponit = item;
+
+            if (!!ponit) {
+                if (keyword != '') {
+                    if (ponit.F_Name.indexOf(keyword) == -1 && ponit.F_Code.indexOf(keyword) == -1) {
+                        ponit = null;
+                    }
+                }
+            }
+
+            if (!!ponit) {// 刷新流程模板数据
+                var _cardbox = "";
+
+                var _active = "";
+                if (!!schemeListSelected[item.F_Id]) {
+                    _active = "active";
+                }
+                _cardbox += '<div class="card-box ' + _active + ' "  data-value="' + item.F_Id + '" >';
+                _cardbox += '    <div class="card-box-img">';
+                _cardbox += '        <img src="' + top.$.rootUrl + '/img/filetype/Scheme.png" />';
+                _cardbox += '    </div>';
+                _cardbox += '    <div class="card-box-content">';
+                _cardbox += '        <p>名称：' + item.F_Name + '</p>';
+                _cardbox += '        <p>编号：' + item.F_Code + '</p>';
+                _cardbox += '    </div>';
+                _cardbox += '</div>';
+                var $cardbox = $(_cardbox);
+                $cardbox[0].shceme = item;
+                $warp.append($cardbox);
+            }
+        }
+        $warp.find('.card-box').on('click', function () {
+            var $this = $(this);
+            var value = $this.attr('data-value');
+            if ($this.hasClass('active')) {
+                $this.removeClass('active');
+                delete schemeListSelected[value];
+            }
+            else {
+                schemeListSelected[value] = $this[0].shceme;
+                $this.addClass('active');
+            }
+        });
+
+        $('#main_list').html($warp);
+    }
+    var isLoaded = false;
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            // 加载自定义流程列表
+            aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_NewWorkFlow/NWFScheme/GetALLInfoList', {}, function (data) {
+                schemeList = data;
+                render();
+                isLoaded = true;
+            });
+
+            $('#F_ToUserId').lrUserSelect(0);
+
+            $("#txt_keyword").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    keyword = $(this).val();
+                    render();
+                }
+            });
+            // 滚动条
+            //$('#main_list_warp').lrscroll();
+        },
+        initData: function () {
+            if (!!selectedRow) {
+                keyValue = selectedRow.F_Id;
+                $('.form-warp-top').lrSetFormData(selectedRow);
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_NewWorkFlow/NWFDelegate/GetRelationList', { keyValue: keyValue }, function (data) {
+                    page.setSchemeData(data);
+                });
+            }
+        },
+        setSchemeData: function (_data) {
+            if (isLoaded) {
+                $.each(_data, function (id, item) {
+                    $('.card-box[data-value="' + item.F_SchemeInfoId + '"]').trigger('click');
+                });
+            }
+            else {
+                setTimeout(function () {
+                    page.setSchemeData(_data);
+                }, 100);
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        if (!$('.form-warp-top').lrValidform()) {
+            return false;
+        }
+        var formData = $('.form-warp-top').lrGetFormData(keyValue);
+        formData.F_ToUserName = $('#F_ToUserId span').text();
+
+
+        var schemeInfoList = [];
+        for (var id in schemeListSelected) {
+            schemeInfoList.push(id);
+        }
+        if (schemeInfoList.length == 0) {
+            aycsoft.alert.warning('至少选择一个流程模板');
+            return false;
+        }
+        $.lrSaveForm(top.$.rootUrl + '/LR_NewWorkFlow/NWFDelegate/SaveForm?keyValue=' + keyValue, { 'strEntity': JSON.stringify(formData), 'strSchemeInfo': String(schemeInfoList) }, function (res) {
+            if (!!callBack) {
+                callBack();
+            }
+        });
+    };
+    page.init();
+}
+</script>

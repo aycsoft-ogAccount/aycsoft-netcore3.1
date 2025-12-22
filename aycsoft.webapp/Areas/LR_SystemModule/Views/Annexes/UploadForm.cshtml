@@ -1,0 +1,327 @@
+﻿
+@{
+    ViewBag.Title = "附件上传";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link href="~/lib/webuploader/webuploader.css" rel="stylesheet" />
+<style>
+    .lr-form-layout-body {
+    padding:0 5px 5px 5px;
+}
+.lr-form-file-queue-wrap {
+    position:relative;
+    width:100%;
+    height:100%;
+    border:1px solid #ddd;
+    border-radius:4px;
+    overflow-y:auto;
+}
+.lr-form-file-queue {
+    position:relative;
+}
+.lr-form-file-queue-item {
+    position:relative;
+    width:100%;
+    height:50px;
+    border-bottom:1px solid #ddd;
+    padding-left:60px;
+
+}
+.lr-file-image {
+    position:absolute;
+    top:5px;
+    left:5px;
+}
+.lr-file-image img {
+    width:40px;
+    height:40px;
+}
+.lr-file-name{
+    line-height:50px;
+
+}
+.lr-msg {
+    position:absolute;
+    top:0;
+    right:5px;
+    font-size: 25px;
+    line-height:50px;
+}
+.lr-msg .fa-check-circle{
+    color: #5cb85c;
+}
+.lr-msg .fa-exclamation-circle {
+    color: #b94a48;
+}
+
+.lr-tool-bar {
+    position:absolute;
+    top:0;
+    right:35px;
+    font-size: 25px;
+    line-height:50px;
+    color:#666;
+    cursor:pointer;
+}
+.lr-tool-bar > i {
+    margin-left:8px;
+}
+
+.lr-tool-bar .fa-minus-circle {
+    color: #b94a48;
+}
+.lr-tool-bar .fa-cloud-download {
+    color: #3498db;
+}
+
+.lr-uploader-progress {
+    position:absolute;
+    bottom:2px;
+    left:60px;
+    height:4px;
+    width:500px;
+    width:calc(100% - 90px);
+}
+.lr-uploader-progress-bar {
+    position:relative;
+    height:100%;
+    background-color:#039cfd;
+    border-radius:4px;
+}
+
+
+.lr-form-file-queue-bg {
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:300px;
+    height:30px;
+    line-height:30px;
+    
+    margin:-15px 0 0 -150px;
+}
+.lr-form-file-queue-bg h1 {
+    color: #666;
+    font-size: 20px;
+    font-family: Microsoft Yahei;
+    padding-bottom: 2px;
+    margin: 0;
+}
+
+/*对百度插件的样式重写*/
+.webuploader-pick {
+    padding:8px 15px;
+    background-color:#039cfd;
+}
+.webuploader-pick-hover {
+    background-color:#027dcb;
+}
+</style>
+<div class="lr-form-layout lr-form-layout-top-bottom">
+    <div class="lr-form-layout-header">
+        <div id="lr_add_file_btn"><i class="fa fa-cloud-upload"></i>添加文件</div>
+    </div>
+    <div class="lr-form-layout-body">
+        <div class="lr-form-file-queue-wrap" id="lr_form_file_queue">
+            <div class="lr-form-file-queue" id="lr_form_file_queue_list">
+
+            </div>
+            <div class="lr-form-file-queue-bg">
+                <h1>试试将电脑里的文件拖拽到此上传</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/webuploader/webuploader.nolog.min.js"></script>
+<script>
+var keyVaule = request('keyVaule');
+var extensions = request('extensions');
+var filePath = request('filePath');
+
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+   
+    $.lrSetForm(top.$.rootUrl + '/LR_SystemModule/Annexes/GetAnnexesFileList?folderId=' + keyVaule, function (data) {
+        for (var i = 0, l = data.length; i < l; i++) {
+            $('#lr_form_file_queue .lr-form-file-queue-bg').hide();
+            var item = data[i];
+            fileInfo[item.F_Id] = {
+                fileGuid: item.F_Id,
+                chunks: 1
+            }
+            var $item = $('<div class="lr-form-file-queue-item" id="lr_filequeue_' + item.F_Id + '" ></div>');
+            $item.append('<div class="lr-file-image"><img src="' + top.$.rootUrl + '/img/filetype/' + item.F_FileType + '.png"></div>');
+            $item.append('<span class="lr-file-name">' + item.F_FileName + '(' + aycsoft.countFileSize(item.F_FileSize) + ')</span>');
+
+            $item.append('<div class="lr-msg"><i class="fa fa-check-circle"></i></div>');
+            $item.append('<div class="lr-tool-bar"><i class="fa fa-cloud-download" title="下载"  data-value="' + item.F_Id + '" ></i><i class="fa fa-minus-circle" title="删除"  data-value="' + item.F_Id + '" ></i></div>');
+
+            $item.find('.lr-tool-bar .fa-minus-circle').on('click', function () {
+                var fileId = $(this).attr('data-value');
+                DeleteFile(fileId);
+            });
+
+            $item.find('.lr-tool-bar .fa-cloud-download').on('click', function () {
+                var fileId = $(this).attr('data-value');
+                DownFile(fileId);
+            });
+
+            $('#lr_form_file_queue_list').append($item);
+        }
+    });
+
+    var fileInfo = {};
+    
+    // 触发合并文件碎片
+    var mergeFileChunks = function (file) {
+        var param = {};
+        param['folderId'] = keyVaule;
+        param['fileGuid'] = fileInfo[file.id].fileGuid;
+        param['fileName'] = fileInfo[file.id].name;
+        param['chunks'] = fileInfo[file.id].chunks;
+        param['filePath'] = filePath;
+        aycsoft.httpAsyncPost(top.$.rootUrl + "/LR_SystemModule/Annexes/MergeAnnexesFile", param, function (res) {
+            var $fileItem = $('#lr_form_file_queue_list').find('#lr_filequeue_' + file.id);
+            $fileItem.find('.lr-uploader-progress').remove();
+            if (res.code == aycsoft.httpCode.success) {
+                // 文件保存成功后
+                $fileItem.append('<div class="lr-msg"><i class="fa fa-check-circle"></i></div>');
+                $fileItem.append('<div class="lr-tool-bar"><i class="fa fa-minus-circle" title="删除"  data-value="' + file.id + '" ></i></div>');
+
+                $fileItem.find('.lr-tool-bar .fa-minus-circle').on('click', function () {
+                    var fileId = $(this).attr('data-value');
+                    DeleteFile(fileId);
+                });
+            }
+            else {
+                $fileItem.append('<div class="lr-msg"><i class="fa fa-exclamation-circle"></i></div>');
+            }
+        });
+    }
+    // 触发清楚文件碎片
+    var reomveFileChunks = function (file) {
+        var param = {};
+        param['fileGuid'] = fileInfo[file.id].fileGuid;
+        param['chunks'] = fileInfo[file.id].chunks;
+        param['filePath'] = filePath;
+        aycsoft.httpAsyncPost(top.$.rootUrl + "/LR_SystemModule/Annexes/MergeAnnexesFile", param, function (res) {});
+        var $fileItem = $('#lr_form_file_queue_list').find('#lr_filequeue_' + file.id);
+        $fileItem.find('.lr-uploader-progress').remove();
+        $fileItem.append('<div class="lr-msg"><i class="fa fa-exclamation-circle"></i></div>');
+    }
+    // 删除文件
+    var DeleteFile = function (fileId) {
+        var param = {};
+        param['fileId'] = fileInfo[fileId].fileGuid;
+        aycsoft.httpAsyncPost(top.$.rootUrl + "/LR_SystemModule/Annexes/DeleteAnnexesFile", param, function (res) {});
+        var file = page.uploader.getFile(fileId);
+        if (!!file) {
+            page.uploader.removeFile(file);
+        }
+        delete fileInfo[fileId];
+        var $fileItem = $('#lr_form_file_queue_list').find('#lr_filequeue_' + fileId);
+        $fileItem.remove();
+        if ($('#lr_form_file_queue_list>div').length == 0) {
+            $('#lr_form_file_queue .lr-form-file-queue-bg').show();
+        }
+            }
+    // 下载文件
+    var DownFile = function (fileId) {
+        aycsoft.download({ url: top.$.rootUrl + '/LR_SystemModule/Annexes/DownAnnexesFile', param: { fileId: fileId }, method: 'POST' });
+    }
+
+    var page = {
+        uploader: null,
+        init: function () {
+            if (!WebUploader.Uploader.support()) {
+                alert('Web Uploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
+                throw new Error('WebUploader does not support the browser you are using.');
+            }
+            extensions = extensions || "gif,jpeg,jpg,png,pdf,doc,docx,ppt,pptx,txt,xls,xlsx";
+            var mimeTypes = '.' + extensions.replace(/,/g, ',.');
+            page.uploader = WebUploader.create({
+                auto: true,
+                swf: top.$.rootUrl + '/lib/webuploader/Uploader.swf',
+                // 文件接收服务端。
+                server: top.$.rootUrl + "/LR_SystemModule/Annexes/UploadAnnexesFileChunk",
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#lr_add_file_btn',
+                dnd: '#lr_form_file_queue',
+                paste: 'document.body',
+                disableGlobalDnd:true,
+                accept: {
+                    extensions: extensions,
+                    mimeTypes:mimeTypes
+                },
+                multiple: true,
+                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                resize: false,
+                // 文件分片上传
+                chunked: true,
+                chunkRetry: 3,
+                prepareNextFile: true,
+                chunkSize:'1048576',
+                // 上传参数
+                formData: {
+                }
+            });
+            page.uploader.on('fileQueued', page.fileQueued);
+            page.uploader.on('uploadStart', page.uploadStart);
+            page.uploader.on('uploadBeforeSend', page.uploadBeforeSend);
+            page.uploader.on('uploadProgress', page.uploadProgress);
+            page.uploader.on('uploadSuccess', page.uploadSuccess);
+            page.uploader.on('uploadError', page.uploadError);
+            page.uploader.on('uploadComplete', page.uploadComplete);
+            page.uploader.on('error', page.error);            
+        },
+        fileQueued: function (file) {// 文件加载到队列
+            fileInfo[file.id] = { name: file.name };
+            $('#lr_form_file_queue .lr-form-file-queue-bg').hide();
+            // 添加一条文件记录
+            var $item = $('<div class="lr-form-file-queue-item" id="lr_filequeue_' + file.id + '" ></div>');
+            $item.append('<div class="lr-file-image"><img src="' + top.$.rootUrl + '/img/filetype/' + file.ext + '.png"></div>');
+            $item.append('<span class="lr-file-name">' + file.name + '(' + aycsoft.countFileSize(file.size) + ')</span>');
+
+            $('#lr_form_file_queue_list').append($item);
+        },
+        uploadStart: function (file) {
+            var $fileItem = $('#lr_form_file_queue_list').find('#lr_filequeue_' + file.id);
+            $fileItem.append('<div class="lr-uploader-progress"><div class="lr-uploader-progress-bar" style="width:0%;"></div></div>');
+        },
+        uploadBeforeSend: function (object, data, headers) {
+            data.chunk = data.chunk || 0;
+            data.chunks = data.chunks || 1;
+            fileInfo[data.id].fileGuid = fileInfo[data.id].fileGuid || WebUploader.Base.guid();
+            data.fileGuid = fileInfo[data.id].fileGuid;
+            fileInfo[data.id].chunks = data.chunks;
+        },
+        uploadProgress: function (file, percentage) {
+            var $fileItem = $('#lr_form_file_queue_list').find('#lr_filequeue_' + file.id);
+            $fileItem.find('.lr-uploader-progress-bar').css('width', (percentage * 100 + '%'));
+        },
+        uploadSuccess: function (file, res) {
+            if (res.code == 200) {// 上传成功
+                mergeFileChunks(file);
+            }
+            else {// 上传失败
+                reomveFileChunks(file);
+            }
+        },
+        uploadError: function (file, code) {
+            reomveFileChunks(file);
+        },
+        uploadComplete: function (file) {
+        },
+        error: function (type) {
+            switch (type) {
+                case 'Q_TYPE_DENIED':
+                    aycsoft.alert.error('当前文件类型不允许上传');
+                    break;
+            };
+        }
+    };
+    page.init();
+}
+</script>
+

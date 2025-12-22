@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "数据库连接管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout">
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;<span class="lrlg">查询</span></a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<span class="lrlg">新增</span></a>
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;<span class="lrlg">编辑</span></a>
+                        <a id="lr_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;<span class="lrlg">删除</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lr-layout-body" id="gridtable">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var refreshGirdData; // 更新数据
+    var selectedRow;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var page = {
+            init: function () {
+                page.initGrid();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyword: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 新增
+                $('#lr_add').on('click', function () {
+                    selectedRow = null;
+                    aycsoft.layerForm({
+                        id: 'Form',
+                        title: '添加数据库',
+                        url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/Form',
+                        width: 620,
+                        height: 350,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                });
+                // 编辑
+                $('#lr_edit').on('click', function () {
+                    selectedRow = $('#gridtable').jfGridGet('rowdata');
+                    var keyValue = $('#gridtable').jfGridValue('F_DatabaseLinkId');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerForm({
+                            id: 'Form',
+                            title: '编辑数据库',
+                            url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/Form',
+                            width: 620,
+                            height: 350,
+                            callBack: function (id) {
+                                return top[id].acceptClick(refreshGirdData);
+                            }
+                        });
+                    }
+                });
+                // 删除
+                $('#lr_delete').on('click', function () {
+                    var keyValue = $('#gridtable').jfGridValue('F_DatabaseLinkId');
+                    if (aycsoft.checkrow(keyValue)) {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_SystemModule/DatabaseLink/DeleteForm', { keyValue: keyValue }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+            initGrid: function () {
+                $('#gridtable').jfGrid({
+                    url: top.$.rootUrl + '/LR_SystemModule/DatabaseLink/GetList',
+                    headData: [
+                        { label: "名称", name: "F_DBAlias", width: 150, align: "left" },
+                        { label: "编码", name: "F_DBName", width: 150, align: "left" },
+                        { label: "类型", name: "F_DbType", width: 80, align: "center" },
+                        { label: "数据库地址", name: "F_ServerAddress", width: 200, align: "left" },
+                        { label: "备注", name: "F_Description", width: 300, align: "left" }
+                    ],
+                    mainId: 'F_DatabaseLinkId',
+                    reloadSelected: true
+                });
+                page.search();
+            },
+            search: function (param) {
+                $('#gridtable').jfGridSet('reload', param);
+            }
+        };
+
+        // 保存数据后回调刷新
+        refreshGirdData = function () {
+            $('#gridtable').jfGridSet('reload');
+        }
+
+        page.init();
+    }
+</script>

@@ -1,0 +1,778 @@
+﻿@{
+    ViewData["Title"] = "行政区域";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<style>
+
+    .lr-layout-center .lr-layout-wrap {
+        padding-top: 32px;
+    }
+
+    .showarea-list {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    .showarea-list-item {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: none;
+        padding-top: 40px;
+    }
+
+        .showarea-list-item.active {
+            display: block;
+        }
+
+    .lr-nav-tabs {
+        position: absolute;
+        top: 0px;
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-tabs.lr-nav-tabs > li > a {
+        margin-right: 0;
+        border-radius: 0;
+        border: none;
+        padding: 11px 15px;
+    }
+
+        .nav-tabs.lr-nav-tabs > li > a:hover {
+            border-bottom-color: transparent;
+        }
+
+    .nav-tabs.lr-nav-tabs > li.active > a, .nav-tabs.lr-nav-tabs > li.active > a:focus, .nav-tabs.lr-nav-tabs > li.active > a:hover {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: none;
+        border-bottom: 2px solid #3498DB;
+    }
+
+
+    .lr-tab-content {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+        .lr-tab-content .tab-pane {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+    .lr-tab-scroll-content {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .lr-tab-content .tab-pane .alert {
+        margin-bottom: 0px;
+    }
+
+
+    .lr-portal-panel-title {
+        padding-top: 10px;
+        line-height: 30px;
+        border-bottom: 1px solid #ccc;
+        color: #666;
+        font-weight: 300;
+        font-size: 16px;
+    }
+
+    .lr-portal-panel-content {
+        position: relative;
+        width: 100%;
+    }
+
+    .lr-portal-panel-content-right {
+        position: relative;
+        width: 200px;
+    }
+
+    .jfgrid-layout {
+        border: 1px solid #ccc;
+        height: 500px;
+    }
+</style>
+
+<div class="lr-layout lr-layout-left-center" id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">插件列表</div>
+            <div id="plugin_list" class="lr-panel-content"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                演示区域 - <span id="title_info">未选择插件</span>
+            </div>
+            <div class="showarea-list">
+                <div class="showarea-list-item active" style="        padding-top: 0px;">
+                    <div class="lr-tab-scroll-content">
+                        <div class="alert alert-warning" role="alert">
+                            <p>1.此页面展示一些敏捷框架所使用的部分前端插件!</p>
+                            <p>2.所有插件都是支持主流浏览器的（IE8+、Chrome、Firefox、360浏览器等）!</p>
+                            <p>3.选用的都是一些轻量,开源的插件,方便后续的扩展!</p>
+                        </div>
+                        <div class="lr-portal-panel-title">
+                            <i class="fa fa-tags"></i>&nbsp;&nbsp;框架所使用的一些前端组件列表
+                        </div>
+                        <div class="lr-portal-panel-content" style="        padding-top: 10px;">
+                            <p>1.JS框架：jquery-1.10.2（考虑到兼容低版本浏览器）、Bootstrap.js</p>
+                            <p>2.CSS框架：Bootstrap v3.3.4</p>
+                            <p>3.在线编辑器：ckeditor、simditor</p>
+                            <p>4.上传文件：WebUploader</p>
+                            <p>5.数据表格：JFGrid</p>
+                            <p>6.对话框：layer.js</p>
+                            <p>7.下拉选择框：aycsoftselect</p>
+                            <p>8.树结构控件：aycsofttree</p>
+                            <p>9.图表插件：Echarts</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="aycsoft_tree_area" class="showarea-list-item">
+                    <ul class="nav nav-tabs lr-nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tree_base" aria-controls="home" role="tab" data-toggle="tab">基础信息</a></li>
+                        <li role="presentation"><a href="#tree_ajax" aria-controls="profile" role="tab" data-toggle="tab">获取后端数据</a></li>
+                        <li role="presentation"><a href="#tree_checkbox" aria-controls="settings" role="tab" data-toggle="tab">复选框</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content lr-tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="tree_base">
+                            <div class="lr-tab-scroll-content">
+                                <div class="alert alert-warning" role="alert">
+                                    <p>1.lrtree是一个基于通过jquery的轻量级树形插件!</p>
+                                    <p>2.通过jquery选择器就可以动态创建出一个树形数据!</p>
+                                    <p>3.支持复选框,ajax后端数据获取,数据懒加载!</p>
+                                    <p>4.兼容目前最流行浏览器（IE8+、Chrome、Firefox、360浏览器）</p>
+                                </div>
+                                <div class="lr-portal-panel-title">
+                                    <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                                </div>
+                                <div class="lr-portal-panel-content">
+                                    <div id="tree_show_base" class="lr-portal-panel-content-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tree_ajax">
+                            <div class="lr-tab-scroll-content">
+                                <div class="alert alert-warning" role="alert">
+                                    <p>1.可以通过ajax方式获取后台数据!</p>
+                                </div>
+                                <div class="lr-portal-panel-title">
+                                    <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                                </div>
+                                <div class="lr-portal-panel-content">
+                                    <div id="tree_show_ajax" class="lr-portal-panel-content-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tree_checkbox">
+                            <div class="lr-tab-scroll-content">
+                                <div class="alert alert-warning" role="alert">
+                                    <p>1.可以给给指定的节点添加勾选框!</p>
+                                </div>
+                                <div class="lr-portal-panel-title">
+                                    <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                                </div>
+                                <div class="lr-portal-panel-content">
+                                    <div id="tree_show_checkbox" class="lr-portal-panel-content-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="aycsoft_select_area" class="showarea-list-item" style="        padding-top: 0px;">
+                    <div class="lr-tab-scroll-content">
+                        <div class="alert alert-warning" role="alert">
+                            <p>1.lrselect是一个基于通过jquery的轻量级下拉框插件!</p>
+                            <p>2.支持主流浏览器的（IE8+、Chrome、Firefox、360浏览器等）!</p>
+                            <p>3.基本能满足所有需求,支持普通下拉框，树形下拉框，支持模糊查询和数据动态加载!</p>
+                        </div>
+                        <div class="lr-portal-panel-title">
+                            <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                        </div>
+                        <div class="lr-portal-panel-content" style="        padding: 20px;">
+                            <div id="select1"></div>
+                            <div id="select2" style="        margin-top: 10px;"></div>
+                            <div id="select3" style="        margin-top: 10px;"></div>
+                            <div id="select4" style="        margin-top: 10px;"></div>
+                            <div id="select5" style="        margin-top: 10px;"></div>
+                            <div id="select6" style="        margin-top: 10px;"></div>
+                            <div id="select7" style="        margin-top: 10px;"></div>
+
+                            @*<button id="test">测试</button>*@
+                        </div>
+                    </div>
+                </div>
+                <div id="aycsoft_selectuser_area" class="showarea-list-item" style="        padding-top: 0px;">
+                    <div class="lr-tab-scroll-content">
+                        <div class="alert alert-warning" role="alert">
+                            <p>1.基于layer弹层和lrselect的人员选择!</p>
+                            <p>2.支持主流浏览器的（IE8+、Chrome、Firefox、360浏览器等）!</p>
+                            <p>3.基本能满足所有需求!</p>
+                        </div>
+                        <div class="lr-portal-panel-title">
+                            <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                        </div>
+                        <div class="lr-portal-panel-content" style="        padding: 20px;">
+                            <div id="selectuser1"></div>
+                            <div id="selectuser2" style="        margin-top: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="jfgrid_area" class="showarea-list-item" style="        padding-top: 0px;">
+                    <div class="lr-tab-scroll-content">
+                        <div class="alert alert-warning" role="alert">
+                            <p>1.jfgrid是一个轻量级的表格插件!</p>
+                            <p>2.所有插件都是支持主流浏览器的（IE8+、Chrome、Firefox、360浏览器等）!</p>
+                            <p>3.基本能满足所有需求,最主要的原因是免费的!</p>
+                            <p>4.Aycsoft前端开发团队对其做了一定的扩展和封装,方便整体框架的使用!</p>
+                        </div>
+                        <div class="lr-portal-panel-title">
+                            <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                        </div>
+                        <div class="lr-portal-panel-content" style="        padding: 20px;">
+                            <div id="aycsoft_jfgrid"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="uploader_area" class="showarea-list-item" style="        padding-top: 0px;">
+                    <div class="lr-tab-scroll-content">
+                        <div class="alert alert-warning" role="alert">
+                            <p>1.WebUploader是由Baidu WebFE(FEX)团队开发的一个简单的以HTML5为主，FLASH为辅的现代文件上传组件。</p>
+                            <p>2.在现代的浏览器里面能充分发挥HTML5的优势，同时又不摒弃主流IE浏览器，沿用原来的FLASH运行时，兼容IE6+，iOS 6+, android 4+。两套运行时，同样的调用方式，可供用户任意选用。</p>
+                            <p>3.采用大文件分片并发上传，极大的提高了文件上传效率。</p>
+                            <p>4.Aycsoft前端开发团队对其做了一定的扩展和封装,方便整体框架的使用!</p>
+                        </div>
+                        <div class="lr-portal-panel-title">
+                            <i class="fa fa-tags"></i>&nbsp;&nbsp;事例
+                        </div>
+                        <div class="lr-portal-panel-content" style="        padding: 20px;">
+                            <div id="aycsoft_uploader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var pluginList = [{
+        id: '0',
+        text: '框架自带',
+        value: 'no',
+        hasChildren: true,
+        isexpand: true,
+        complete: true,
+        ChildNodes: [
+            {
+                id: 'aycsofttree',
+                text: '树形插件',
+                value: 'aycsofttree',
+                isexpand: false,
+                complete: true
+            },
+            {
+                id: 'aycsoftselect',
+                text: '选择框',
+                value: 'aycsoftselect',
+                isexpand: false,
+                complete: true
+            },
+            {
+                id: 'aycsoftuserselect',
+                text: '人员选择框',
+                value: 'aycsoftuserselect',
+                isexpand: false,
+                complete: true
+            }
+        ]
+    }, {
+        id: '1',
+        text: '第三方集成',
+        value: 'no',
+        hasChildren: true,
+        isexpand: true,
+        complete: true,
+        ChildNodes: [
+            {
+                id: 'jfGrid',
+                text: '表格(JFGrid)',
+                value: 'jfGrid',
+                isexpand: false,
+                complete: true
+            },
+            {
+                id: 'webUploader',
+                text: '上传文件(WebUploader)',
+                value: 'webUploader',
+                isexpand: false,
+                complete: true
+            }
+        ]
+    }];
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var page = {
+            init: function () {
+                page.bind();
+                page.initLeftTree();
+
+                //$('#test').on('click', function () {
+                //    $('#select4').lrselectSet('');
+                //});
+            },
+            bind: function () {
+                $(".lr-tab-scroll-content").lrscroll();
+            },
+            initLeftTree: function () {
+                $('#plugin_list').lrtree({
+                    data: pluginList,
+                    nodeClick: function (item) {
+                        switch (item.value) {
+                            case 'aycsofttree':
+                                $('#title_info').text(item.text);
+                                $('#aycsoft_tree_area').parent().find('.showarea-list-item.active').removeClass('active');
+                                $('#aycsoft_tree_area').addClass('active');
+                                pluginlist.treeinit();
+                                break;
+                            case 'aycsoftselect':
+                                $('#title_info').text(item.text);
+                                $('#aycsoft_select_area').parent().find('.showarea-list-item.active').removeClass('active');
+                                $('#aycsoft_select_area').addClass('active');
+                                pluginlist.selectinit();
+                                break;
+                            case 'aycsoftuserselect':
+                                $('#title_info').text(item.text);
+                                $('#aycsoft_selectuser_area').parent().find('.showarea-list-item.active').removeClass('active');
+                                $('#aycsoft_selectuser_area').addClass('active');
+                                pluginlist.selectUserinit();
+                                break;
+                            case 'jfGrid':
+                                $('#title_info').text(item.text);
+                                $('#jfgrid_area').parent().find('.showarea-list-item.active').removeClass('active');
+                                $('#jfgrid_area').addClass('active');
+                                pluginlist.jfgridinit();
+                                break;
+                            case 'webUploader':
+                                $('#title_info').text(item.text);
+                                $('#uploader_area').parent().find('.showarea-list-item.active').removeClass('active');
+                                $('#uploader_area').addClass('active');
+                                pluginlist.uploaderInit();
+                                break;
+                        }
+                    }
+                });
+            }
+        };
+
+        //树插件
+        var treeCode = {
+            base:
+                function () {
+                    $('#tree_show_base').lrtree({
+                        data: [{
+                            id: '0',
+                            text: '父节点',
+                            value: 'no',
+                            hasChildren: true,
+                            isexpand: true,
+                            complete: true,
+                            ChildNodes: [
+                                {
+                                    id: '1',
+                                    text: '子节点一',
+                                    value: 'aycsofttree',
+                                    hasChildren: true,
+                                    isexpand: true,
+                                    complete: true,
+                                    ChildNodes: [
+                                        {
+                                            id: '2',
+                                            text: '子节点二',
+                                            value: 'aycsofttree',
+                                            complete: true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }]
+                    });
+                },
+            ajax:
+                function () {
+                    $('#tree_show_ajax').lrtree({
+                        url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetClassifyTree'
+                    });
+                },
+            checkbox:
+                function () {
+                    $('#tree_show_checkbox').lrtree({
+                        data: [{
+                            id: '0',
+                            text: '父节点',
+                            value: 'no',
+                            showcheck: true,
+                            hasChildren: true,
+                            isexpand: true,
+                            complete: true,
+                            ChildNodes: [
+                                {
+                                    id: '1',
+                                    text: '子节点一',
+                                    value: 'aycsofttree',
+                                    hasChildren: true,
+                                    isexpand: true,
+                                    complete: true,
+                                    ChildNodes: [
+                                        {
+                                            id: '2',
+                                            text: '子节点二',
+                                            value: 'aycsofttree',
+                                            showcheck: true,
+                                            complete: true
+                                        },
+                                        {
+                                            id: '3',
+                                            text: '子节点三',
+                                            value: 'aycsofttree',
+                                            showcheck: true,
+                                            complete: true
+                                        }, {
+                                            id: '4',
+                                            text: '子节点四',
+                                            value: 'aycsofttree',
+                                            showcheck: true,
+                                            complete: true
+                                        }
+                                    ]
+                                },
+                                {
+                                    id: '11',
+                                    text: '子节点一一',
+                                    value: 'aycsofttree',
+                                    showcheck: true,
+                                    hasChildren: true,
+                                    isexpand: true,
+                                    complete: true,
+                                    ChildNodes: [
+                                        {
+                                            id: '12',
+                                            text: '子节点一二',
+                                            value: 'aycsofttree',
+                                            showcheck: true,
+                                            complete: true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }]
+                    });
+                }
+        };
+
+        // jfgrid
+        var initGrid = function () {
+            $('#aycsoft_jfgrid').jfGrid({
+                isPage: true,
+
+                isMultiselect: true,
+
+                isSubGrid: true,    // 是否有子表单
+                subGridRowExpanded: function () {
+
+                },
+                rowdatas: [
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 },
+                    { A: 'ra1', B1: 'rb11', B21: 'rb211', B22: 'rb221', C: 'rc1', D1: 'rd11', D2: 'rd21', E: 1 }
+                ],
+                headData: [
+                    { label: 'A', name: 'A', width: 80, align: 'left', frozen: true },
+                    {
+                        label: 'B', name: 'B', width: 80, align: 'center', frozen: true,
+                        children: [
+                            { label: 'B1', name: 'B1', width: 80, align: 'center' },
+                            {
+                                label: 'B2', name: 'B2', width: 80, align: 'center',
+                                children: [
+                                    { label: 'B21', name: 'B21', width: 80, align: 'center' },
+                                    {
+                                        label: 'B21', name: 'B22', width: 80, align: 'center'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    { label: 'C', name: 'C', width: 80, align: 'right' },
+                    {
+                        label: 'D', name: 'D', width: 80, align: 'center',
+                        children: [
+                            { label: 'D1', name: 'D1', width: 80, align: 'center' },
+                            { label: 'D2', name: 'D2', width: 80, align: 'center' }
+                        ]
+                    },
+                    {
+                        label: "E", name: "E", width: 300, align: "left",
+                        formatter: function (cellvalue) {
+                            return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                        }
+                    }
+                ]
+            });
+        };
+
+
+        var pluginlist = {
+            treeinit: function () {
+                treeCode.base();
+
+                treeCode.ajax();
+
+                treeCode.checkbox();
+            },
+            selectinit: function () {
+                var dfop = {
+                    type: 'tree',
+                    // 展开最大高度
+                    maxHeight: 200,
+                    // 是否允许搜索
+                    allowSearch: true,
+                    // 访问数据接口地址
+                    url: top.$.rootUrl + '/LR_OrganizationModule/Company/GetTree',
+                    // 访问数据接口参数
+                    param: { parentId: '0' }
+                };
+                $('#select1').lrselect(dfop);
+
+
+                var dfop2 = {
+                    // 字段
+                    value: "F_AreaCode",
+                    text: "F_AreaName",
+                    title: "F_AreaName",
+                    // 展开最大高度
+                    maxHeight: 10,
+                    // 是否允许搜索
+                    allowSearch: true,
+                    // 访问数据接口地址
+                    url: top.$.rootUrl + '/LR_SystemModule/Area/Getlist',
+                    // 访问数据接口参数
+                    param: { parentId: '' },
+                }
+
+                $('#select2').lrselect(dfop2);
+
+                $('#select4').lrselect({
+                    // 字段
+                    value: "F_AreaCode",
+                    text: "F_AreaName",
+                    title: "F_AreaName",
+                    type: 'multiple',
+                    // 展开最大高度
+                    maxHeight: 200,
+                    // 是否允许搜索
+                    allowSearch: true,
+                    // 访问数据接口地址
+                    url: top.$.rootUrl + '/LR_SystemModule/Area/Getlist',
+                    // 访问数据接口参数
+                    param: { parentId: '' },
+                });
+
+                $('#select5').lrGirdSelect({
+                    // 字段
+                    url: top.$.rootUrl + '/LR_SystemModule/DataItem/GetDetailList',
+                    param: { itemCode: 'Client_ProductInfo' },
+                    selectWord: 'F_ItemName',
+                    value: 'F_ItemValue',
+                    text: 'F_ItemName',
+                    headData: [{ label: "商品编号", name: "F_ItemValue", width: 100, align: "left" },
+                    { label: "商品名称", name: "F_ItemName", width: 450, align: "left" }],
+                    select: function (item) {
+
+                    }
+
+                });
+
+                $('#select3').lrselect({
+                    type: 'treemultiple',
+                    allowSearch: true,
+                    //type: 'tree',
+                    select: function (items) {
+                        $('#select4').lrselectSet('');
+                    },
+                    data: [{
+                        id: '0',
+                        text: '父节点',
+                        value: 'no',
+                        showcheck: true,
+                        hasChildren: true,
+                        isexpand: true,
+                        complete: true,
+                        ChildNodes: [
+                            {
+                                id: '1',
+                                text: '子节点一',
+                                value: 'aycsofttree',
+                                hasChildren: true,
+                                isexpand: true,
+                                complete: true,
+                                ChildNodes: [
+                                    {
+                                        id: '2',
+                                        text: '子节点二',
+                                        value: 'aycsofttree',
+                                        showcheck: true,
+                                        complete: true
+                                    },
+                                    {
+                                        id: '3',
+                                        text: '子节点三',
+                                        value: 'aycsofttree',
+                                        showcheck: true,
+                                        complete: true
+                                    }, {
+                                        id: '4',
+                                        text: '子节点四',
+                                        value: 'aycsofttree',
+                                        showcheck: true,
+                                        complete: true
+                                    }
+                                ]
+                            },
+                            {
+                                id: '11',
+                                text: '子节点一一',
+                                value: 'aycsofttree',
+                                showcheck: true,
+                                hasChildren: true,
+                                isexpand: true,
+                                complete: true,
+                                ChildNodes: [
+                                    {
+                                        id: '12',
+                                        text: '子节点一二',
+                                        value: 'aycsofttree',
+                                        showcheck: true,
+                                        complete: true
+                                    }
+                                ]
+                            }
+                        ]
+                    }],
+                    height: 300
+                });
+
+                $('#select6').lrlayerselect({
+                    treeCode: 'dataitemc',
+                    treeParentId: 'f_parentid',
+                    treeValueId: 'f_itemid',
+                    treeTextId: 'f_itemname',
+
+                    dataCode: 'dataitem',
+                    dataTreeId: 'f_itemid',
+                    dataValueId: 'f_itemdetailid',
+                    dataTextId: 'f_itemname',
+
+                    grid: [
+                        { label: '项目名', name: 'f_itemname', width: 175, align: 'left' },
+                        { label: '项目值', name: 'f_itemvalue', width: 175, align: 'left' },
+                        { label: "备注", name: "f_description", width: 200, align: "left" }
+                    ],
+                    select: function (values, texts) {
+                    }
+
+                });
+                $('#select7').lrlayerselect({
+                    treeCode: 'dataitemc',
+                    treeParentId: 'f_parentid',
+                    treeValueId: 'f_itemid',
+                    treeTextId: 'f_itemname',
+
+                    dataCode: 'dataitem',
+                    dataTreeId: 'f_itemid',
+                    dataValueId: 'f_itemdetailid',
+                    dataTextId: 'f_itemname',
+
+                    grid: [
+                        { label: '项目名', name: 'f_itemname', width: 175, align: 'left' },
+                        { label: '项目值', name: 'f_itemvalue', width: 175, align: 'left' },
+                        { label: "备注", name: "f_description", width: 200, align: "left" }
+                    ],
+                    select: function (values, texts) {
+                    },
+                    isMultiple: false
+
+                });
+            },
+            selectUserinit: function () {
+                $('#selectuser1').lrformselect({
+                    layerUrl: top.$.rootUrl + '/LR_OrganizationModule/User/SelectForm',
+                    layerUrlW: 800,
+                    layerUrlH: 520,
+                    dataUrl: ''
+                });
+            },
+            jfgridinit: function () {
+                initGrid();
+            },
+            uploaderInit: function () {
+                $('#aycsoft_uploader').lrUploader();
+            }
+        }
+
+        page.init();
+    }
+</script>

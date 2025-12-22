@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "岗位选择";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-form-layout {
+    padding-left:240px;
+}
+.form-company-list {
+    position:absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:240px;
+    border-right:1px solid #ddd;
+    padding:5px;
+}
+
+.form-post-list {
+    position:relative;
+    width:100%;
+    height:100%;
+   padding-bottom:30px;
+}
+.form-post-search {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:30px;
+    border-top:1px solid #ddd;
+}
+.form-post-search input {
+    border:0;
+}
+.form-post-search .input-query {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    color: #ccc;
+    font-size: 16px;
+    cursor: default;
+    line-height:29px;
+}
+.form-post-list-content {
+    position:relative;
+    width:100%;
+    height:100%;
+    padding:5px;
+}
+</style>
+<div class="lr-form-layout">
+    <div class="form-company-list" id="form_company_list"></div>
+    <div class="form-post-list">
+        <div class="form-post-list-content" id="form_post_list"></div>
+        <div class="form-post-search"><input type="text" class="form-control" /><span class="input-query" title="查询"><i class="fa fa-search"></i></span></div>
+    </div>
+</div>
+<script>
+var dfopid = request('dfopid');
+var selectValue = request('selectValue');
+
+var acceptClick;
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var postitem = { value: '', text: '' };
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#form_company_list').lrtree({
+                url: top.$.rootUrl + '/LR_OrganizationModule/Company/GetTree',
+                param: { parentId: '0' },
+                nodeClick: function (item) {
+                    $('#form_post_list').lrtreeSet('refresh', {
+                        url: top.$.rootUrl + '/LR_OrganizationModule/Post/GetTree',
+                        param: { companyId: item.id }
+                    });
+                }
+            });
+
+            $('#form_post_list').lrtree({
+                nodeClick: function (item) {
+                    postitem.value = item.id;
+                    postitem.text = item.text;
+                }
+            });
+
+
+            $('.form-post-search>input').on("keypress", function (e) {
+                if (event.keyCode == "13") {
+                    var keyword = $(this).val();
+                    $('#form_post_list').lrtreeSet('search', { keyword: keyword });
+
+                }
+            });
+        },
+        initData: function () {
+            if (!!selectValue && selectValue != "0") {
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_OrganizationModule/Post/GetEntity', { keyValue: selectValue }, function (data) {
+                    if (!!data) {
+                        $('#form_company_list').lrtreeSet('setValue', data.F_CompanyId);
+                        $('#form_post_list').lrtreeSet('setValue', data.F_PostId);
+                    }
+                });
+            }
+        }
+    };
+    // 保存数据
+    acceptClick = function (callBack) {
+        callBack(postitem, dfopid);
+        return true;
+    };
+    page.init();
+}
+</script>

@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .file {
+    width: 375px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+    .file input {
+        position: absolute;
+        font-size: 120px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer !important;
+    }
+
+    .file img {
+        width: 375px;
+        height: 120px;
+        cursor: pointer;
+    }
+
+    .text {
+        text-align: center;
+    }
+</style>
+<div class="lr-form-wrap" id="form">
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">说明<font face="宋体">*</font></div>
+        <input id="F_Des" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+    </div>
+    <div class="col-xs-12 lr-form-item">
+        <div class="lr-form-item-title">排序码<font face="宋体">*</font></div>
+        <input id="F_SortCode" type="text" class="form-control" isvalid="yes" checkexpession="Num" />
+    </div>
+    <div class="col-xs-12" style="padding-left:100px;">
+        <div class="file">
+            <input type="file" name="uploadFile" id="uploadFile">
+        </div>
+        <div class="text">
+            上传图片尺寸为375x120，大小不超过1M。
+        </div>
+    </div>
+</div>
+<script>
+var acceptClick;
+var keyValue = request('keyValue');
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    var selectedRow = aycsoft.frameTab.currentIframe().selectedRow;
+
+
+    function uploadImg() {
+        var f = document.getElementById('uploadFile').files[0]
+        var src = window.URL.createObjectURL(f);
+        document.getElementById('uploadPreview').src = src;
+    };
+
+    var page = {
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+            $('#uploadFile').on('change', uploadImg);
+            $('.file').prepend('<img id="uploadPreview"  src="' + top.$.rootUrl + '/LR_AppManager/DTImg/GetImg?keyValue=' + keyValue + '" >');
+
+        },
+        initData: function () {
+            if (!!selectedRow) {
+                $('#form').lrSetFormData(selectedRow);
+            }
+        }
+    };
+    // 保存数据 
+    acceptClick = function (callBack) {
+        if (!$('#form').lrValidform()) {
+            return false;
+        }
+        var postData = $('#form').lrGetFormData();
+
+        if (!keyValue && !postData.uploadFile) {
+            aycsoft.alert.error("请选择图片");
+            return false; 
+        }
+
+        var f = document.getElementById('uploadFile').files[0];
+        if (!!f) {
+            aycsoft.loading(true, '正在保存...');
+            $.ajaxFileUpload({
+                data: postData,
+                url: top.$.rootUrl + "/LR_AppManager/DTImg/UploadFile?keyValue=" + keyValue,
+                secureuri: false,
+                fileElementId: 'uploadFile',
+                dataType: 'json',
+                success: function (data) {
+                    if (!!callBack) {
+                        callBack();
+                    }
+                    aycsoft.loading(false);
+                    aycsoft.layerClose(window.name);
+                }
+            });
+        }
+        else {
+            $.lrSaveForm(top.$.rootUrl + '/LR_AppManager/DTImg/SaveForm?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调 
+                if (!!callBack) {
+                    callBack();
+                }
+            });
+        }
+    };
+    page.init();
+} 
+</script>

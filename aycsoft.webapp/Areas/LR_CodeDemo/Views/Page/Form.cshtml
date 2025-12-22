@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "表单页面";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+    <div class="lr-form-wrap" id="form">
+        <div class="col-xs-12 lr-form-item" style="padding-left: 30px;">
+            <div style="padding: 0px; line-height: 38px; text-align: center; font-size: 20px; font-weight: bold; color: rgb(51, 51, 51);">标 题</div>
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">编号<font face="宋体">*</font></div>
+            <input id="F_AreaCode" type="text" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">名称<font face="宋体">*</font></div>
+            <input id="F_AreaName" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">排序<font face="宋体">*</font></div>
+            <input id="F_SortCode" type="text" class="form-control" placeholder="请输入排序号" isvalid="yes" checkexpession="Num" />
+        </div>
+        <div class="col-xs-12 lr-form-item">
+            <div class="lr-form-item-title">描述</div>
+            <textarea id="F_Description" type="text" class="form-control" style="height:80px;"></textarea>
+        </div>
+    </div>
+<script>
+var keyValue = request('keyValue') || '';
+var bootstrap = function ($, aycsoft) {
+    "use strict";
+    window.page = {
+        isUpdate:false,// 表示表单是编辑还是新增状态
+        setAuthorize: function (data, isLook) {// 工作流表单生效,权限设置;data,模板配置表单权限数据 isLook 表示当前是只读模式
+
+        },
+        setFormData: function (processId, wfFormParam, userId, callback) {
+            // processId 普通版表单相当于 keyvalue；流程表单中是流程实例主键（默认关联主表主键）
+            // wfFormParam 流程表单有用，表单自定义参数
+            // userId 流程表单有用，代发流程用户主键
+            $.lrSetForm(top.$.rootUrl + '/LR_FormModule/Custmerform/GetFormData?keyValue=' + processId, function (data) {
+
+            });
+
+        },
+        validForm: function (code) { // code 只在流程状态下起作用,代表流程当前执行的动作
+            if (!$('#form').lrValidform()) {
+                return false;
+            }
+            return true;
+        },
+        save: function (processId, callback) {
+            var postData = $('#form').lrGetFormData(keyValue);
+            if (page.isUpdate) {
+                keyValue = processId;
+            }
+            else {// 默认关联的是主表主键，如果需要变动请更改
+                postData.F_Id = processId;
+            }
+
+            $.lrSaveForm(top.$.rootUrl + 'xxxxxx?keyValue=' + keyValue, postData, function (res) {
+                // 保存成功后才回调
+                callBack && callBack(res);
+            });
+        },
+        init: function () {
+            page.bind();
+            page.initData();
+        },
+        bind: function () {
+                
+        },
+        initData: function () {
+            if (keyValue) {
+                // 获取数据赋值
+                page.setFormData(keyValue)
+            }
+        }
+    };
+    // 保存数据
+    window.acceptClick = function (callBack) {
+        if (page.validForm()) {
+            page.save(keyValue, function (res) {
+                callBack()
+            })
+        }
+    };
+    page.init();
+}
+</script>

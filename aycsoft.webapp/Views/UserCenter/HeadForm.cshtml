@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "个人中心-我的头像";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+.lr-wrap {
+    width:300px;
+    position:relative;
+}
+.lr-wrap .text
+{
+    margin-top: 30px; 
+    line-height: 14px; 
+    color: #75777A;
+    text-align: center;
+}
+.lr-wrap .text div {
+    margin-top:10px;
+}
+.lr-wrap .file {
+    width: 100px;
+    height: 100px;
+    margin:auto;
+    position:relative;
+    overflow: hidden;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer !important;
+}
+.lr-wrap img {
+    width: 100px; 
+    height: 100px;
+    border-radius: 100px;
+    cursor:pointer;
+}
+</style>
+<div class="lr-wrap" >
+    <div class="file" >
+        
+        <input type="file" name="uploadFile" id="uploadFile">
+    </div>
+    <div class="text">
+        建议上传图片尺寸为100x100，大小不超过2M。
+        <div><a class="btn btn-primary" id="lr_save_btn"><i class="fa fa-save"></i>&nbsp;保&nbsp;存</a></div>
+    </div>
+</div>
+<script>
+    var loaddfimg;
+    var baseinfo;
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var getBaseinfo = function (callback) {
+            baseinfo = aycsoft.frameTab.currentIframe().baseinfo;
+            if (!baseinfo) {
+                setTimeout(function () { getBaseinfo(callback) }, 100);
+            }
+            else {
+                callback();
+            }
+        };
+
+
+        var page = {
+            init: function () {
+                getBaseinfo(function () {
+                    page.initData();
+                    page.bind();
+                });
+            },
+            bind: function () {
+                function uploadImg() {
+                    var f = document.getElementById('uploadFile').files[0]
+                    var src = window.URL.createObjectURL(f);
+                    document.getElementById('uploadPreview').src = src;
+                };
+
+                $('#uploadFile').on('change', uploadImg);
+
+                $('#lr_save_btn').on('click', function () {
+                    var f = document.getElementById('uploadFile').files[0];
+                    if (!!f) {
+                        aycsoft.loading(true, '正在保存...');
+                        $.ajaxFileUpload({
+                            url: top.$.rootUrl + "/LR_SystemModule/Img/UploadFile?code=userhead_" + baseinfo.F_Account,
+                            secureuri: false,
+                            fileElementId: 'uploadFile',
+                            dataType: 'json',
+                            success: function (data) {
+                                aycsoft.loading(false);
+                                $('#uploadFile').on('change', uploadImg);
+                                if (data.code == 200) {
+                                    aycsoft.alert.success('保存成功');
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            initData: function () {
+                $('.file').prepend('<img id="uploadPreview"  src="' + top.$.rootUrl + '/LR_OrganizationModule/User/HeadImg?account=userhead_' + baseinfo.F_Account + '" >');
+            }
+        };
+        page.init();
+    }
+</script>

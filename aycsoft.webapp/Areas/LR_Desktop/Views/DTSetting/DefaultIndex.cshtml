@@ -1,0 +1,731 @@
+﻿
+@{
+    ViewBag.Title = "PcIndex";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    body {
+        padding: 10px;
+        background: #f8f8f8;
+    }
+
+    .lr-desktop-panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 0px 22px;
+        border-radius: 2px;
+        overflow-y: auto;
+    }
+
+    .lr-uitheme-accordion .lr-desktop-panel {
+        border-radius: 0px;
+    }
+
+    .lr-uitheme-windos .lr-desktop-panel {
+        border-radius: 3px;
+    }
+
+    .lr-uitheme-default .lr-desktop-panel {
+        border-radius: 3px;
+    }
+
+    .portal-panel-title {
+        padding-top: 10px;
+        line-height: 45px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        color: #4a4a4a;
+        font-weight: 300;
+        font-size: 14px;
+    }
+
+    .portal-panel-content {
+        position: relative;
+        width: 100%;
+        padding: 20px 5px 5px 5px;
+    }
+
+    .lr-item-20 {
+        position: relative;
+        float: left;
+        width: 260px;
+        padding: 10px;
+    }
+
+        .lr-item-20:nth-of-type(5n +1) .task-stat {
+            background: #578ebe;
+        }
+
+        .lr-item-20:nth-of-type(5n +2) .task-stat {
+            background: #e35b5a;
+        }
+
+        .lr-item-20:nth-of-type(5n +3) .task-stat {
+            background: #44b6ae;
+        }
+
+        .lr-item-20:nth-of-type(5n +4) .task-stat {
+            background: #8775a7;
+        }
+
+        .lr-item-20:nth-of-type(5n) .task-stat {
+            background: #3598dc;
+        }
+
+        .lr-item-20:nth-of-type(5n +1) .more {
+            background: #4884b8;
+        }
+
+        .lr-item-20:nth-of-type(5n +2) .more {
+            background: #e04a49;
+        }
+
+        .lr-item-20:nth-of-type(5n +3) .more {
+            background: #3ea7a0;
+        }
+
+        .lr-item-20:nth-of-type(5n +4) .more {
+            background: #7c699f;
+        }
+
+        .lr-item-20:nth-of-type(5n) .more {
+            background: #258fd7;
+        }
+
+
+
+    .task-stat {
+        position: relative;
+        height: 104px;
+        width: 100%;
+        border-radius: 5px;
+        font-family: "Open Sans", sans-serif;
+        overflow: hidden;
+        color: #FFFFFF;
+    }
+
+        .task-stat .visual {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0 0 10px;
+        }
+
+            .task-stat .visual > i {
+                color: #FFFFFF;
+                opacity: 0.4;
+                filter: alpha(opacity=10);
+                font-size: 60px;
+                line-height: 65px;
+            }
+
+        .task-stat .details {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+            .task-stat .details .number {
+                text-align: right;
+                font-size: 32px;
+                line-height: 36px;
+                letter-spacing: -1px;
+                margin-bottom: 0px;
+                font-weight: 300;
+            }
+
+            .task-stat .details .desc {
+                text-align: right;
+                font-size: 15px;
+                padding-top: 5px;
+            }
+
+        .task-stat .more {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            clear: both;
+            padding: 4px 10px;
+            text-transform: uppercase;
+            font-weight: 300;
+            font-size: 12px;
+            opacity: 0.8;
+            filter: alpha(opacity=70);
+            text-decoration: none;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+
+            .task-stat .more > i {
+                display: inline-block;
+                margin-top: 0px;
+                float: right;
+                font-size: 15px;
+                color: #fff;
+                opacity: 0.8;
+            }
+
+            .task-stat .more:hover {
+                text-decoration: none;
+                opacity: 0.9;
+                filter: alpha(opacity=90);
+            }
+
+    .lr-msg-line {
+        position: relative;
+        width: 100%;
+        line-height: 39px;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .lr-msg-line > a {
+            cursor: pointer;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .lr-msg-line > label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-bottom: 0px;
+            color: #333;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+    .lr-chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+    }
+
+
+    .portal-panel-title .menu {
+        float: right;
+        display: flex;
+        width: 26px;
+        background: transparent;
+        justify-content: space-between;
+        cursor: pointer;
+        margin: 22px 20px 0 0;
+    }
+
+        .portal-panel-title .menu .point {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border: 1px solid #979797;
+            border-radius: 50%;
+        }
+
+    .targetItem:hover .tool {
+        display: block;
+    }
+
+    .targetItem .tool {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #1d1d1d;
+        color: #fff;
+        display: none;
+        cursor: pointer;
+    }
+
+
+        .targetItem .tool div {
+            float: left;
+            width: 50%;
+            height: 100%;
+            position: relative;
+        }
+
+            .targetItem .tool div:first-child:after {
+                position: absolute;
+                right: 0;
+                bottom: 5px;
+                top: 5px;
+                width: 1px;
+                content: '';
+                -webkit-transform: scaleX(.5);
+                transform: scaleX(.5);
+                background-color: #fff;
+            }
+
+
+    .lr-black-addbtn {
+        height: 40px;
+        line-height: 40px;
+        color: #0188D2;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid #0188D2;
+        margin-top: 5px;
+    }
+
+    .portal-panel-title .tool {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 106px;
+        height: 45px;
+    }
+
+        .portal-panel-title .tool div {
+            float: left;
+            width: 50%;
+            height: 100%;
+            position: relative;
+            text-align: center;
+            color: #0188D2;
+            cursor: pointer;
+        }
+
+            .portal-panel-title .tool div:first-child:after {
+                position: absolute;
+                right: 0;
+                bottom: 15px;
+                top: 15px;
+                width: 1px;
+                content: '';
+                -webkit-transform: scaleX(.5);
+                transform: scaleX(.5);
+                background-color: #0188D2;
+            }
+</style>
+<script src="~/lib/echarts/echarts.min.js"></script>
+<div class="lr-desktop-panel">
+    <div class="col-xs-12">
+        <div class="portal-panel-title" style="        position: relative;">
+            <i class="fa fa-balance-scale"></i>&nbsp;&nbsp;统计指标
+            <div id="lr-add-target" style="        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 80px;
+        line-height: 65px;
+        font-size: 14px;
+        color: #0188D2;
+        text-align: center;"><i class="fa fa-plus"></i>&nbsp;&nbsp;添加</div>
+        </div>
+        <div class="portal-panel-content" id="lr_target">
+        </div>
+    </div>
+    <div class="col-xs-12 lr-black-addbtn" id="lr-add-list">
+        <i class="fa fa-plus"></i>添加消息列表
+    </div>
+
+    <div class="col-xs-12 lr-black-addbtn" id="lr-add-chart">
+        <i class="fa fa-plus"></i>添加图表
+    </div>
+
+</div>
+<script>var refreshGirdData;
+    var selectedRow = null;
+    var switchbtn = 1;
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+
+        var targetMap = {};
+        var listMap = {};
+        var chartMap = {};
+        var chartMap2 = {};
+
+        var page = {
+            init: function () {
+                // 加载数据
+                $('#lr_target').lrscroll();
+                page.bind();
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTTarget/GetList', {}, function (data) {
+                    page.target(data || []);
+                });
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTList/GetList', {}, function (data) {
+                    page.list(data || []);
+                });
+                aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTChart/GetList', {}, function (data) {
+                    page.chart(data || []);
+                });
+            },
+            target: function (data) {
+                var itemW = 210;
+                var allw = 0;
+
+                var w = $('#lr_target').width() - 10;
+                var itemW = w / data.length;
+                if (itemW < 210) {
+                    itemW = 210;
+                }
+                allw = itemW * data.length;
+                var $target = $('#lr_target .lr-scroll-box');
+                $target.css('width', allw);
+                targetMap = {};
+                $.each(data, function (_index, _item) {
+                    targetMap[_item.F_Id] = _item;
+                    var _html = '\
+                <div class="lr-item-20 targetItem">\
+                    <div class="task-stat" >\
+                        <div class="visual">\
+                            <i class="'+ _item.F_Icon + '"></i>\
+                        </div>\
+                        <div class="details">\
+                            <div class="number" data-value="'+ _item.F_Id + '"></div>\
+                            <div class="desc">'+ _item.F_Name + '</div>\
+                        </div>';
+                    if (_item.F_Url) {
+                        _html += '<a class="more" data-Id="' + _item.F_Id + '" >\
+                            查看更多 <i class="fa fa-arrow-circle-right"></i>\
+                        </a>';
+                    }
+                    _html += '\
+                    <div class="tool" data-Id="' + _item.F_Id + '">\
+                        <div>编辑</div>\
+                        <div>删除</div>\
+                    </div>';
+
+                    _html += '</div>\
+                </div>';
+
+                    $target.append(_html);
+                    // 向后台请求数据
+                    top.aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_SystemModule/DataSource/GetDataTableBySql', { code: _item.F_DataSourceId, sql: _item.F_Sql }, function (data) {
+                        if (data) {
+                            for (var key in data[0]) {
+                                $target.find('[data-value="' + _item.F_Id + '"]').text(data[0][key] || "");
+                            }
+                        }
+                    });
+                });
+                $target.find('.lr-item-20 .more').on('click', function () {
+                    var Id = $(this).attr('data-Id');
+                    top.aycsoft.frameTab.open({ F_ModuleId: Id, F_FullName: targetMap[Id].F_Name, F_UrlAddress: targetMap[Id].F_Url });
+                    return false;
+                });
+                $target.find('.lr-item-20').css('width', itemW);
+                $('#lr_target').resize(function () {
+                    var w = $('#lr_target').width() - 10;
+                    var itemW = w / data.length;
+                    if (itemW < 210) {
+                        itemW = 210;
+                    }
+                    allw = itemW * data.length;
+                    $target.css('width', allw);
+                    $target.find('.lr-item-20').css('width', itemW);
+                });
+            },
+            list: function (data) {
+                var $btn = $('#lr-add-list');
+                listMap = {};
+                $.each(data, function (_index, _item) {
+                    listMap[_item.F_Id] = _item;
+                    var _html = '\
+                <div class="col-xs-6 listItem" data-Id="'+ _item.F_Id + '">\
+                    <div class="portal-panel-title">\
+                        <i class="'+ _item.F_Icon + '"></i>&nbsp;&nbsp;' + _item.F_Name + '<div class="tool"><div>编辑</div><div>删除</div></div>\
+                    </div>\
+                    <div class="portal-panel-content" style="overflow: hidden; padding-top: 20px; padding-left: 30px; padding-right: 50px;height:225px;" data-value="'+ _item.F_Id + '" >\
+                    </div>\
+                </div>';
+                    $btn.before(_html);
+                    // 向后台请求数据
+
+                    top.aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_SystemModule/DataSource/GetDataTableBySql', { code: _item.F_DataSourceId, sql: _item.F_Sql }, function (data) {
+                        if (data) {
+                            var $content = $('[data-value="' + _item.F_Id + '"]');
+                            $.each(data, function (_index, _item) {
+                                var _html = '\
+                            <div class="lr-msg-line">\
+                                <a href="#" style="text-decoration: none;" >' + _item.f_title + '</a>\
+                                <label>'+ _item.f_time + '</label>\
+                            </div>';
+
+                                var _$html = $(_html);
+                                _$html.find('a')[0].item = _item;
+                                $content.append(_$html);
+                            });
+                        }
+                    });
+                });
+            },
+            chart: function (data) {
+                var $btn = $('#lr-add-chart');
+                chartMap = {};
+                chartMap2 = {};
+                $.each(data, function (_index, _item) {
+                    chartMap2[_item.F_Id] = _item;
+                    var _html = '\
+                <div class="col-xs-'+ (12 / parseInt(_item.F_Proportion1)) + '  chartItem" data-Id="' + _item.F_Id + '">\
+                    <div class="portal-panel-title">\
+                        <i class="'+ _item.F_Icon + '"></i>&nbsp;&nbsp;' + _item.F_Name + '<div class="tool"><div>编辑</div><div>删除</div></div>\
+                    </div>\
+                    <div class="portal-panel-content">\
+                        <div id="'+ _item.F_Id + '" class="lr-chart-container" data-type="' + _item.F_Type + '"   ></div>\
+                    </div>\
+                </div>';
+
+                    $btn.before(_html);
+
+                    chartMap[_item.F_Id] = echarts.init(document.getElementById(_item.F_Id));
+
+                    // 向后台请求数据
+                    top.aycsoft.httpAsync('Post', top.$.rootUrl + '/LR_SystemModule/DataSource/GetDataTableBySql', { code: _item.F_DataSourceId, sql: _item.F_Sql }, function (data) {
+                        if (data) {
+                            var type = $('#' + _item.F_Id).attr('data-type');
+                            var legendData = [];
+                            var valueData = [];
+                            $.each(data, function (_index, _item) {
+                                legendData.push(_item.name);
+                                valueData.push(_item.value);
+                            });
+
+                            var option = {};
+                            switch (type) {
+                                case '0'://饼图
+                                    option.legend = {
+                                        bottom: 'bottom',
+                                        data: legendData
+                                    };
+                                    option.series = [{
+                                        name: '占比',
+                                        type: 'pie',
+                                        radius: '75%',
+                                        center: ['50%', '50%'],
+                                        label: {
+                                            normal: {
+                                                formatter: '{b}:{c}: ({d}%)',
+                                                textStyle: {
+                                                    fontWeight: 'normal',
+                                                    fontSize: 12,
+                                                    color: '#333'
+                                                }
+                                            }
+                                        },
+                                        data: data,
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+                                    }];
+                                    option.color = ['#df4d4b', '#304552', '#52bbc8', 'rgb(224,134,105)', '#8dd5b4', '#5eb57d', '#d78d2f'];
+                                    break;
+                                case '1'://折线图
+                                    option.tooltip = {
+                                        trigger: 'axis'
+                                    };
+                                    option.grid = {
+                                        bottom: '8%',
+                                        containLabel: true
+                                    };
+                                    option.xAxis = {
+                                        type: 'category',
+                                        boundaryGap: false,
+                                        data: legendData
+                                    };
+                                    option.yAxis = {
+                                        type: 'value'
+                                    }
+                                    option.series = [{
+                                        type: 'line',
+                                        data: valueData
+                                    }];
+
+
+                                    break;
+                                case '2'://柱状图
+                                    option.tooltip = {
+                                        trigger: 'axis'
+                                    };
+                                    option.grid = {
+                                        bottom: '8%',
+                                        containLabel: true
+                                    };
+                                    option.xAxis = {
+                                        type: 'category',
+                                        boundaryGap: false,
+                                        data: legendData
+                                    };
+                                    option.yAxis = {
+                                        type: 'value'
+                                    }
+                                    option.series = [{
+                                        type: 'bar',
+                                        data: valueData
+                                    }];
+                                    break;
+                            }
+                            chartMap[_item.F_Id].setOption(option);
+                        }
+                    });
+
+                });
+                window.onresize = function (e) {
+                    $.each(chartMap, function (id, obj) {
+                        obj.resize(e);
+                    });
+                }
+            },
+            bind: function () {
+                // 统计
+                $('#lr_target').on('click', '.tool>div', function () {
+                    var $this = $(this);
+                    var text = $this.text();
+                    var id = $this.parent().attr('data-Id');
+                    var item = targetMap[id];
+                    selectedRow = item;
+                    switchbtn = 1;
+                    if (text === '编辑') {
+                        aycsoft.layerForm({
+                            id: 'Form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/LR_Desktop/DTTarget/Form',
+                            width: 600,
+                            height: 500,
+                            btn: null
+                        });
+                    }
+                    else {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_Desktop/DTTarget/DeleteForm', { keyValue: item.F_Id }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+                });
+                $('#lr-add-target').on('click', function () {
+                    selectedRow = null;
+                    switchbtn = 1;
+                    aycsoft.layerForm({
+                        id: 'Form',
+                        title: '添加',
+                        url: top.$.rootUrl + '/LR_Desktop/DTTarget/Form',
+                        width: 600,
+                        height: 500,
+                        btn: null
+                    });
+                });
+                // 列表
+                $('.lr-desktop-panel').on('click', '.listItem .tool>div', function () {
+                    var $this = $(this);
+                    var text = $this.text();
+                    var id = $this.parents('.listItem').attr('data-Id');
+                    var item = listMap[id];
+                    selectedRow = item;
+                    switchbtn = 2;
+                    if (text === '编辑') {
+                        aycsoft.layerForm({
+                            id: 'Form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/LR_Desktop/DTList/Form',
+                            width: 600,
+                            height: 500,
+                            btn: null
+                        });
+                    }
+                    else {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_Desktop/DTList/DeleteForm', { keyValue: item.F_Id }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+
+                });
+                $('#lr-add-list').on('click', function () {
+                    selectedRow = null;
+                    switchbtn = 2;
+                    aycsoft.layerForm({
+                        id: 'Form',
+                        title: '添加',
+                        url: top.$.rootUrl + '/LR_Desktop/DTList/Form',
+                        width: 600,
+                        height: 500,
+                        btn: null
+                    });
+                });
+                // 图表
+                $('.lr-desktop-panel').on('click', '.chartItem .tool>div', function () {
+                    var $this = $(this);
+                    var text = $this.text();
+                    var id = $this.parents('.chartItem').attr('data-Id');
+                    var item = chartMap2[id];
+                    selectedRow = item;
+                    switchbtn = 3;
+                    if (text === '编辑') {
+                        aycsoft.layerForm({
+                            id: 'Form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/LR_Desktop/DTChart/Form',
+                            width: 600,
+                            height: 500,
+                            btn: null
+                        });
+                    }
+                    else {
+                        aycsoft.layerConfirm('是否确认删除该项！', function (res) {
+                            if (res) {
+                                aycsoft.deleteForm(top.$.rootUrl + '/LR_Desktop/DTChart/DeleteForm', { keyValue: item.F_Id }, function () {
+                                    refreshGirdData();
+                                });
+                            }
+                        });
+                    }
+
+                });
+                $('#lr-add-chart').on('click', function () {
+                    selectedRow = null;
+                    switchbtn = 3;
+                    aycsoft.layerForm({
+                        id: 'Form',
+                        title: '添加',
+                        url: top.$.rootUrl + '/LR_Desktop/DTChart/Form',
+                        width: 600,
+                        height: 500,
+                        btn: null
+                    });
+                });
+            }
+        };
+
+        refreshGirdData = function () {
+            switch (switchbtn) {
+                case 1:
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTTarget/GetList', {}, function (data) {
+                        $('.targetItem').remove();
+                        page.target(data || []);
+                    });
+                    break;
+                case 2:
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTList/GetList', {}, function (data) {
+                        $('.listItem').remove();
+                        page.list(data || []);
+                    });
+                    break;
+                case 3:
+                    aycsoft.httpAsync('GET', top.$.rootUrl + '/LR_Desktop/DTChart/GetList', {}, function (data) {
+                        $('.chartItem').remove();
+                        page.chart(data || []);
+                    });
+                    break;
+            }
+        }
+
+        page.init();
+    }</script>

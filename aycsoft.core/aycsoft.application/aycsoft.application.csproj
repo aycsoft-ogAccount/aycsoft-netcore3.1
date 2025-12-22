@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>lr.application</PackageId>
+    <Authors>young</Authors>
+    <Company>广州轻创软件信息科技有限公司</Company>
+    <Product>Aycsoft敏捷框架Core版本</Product>
+    <Copyright>https://www.aycsoft.cn</Copyright>
+    <PackageProjectUrl>https://www.aycsoft.cn</PackageProjectUrl>
+    <PackageIcon>applogo.png</PackageIcon>
+    <PackageReleaseNotes>使用需要购买Aycsoft框架https://www.aycsoft.cn</PackageReleaseNotes>
+    <Version>1.0.3</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\work\aycsoft-adms-core\aycsoft.framework.core\aycsoft.core\aycsoft.application\aycsoft.application.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\aycsoft.database\aycsoft.database.csproj" />
+    <ProjectReference Include="..\aycsoft.iapplication\aycsoft.iapplication.csproj" />
+    <ProjectReference Include="..\aycsoft.util\aycsoft.util.csproj" />
+    <ProjectReference Include="..\aycsoft.wechat\aycsoft.wechat.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LangLuage\Map\" />
+    <Folder Include="LangLuage\Type\" />
+    <Folder Include="Data\DbDraft\" />
+    <Folder Include="Data\DbField\" />
+    <Folder Include="Desktop\Chart\" />
+    <Folder Include="Desktop\List\" />
+    <Folder Include="Desktop\Target\" />
+    <Folder Include="TaskScheduling\" />
+    <Folder Include="TaskScheduling\Log\" />
+    <Folder Include="TaskScheduling\Scheme\" />
+    <Folder Include="Message\StrategyInfo\" />
+    <Folder Include="Message\Contacts\" />
+    <Folder Include="Message\Msg\" />
+    <Folder Include="Message\SysUser\" />
+    <Folder Include="DisplayBoard\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Quartz" Version="3.0.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="DisplayBoard\LR_KBKanBanInfo\LR_KBKanBanInfoEntity.cs" />
+    <Compile Remove="DisplayBoard\LR_KBKanBanInfo\LR_KBKanBanInfoIBLL.cs" />
+    <Compile Remove="DisplayBoard\LR_KBFeaManage\LR_KBFeaManageEntity.cs" />
+    <Compile Remove="DisplayBoard\LR_KBFeaManage\LR_KBFeaManageIBLL.cs" />
+    <Compile Remove="DisplayBoard\LR_KBConfigInfo\LR_KBConfigInfoEntity.cs" />
+    <Compile Remove="DisplayBoard\LR_KBConfigInfo\LR_KBConfigInfoIBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\applogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

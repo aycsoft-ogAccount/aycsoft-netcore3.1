@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "个人中心-日志查看";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+.lr-layout {
+    padding:0;
+    padding-top:40px;
+}
+.lr-layout-center {
+    padding:0;
+}
+.lr-layout-wrap {
+    padding:0;
+    border:0;
+}
+.lr-nav-tabs
+{
+    position: absolute;
+    top: 0;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+.lr-nav-tabs>li {
+    border: 0;
+    padding: 11px 15px;
+    cursor:pointer;
+}
+.lr-nav-tabs>li.active, 
+.lr-nav-tabs>li.active:focus, 
+.lr-nav-tabs>li.active:hover {
+    color: #555;
+    cursor: default;
+    padding-bottom:10px;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 2px solid #3498DB;
+}
+</style>
+<div id="lr_layout" class="lr-layout">
+    <ul class="nav nav-tabs lr-nav-tabs" id="lr_left_list">
+        <li class="active" data-value="1">登录日志</li>
+        <li data-value="2">访问日志</li>
+        <li data-value="3">操作日志</li>
+    </ul>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap lr-layout-wrap-notitle">
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-left">
+                    <div class="lr-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="lr-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lr-layout-body" id="gridtable">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var categoryId = '1';
+        var logbegin = '';
+        var logend = '';
+
+        var page = {
+            init: function () {
+                page.initleft();
+                page.initGrid();
+                page.bind();
+            },
+            bind: function () {
+                $('#datesearch').lrdate({
+                    dfdata: [
+                        { name: '今天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00') }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近7天', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'd', -6) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近1个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -1) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                        { name: '近3个月', begin: function () { return aycsoft.getDate('yyyy-MM-dd 00:00:00', 'm', -3) }, end: function () { return aycsoft.getDate('yyyy-MM-dd 23:59:59') } },
+                    ],
+                    // 月
+                    mShow: false,
+                    premShow: false,
+                    // 季度
+                    jShow: false,
+                    prejShow: false,
+                    // 年
+                    ysShow: false,
+                    yxShow: false,
+                    preyShow: false,
+                    yShow: false,
+                    // 默认
+                    dfvalue: '1',
+                    selectfn: function (begin, end) {
+                        logbegin = begin;
+                        logend = end;
+
+                        page.search();
+                    }
+                });
+
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ keyword: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+            },
+            initleft: function () {
+                $('#lr_left_list li').on('click', function () {
+                    var $this = $(this);
+                    var $parent = $this.parent();
+                    $parent.find('.active').removeClass('active');
+                    $this.addClass('active');
+
+                    categoryId = $this.attr('data-value');
+                    page.search();
+                });
+            },
+            initGrid: function () {
+                $('#gridtable').jfGrid({
+                    url: top.$.rootUrl + '/LR_SystemModule/Log/GetPageListByMy',
+                    headData: [
+                        {
+                            label: "操作时间", name: "F_OperateTime", width: 150, align: "left",
+                            formatter: function (cellvalue) {
+                                return aycsoft.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                            }
+                        },
+                        { label: "操作用户", name: "F_OperateAccount", width: 150, align: "left" },
+                        {
+                            label: "IP地址", name: "F_IPAddress", width: 150, align: "left",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == '::1') {
+                                    return "本地";
+                                } else {
+                                    return cellvalue;
+                                }
+                            }
+                        },
+                        { label: "系统功能", name: "F_Module", width: 150, align: "left" },
+                        { label: "操作类型", name: "F_OperateType", width: 70, align: "center" },
+                        {
+                            label: "执行结果", name: "F_ExecuteResult", width: 70, align: "center",
+                            formatter: function (cellvalue) {
+                                if (cellvalue == '1') {
+                                    return "<span class=\"label label-success\">成功</span>";
+                                } else {
+                                    return "<span class=\"label label-danger\">失败</span>";
+                                }
+                            }
+                        },
+                        { label: "执行结果描述", name: "F_ExecuteResultJson", width: 300, align: "left" }
+
+                    ],
+
+                    mainId: 'F_ItemDetailId',
+                    isPage: true,
+                    sidx: 'F_OperateTime DESC'
+                });
+            },
+            search: function (param) {
+                param = param || {};
+                param.CategoryId = categoryId;
+                param.StartTime = logbegin;
+                param.EndTime = logend;
+
+                $('#gridtable').jfGridSet('reload', { queryJson: JSON.stringify(param) });
+            }
+        };
+
+
+
+        page.init();
+    }
+</script>

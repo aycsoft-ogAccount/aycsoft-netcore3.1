@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "系统功能";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="lr-layout lr-layout-left-center" id="lr_layout">
+    <div class="lr-layout-left">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">功能目录</div>
+            <div class="lr-layout-body" id="module_tree"></div>
+        </div>
+    </div>
+    <div class="lr-layout-center">
+        <div class="lr-layout-wrap">
+            <div class="lr-layout-title">
+                功能信息 - <span id="titleinfo">未选择功能</span>
+            </div>
+            <div class="lr-layout-tool">
+                <div class="lr-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="lr_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" aycsoft-authorize="yes">
+                        <a id="lr_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                    </div>
+                </div>
+            </div>
+            <div class="lr-layout-body" id="gridtable">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var refreshGirdData; // 更新数据
+    var selectedRow;
+    var formHeight;
+    var keyValue;
+    var moduleType = true;
+    var typeList = [];
+
+    var bootstrap = function ($, aycsoft) {
+        "use strict";
+        var moduleId = '0';
+        var page = {
+            init: function () {
+                page.inittree();
+                page.initGrid();
+                page.bind();
+            },
+            bind: function () {
+                // 查询
+                $('#btn_Search').on('click', function () {
+                    var keyword = $('#txt_Keyword').val();
+                    page.search({ parentId: moduleId, keyword: keyword });
+                });
+                // 刷新
+                $('#lr_refresh').on('click', function () {
+                    location.reload();
+                });
+                // 编辑
+                $('#lr_edit').on('click', function () {
+                    selectedRow = $('#gridtable').jfGridGet('rowdata');
+                    if (aycsoft.checkrow(selectedRow)) {
+                        aycsoft.layerForm({
+                            id: 'form',
+                            title: '编辑',
+                            url: top.$.rootUrl + '/LR_LGManager/LGMap/AddForm?keyValue=' + keyValue,
+                            width: 400,
+                            height: formHeight,
+                            callBack: function (id) {
+                                return top[id].acceptClick(function () {
+                                    page.search({ parentId: moduleId });
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+            inittree: function () {
+                $('#module_tree').lrtree({
+                    url: top.$.rootUrl + '/LR_SystemModule/Module/GetModuleTree',
+                    nodeClick: page.treeNodeClick
+                });
+            },
+            treeNodeClick: function (item) {
+                moduleId = item.id;
+                moduleType = item.hasChildren
+                $('#titleinfo').text(item.text);
+                page.search({ parentId: moduleId });
+            },
+            initGrid: function () {
+                var data = [];
+                //获取语言类型
+                aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_LGManager/LGType/GetList', function (res) {
+                    if (res.data) {
+                        data.push({ label: "名称", name: res.data[0].F_Code, width: 200, align: "left" });
+                        keyValue = res.data[0].F_Code;  //主语言
+                        typeList.push(res.data[0].F_Code);
+                        for (var i = 1; i < res.data.length; i++) {
+                            var obj = { label: res.data[i].F_Name, name: res.data[i].F_Code, width: 200, align: "left" };
+                            data.push(obj);
+                            typeList.push(res.data[i].F_Code);
+                        }
+                        $('#gridtable').jfGrid({
+                            headData: data,
+                            dblclick: function (row) {
+                                if (aycsoft.checkrow(row)) {
+                                    selectedRow = row;
+                                    aycsoft.layerForm({
+                                        id: 'form',
+                                        title: '编辑',
+                                        url: top.$.rootUrl + '/LR_LGManager/LGMap/AddForm?keyValue=' + keyValue,
+                                        width: 400,
+                                        height: formHeight,
+                                        callBack: function (id) {
+                                            return top[id].acceptClick(function () {
+                                                page.search({ parentId: moduleId });
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        page.search({ parentId: moduleId });
+                        if (res.data.length <= 3) {
+                            formHeight = 230;
+                        }
+                        else {
+                            formHeight = 230 + (res.data.length - 3) * 40;
+                        }
+                    }
+                });
+            },
+            search: function (param) {
+                //获取表数据并赋值
+                var rowData = [];
+                var obj = {};
+                if (moduleType) {//判断是否有下级
+                    aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_SystemModule/Module/GetModuleListByParentId?parentId=' + param.parentId, function (res) {
+                        if (res.data) {
+                            var dataList = [];
+                            for (var i = 0; i < res.data.length; i++) {
+                                dataList.push(res.data[i].F_FullName);
+                            }
+                            page.render(dataList);
+                        }
+                    });
+                }
+                else {//展示按钮与列
+                    aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_SystemModule/Module/GetFormData?keyValue=' + param.parentId, function (res) {
+                        if (res.data) {
+                            var dataList = [];
+                            for (var i = 0; i < res.data.moduleButtons.length; i++) {
+                                dataList.push(res.data.moduleButtons[i].F_FullName);
+                            }
+                            for (var i = 0; i < res.data.moduleColumns.length; i++) {
+                                if (dataList.indexOf(res.data.moduleColumns[i].F_FullName) == -1) {
+                                    dataList.push(res.data.moduleColumns[i].F_FullName);
+                                }
+                            }
+                            for (var i = 0; i < res.data.moduleFields.length; i++) {
+                                if (dataList.indexOf(res.data.moduleFields[i].F_FullName) == -1) {
+                                    dataList.push(res.data.moduleFields[i].F_FullName);
+                                }
+
+                            }
+                            page.render(dataList);
+                        }
+                    });
+                }
+            },
+            render: function (dataList) {
+
+                if (dataList.length > 0) {
+                    aycsoft.httpAsyncGet(top.$.rootUrl + '/LR_LGManager/LGMap/GetList?typeList=' + typeList + "&dataList=" + dataList, function (mapRes) {
+                        var _map = {};
+                        var _data = [];
+                        if (mapRes.code == 200) {
+                            $.each(mapRes.data, function (_index, _item) {
+                                _map[_item[typeList[0].toLowerCase()]] = _item;
+                            });
+                            $.each(dataList, function (_index, _item) {
+                                if (_map[_item]) {
+                                    _data.push(_map[_item]);
+                                }
+                                else {
+                                    var _point = {};
+                                    _point[typeList[0].toLowerCase()] = _item;
+                                    _data.push(_point);
+                                }
+                            });
+                            $('#gridtable').jfGridSet('refreshdata', _data);
+                        }
+                    });
+                }
+                else {
+                    $('#gridtable').jfGridSet('refreshdata', []);
+                }
+            }
+        };
+        // 保存数据后回调刷新
+        refreshGirdData = function () {
+            page.search({ parentId: moduleId });
+        }
+
+        page.init();
+    }
+</script>

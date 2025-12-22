@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>lr.iapplication</PackageId>
+    <Authors>young</Authors>
+    <Company>广州轻创软件信息科技有限公司</Company>
+    <Product>Aycsoft敏捷框架Core版本</Product>
+    <Copyright>https://www.aycsoft.cn</Copyright>
+    <PackageProjectUrl>https://www.aycsoft.cn</PackageProjectUrl>
+    <PackageIcon>applogo.png</PackageIcon>
+    <PackageReleaseNotes>使用需要购买Aycsoft框架https://www.aycsoft.cn</PackageReleaseNotes>
+    <Version>1.0.3</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\work\aycsoft-adms-core\aycsoft.framework.core\aycsoft.core\aycsoft.iapplication\aycsoft.iapplication.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="cd.dapper.extension" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\aycsoft.workflow\aycsoft.workflow.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TaskScheduling\" />
+    <Folder Include="DisplayBoard\" />
+    <Folder Include="MApp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="DisplayBoard\LR_KBKanBanInfo\LR_KBKanBanInfoBLL.cs" />
+    <Compile Remove="DisplayBoard\LR_KBKanBanInfo\LR_KBKanBanInfoService.cs" />
+    <Compile Remove="DisplayBoard\LR_KBFeaManage\LR_KBFeaManageBLL.cs" />
+    <Compile Remove="DisplayBoard\LR_KBFeaManage\LR_KBFeaManageService.cs" />
+    <Compile Remove="DisplayBoard\LR_KBConfigInfo\LR_KBConfigInfoBLL.cs" />
+    <Compile Remove="DisplayBoard\LR_KBConfigInfo\LR_KBConfigInfoService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\applogo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
